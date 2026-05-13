@@ -1,0 +1,114 @@
+.up-panel {
+    position: relative;
+    top: 0px;
+    height: 58vh;
+    background:#fffafa;
+
+}
+
+.signal{
+    background: red;
+    width:10px;
+    height:10px;
+    border-radius: 5px;
+}
+
+.down-panel{
+    height: 38vh;
+    border: solid 1px red;
+    background: #f5f5f5;
+    bottom:0px;
+}
+.main-content{
+    width:96vw;
+    overflow-y:hidden;
+    overflow-x:scroll;
+
+}
+
+.panel-item{
+    padding:10px;
+}
+
+.input-big{
+    font-size: 14px;
+    width: 60px;
+}
+
+.az {
+    border: solid 1px red;
+    width:fit-content;
+    padding:  3px;
+}
+
+.column-bsm{
+position:relative;
+    top:0px;
+    display:block;
+    height:95vh;
+    border: 1px solid black;flex-grow: 0;min-width:50vw;
+}
+
+.mnemo-sell{
+    width: 20px;
+    height:20px;
+    border: solid 1px  #fffafa;
+
+}
+
+.mnemo-s{
+    background:green;
+     border: solid 1px black;
+     width: 20px;
+    height:20px;
+    }
+
+
+.mnemo-rr{
+        background:#808080;
+     border: solid 1px black;
+     width: 20px;
+    height:20px;
+}
+
+.mnemo-ysp{
+        background:#faf87d;
+     border: solid 1px black;
+     width: 20px;
+    height:20px;
+}
+
+.mnemo-baz {
+        background:#ff4040;
+     border: solid 1px black;
+     width: 20px;
+    height:20px;
+}
+
+.mnemo-lar{
+        background:#4169e1;
+     border: solid 1px black;
+     width: 20px;
+    height:20px;
+}
+
+
+.mnemo-laz{
+        background:#2bb52b;
+     border: solid 1px black;
+     width: 20px;
+    height:20px;
+}
+
+.row-mnemo {
+    display:flex;
+}
+
+
+.alert-error {
+    overflow:hide;
+    border: 1px solid black;
+    font-size: 15px;
+    max-height:32px;
+    max-width: 160px;
+}

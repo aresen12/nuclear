@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <link href="/static/css/bsm.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="main-content" style="">
+    <div style="display:flex;height:95vh;align-items: flex-start;">
+<!--        ТУрбина-->
+        <div  class="column-bsm ">
+            <div class="up-panel">
+            <div>
+            Турбина 1
+            <div style="display:flex;">
+                ОБР
+        <input id="obr_t1" class="input-big">
+            <div>
+                W эл
+            <input id="w_e1" class="input-big">
+                </div>
+            <div>
+                давление
+            <input id="p_in_reactor" class="input-big">
+                дав пусковое
+                <input id="p_start1" class="input-big">
+                </div>
+                <div>
+                G max
+                <input id="g_max_t1" class="input-big">
+                </div>
+            </div>
+            Турбина 2
+            <div style="display:flex;">
+                ОБР
+        <input id="obr_t2" class="input-big">
+            <div>
+                W эл
+            <input id="w_e2" class="input-big">
+                </div>
+            <div>
+                дав пусковое
+                <input id="p_start2" class="input-big">
+                </div>
+                <div>
+                G max
+                <input id="g_max_t2" class="input-big">
+                </div>
+            </div>
+                <div style="display:flex;">
+                    <div >
+                    РДГ1
+                    <div>
+                    Включен<div id="rdg1_s" class="signal"></div>
+                        </div>
+                    W, КВТ
+                    <input id="rdg1_p" class="input-big">
+                        </div>
+                    <div>
+                    РДГ2
+                    <div>
+                    Включен<div id="rdg2_s" class="signal"></div>
+                        </div>
+                    W, КВТ
+                    <input id="rdg2_p" class="input-big">
+                        </div>
+                </div>
+            <div>
+                <div id="alert_high_e_power_t2" class="alert-error">Высокая мощность Турбины 1</div>
+                <div id="alert_high_turnovers1" class="alert-error">Высокие обороты Турбины 1</div>
+                <div id="alert_high_turnovers2" class="alert-error">Высокие обороты Турбины 2</div>
+
+                <div id="alert_high_e_power_t1" class="alert-error">Высокая мощность Турбины 2</div>
+                <div id="error_t1" class="alert-error">Турбина1 неисправна</div>
+                <div id="error_t2" class="alert-error">Турбина2 неисправна</div>
+            </div>
+            </div>
+                </div>
+            <div class="down-panel" style="display:flex">
+                <div >
+                    Турбина 1
+                <button onclick="re.t1.turn_on_or_down()">ВКЛ</button>
+                    пар <button onclick="re.t1.set_unset_up_direction()">🡅</button>
+                    <button onclick="re.t1.set_unset_down_direction()">🡇</button>
+                    </div>
+                <button onclick="re.t1.start()">ПУСК</button>
+                <div>
+                    Турбина 2
+                <button onclick="re.t2.turn_on_or_down()">ВКЛ</button>
+                    пар <button onclick="re.t1.set_unset_up_direction()">🡅</button>
+                    <button onclick="re.t1.set_unset_down_direction()">🡇</button>
+                    </div>
+                <div style="display:flex;">
+                    <div >
+                    РДГ1
+                        <button onclick="re.rdg1.turn_on_or_down()">ВКЛ</button>
+                        </div>
+                    <div>
+                    РДГ2
+                        <button onclick="re.rdg2.turn_on_or_down()">ВКЛ</button>
+                        </div>
+                </div>
+            </div>
+        </div>
+<!--            СУЗ-->
+        <div style="" class="column-bsm ">
+            <div class="up-panel">
+                СФКРЭ
+        <input id="W_Q" class="input-big">
+            Реактивность
+
+        <input id="reactivnost" class="input-big">
+                <div style="display:flex;">
+                    <div>ЛАР<br>
+                    Включен<div id="lar_s" class="signal"></div>
+                        </div>
+                    <div>
+            {% for i in range(0, 9)%}
+            <div class="row-mnemo">
+                {% for j in range(0, 9)%}
+                {% if (i < 3 and (2 - i <= j <= 8 - (2 - i))) or (5 >= i >= 3) or (i > 5 and (i - 6 <= j <= 8 - (i - 6)))%}
+                <div id="m{{i}}_{{j}}" class="mnemo-s "></div>
+                {% else %}
+                <div class="mnemo-sell"></div>
+                {% endif%}
+                {% endfor %}
+                </div>
+            {% endfor %}
+                        </div>
+                    </div>
+            <div style="display:flex;">
+                <div>
+                <div class="alert-error">Большая реактивность</div>
+                <div id="alert_power_q" class="alert-error">Высокая мощность</div>
+                <div id="alert_baz" class="alert-error">БАЗ</div>
+                <div id="alert_az_1" class="alert-error">АЗ-1</div>
+                <div id="alert_az_2" class="alert-error">АЗ-2</div>
+                <div id="alert_az_5" class="alert-error">АЗ-5</div>
+
+                    </div>
+                <div>
+                    <div id="alert_laz_1" class="alert-error">ЛАЗ-1</div>
+                <div id="alert_laz_2" class="alert-error">ЛАЗ-2</div>
+                <div id="alert_laz_3" class="alert-error">ЛАЗ-3</div>
+                <div id="alert_laz_4" class="alert-error">ЛАЗ-4</div>
+                <div id="alert_laz_5" class="alert-error">ЛАЗ-5</div>
+                <div id="alert_laz_6" class="alert-error">ЛАЗ-6</div>
+                    </div>
+                <div><div id="alert_laz_7" class="alert-error">ЛАЗ-7</div>
+                <div id="alert_laz_8" class="alert-error">ЛАЗ-8</div>
+                <div id="alert_laz_9" class="alert-error">ЛАЗ-9</div>
+                </div>
+<!--                <div>Критически низкая мощность</div>-->
+<!--                <div>АР неисправен</div>-->
+
+            </div>
+                </div>
+             <div class="down-panel">
+                 <div>
+            <!--            аз -->
+            <div class="az">
+                <button>АЗ-1</button>
+                <button>АЗ-2</button>
+                <button onclick="re.az.baz()">БАЗ</button>
+                <button onclick="re.az.az5()">АЗ-5</button>
+            </div>
+                     <div style="display:flex;">
+                         <div>
+                         ЛАР<br>
+            <button onclick="re.az.turn_on_or_down_lar()">ВКЛ</button><br>
+                         W, ЛАР<br>
+                     <input id="w_lar" class="input-big"><br>
+                     <button onclick="set_w_lar()">УСТ</button>
+                         </div>
+                     <div>
+            {% for i in range(0, 9)%}
+            <div class="row-mnemo">
+                {% for j in range(0, 9)%}
+                {% if s[i][j] == 1 %}
+                    <button id="s{{i}}_{{j}}" class="mnemo-rr " onclick="sterg({{i}}, {{j}})"></button>
+
+                {% elif s[i][j] == 2 %}
+                     <button id="s{{i}}_{{j}}" class="mnemo-ysp " onclick="sterg({{i}}, {{j}})"></button>
+                {% elif s[i][j] == 3 %}
+                     <button id="s{{i}}_{{j}}" class="mnemo-baz " onclick="sterg({{i}}, {{j}})"></button>
+                {% elif s[i][j] == 4 %}
+                     <button id="s{{i}}_{{j}}" class="mnemo-lar " onclick="sterg({{i}}, {{j}})"></button>
+                {% elif s[i][j] == 5 %}
+                     <button id="s{{i}}_{{j}}" class="mnemo-laz " onclick="sterg({{i}}, {{j}})"></button>
+                {% else %}
+                <button class="mnemo-sell ">
+
+                </button>
+                {% endif%}
+                {% endfor %}
+                </div>
+            {% endfor %}
+                         </div>
+
+                 </div>
+            <button onclick="re.set_unset_up_direction()">Извлек</button>
+            <button onclick="re.set_unset_down_direction()">Опуск</button>
+            <button>Звук</button>
+            <button>Мигание</button>
+        </div>
+             </div>
+        </div>
+        <div style="" class="column-bsm ">
+            <div class="up-panel">
+            <div style="display:flex;">
+            <div>
+            Т реактора<br>
+            <input id="T_reactor" class="input-big">
+                </div>
+            <div>
+                Т воды в БС<br>
+            <input id="T_H2O" class="input-big">
+                </div>
+                <div>
+                Т воды в 2 контуре<br>
+            <input id="T_2_H2O" class="input-big">
+                </div>
+            </div>
+            <div>
+                <div> уровень воды<br>
+                    <input id="h_braban_s" class="input-big">
+                </div>
+                <div style="display:flex;">
+        {% for j in range(1, 4)%}
+                <div style="">
+            ГЦН{{j}}
+            <input id="{{j}}_n" class="input-big">
+                    <div>
+                    питаниe<div id="{{j}}_n_s" class="signal"></div>
+                        </div>
+                    </div>
+            {% endfor %}
+</div>Аварийные<br>
+            <div style="display:flex;">
+        {% for j in range(1, 4)%}
+            <div >
+            ГЦН{{j}}<br>
+            <input id="{{j}}_a" class="input-big"><br>
+
+W
+                <input class="input-big"><div>
+                    питаниe<div id="{{j}}_a_s" class="signal"></div>
+                        </div>
+                    </div>
+            {% endfor %}
+                </div>
+                    </div>
+
+
+            <div class="errors-table" style="display:flex;">
+                <div>
+                <div id="h_lower_water_level_BS" class="alert-error">Уровень воды в БС опасно низкий</div>
+                <div id="1_n_error" class="alert-error">ГНЦ1 неисправен</div>
+                <div id="2_n_error" class="alert-error">ГНЦ2 неисправен</div>
+                <div id="3_n_error" class="alert-error">ГНЦ3 неисправен</div>
+                <div id="1_a_error" class="alert-error">АГНЦ1 неисправен</div>
+                </div>
+                <div>
+                <div id="2_a_error" class="alert-error">АГНЦ2 неисправен</div>
+                <div id="3_a_error" class="alert-error">АГНЦ3 неисправен</div>
+                <div id="alert_high_temperature2" class="alert-error">высокая температура2</div>
+                <div id="alert_high_temperatureBS" class="alert-error">высокая температура в БС</div>
+            </div>
+            </div>
+                </div>
+            <div class="down-panel" style="display:flex;">
+                <p>
+                    <div class="panel-item">
+                {% for j in range(1, 4)%}
+                <div style="height:70px;">
+                ГЦН{{j}}<br>
+                <button onclick="re.gcn['{{j}}_n'].turn_on_or_down()">ВКЛ</button>
+                <button onclick="re.gcn['{{j}}_n'].set_unset_up_direction()">🡅</button>
+                    <button onclick="re.gcn['{{j}}_n'].set_unset_down_direction()">🡇</button>
+                <div>
+                    <button>Грубо</button>
+                    <button>Мелко</button>
+                </div>
+                    </div>
+                {% endfor %}
+                    </p>
+                </div>
+                <div>
+
+                Аварийные<br>
+        {% for j in range(1, 4)%}
+                    <div>
+            ГЦН{{j}}
+                <button onclick="re.gcn['{{j}}_a'].turn_on_or_down()">ВКЛ</button>
+                    <button onclick="re.gcn['{{j}}_a'].set_unset_up_direction()">🡅</button>
+                    <button onclick="re.gcn['{{j}}_a'].set_unset_down_direction()">🡇</button>
+                        </div>
+            {% endfor %}
+            </div>
+                </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+<script src="/static/javascript/app.js"></script>
+<script src="/static/javascript/UI.js"></script>
+
+<script src="/static/javascript/reactor.js"></script>
+{% if not copy %}
+<script>const room_id = {{id_reactor}};
+const copy = false;
+re = new Reactor();
+console.log(re.sterg);
+setup_UI(re);
+setInterval(() => {
+    re.update();
+}, 1000);
+</script>
+{% else %}
+<script>const room_id = {{id_reactor}};
+const copy = true;
+re = new RemoteControl();
+setup_UI(re);
+setInterval(() => {
+    re.update();
+}, 1000); //</script>
+{% endif %}
+<script src="/static/javascript/socketio.js"></script>
+</html>
