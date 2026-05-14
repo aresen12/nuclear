@@ -70,24 +70,57 @@ socket.on('chosen_delete', (data) => {
 
 socket.on('set_w_lar', (data) => {
     if (!copy){
-    re.set_w_lar(data["w"]);
+        re.set_w_lar(data["w"]);
     }
 });
 socket.on('set_unset_down_direction', (data) => {
     if (!copy){
-    re.set_unset_down_direction();
+        re.set_unset_down_direction();
     }
 });
 
 
 socket.on('method_send', (data) => {
     if (!copy){
-        if(data["function"] == "az_5"){
-            re.az.az_5();
+        if(data["function"] == "az5"){
+            re.az.az5();
+        } else if(data["function"] == "baz"){
+            re.az.baz();
+        } else if(data["function"] == "set_unset_up_direction"){
+            re.set_unset_up_direction();
+        } if(data["function"] == "turn_on_or_down_turnover"){
+            if (data["id_t"] == "t1"){
+                re.t1.turn_on_or_down();
+            } else {
+                re.t2.turn_on_or_down();
+            }
+        }if(data["function"] == "start_turnover"){
+            if (data["id_t"] == "t1"){
+                re.t1.start();
+            } else {
+                re.t2.start();
+            }
+        }if(data["function"] == "set_unset_down_direction_turnover"){
+            if (data["id_t"] == "t1"){
+                re.t1.set_unset_down_direction();
+            } else {
+                re.t2.set_unset_down_direction();
+            }
+        }if(data["function"] == "set_unset_up_direction_turnover"){
+            if (data["id_t"] == "t1"){
+                re.t1.set_unset_up_direction();
+            } else {
+                re.t2.set_unset_up_direction();
+            }
         }
 
+    } else {
+         if (data["function"] == "ui_power"){
+            ui_power(data["id_div"], data["flag"]);
+        }
     }
 });
+
 
 
 socket.on('chosen_current', (data) => {

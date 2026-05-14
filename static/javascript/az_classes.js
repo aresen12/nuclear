@@ -137,5 +137,11 @@ class Az{
 
 
 class DAz extends Az{
+    az5(){
+        socket.emit("method_send", {"room": room_id, "function": "az5"});
+    }
 
+    baz(){
+        socket.emit("method_send", {"room": room_id, "function": "baz"});
+    }
 }

@@ -78,4 +78,7 @@ function ui_power(id_div, flag){
     } else {
         document.getElementById(id_div).style.background = "red";
     }
+    if (!copy){
+        socket.emit("method_send", {"room": room_id, "function": "ui_power", "id_div": id_div, "flag": flag});
+    }
 }
