@@ -10,9 +10,15 @@
     <div style="display:flex;height:95vh;align-items: flex-start;">
 <!--        ТУрбина-->
         <div  class="column-bsm ">
-            <div class="up-panel">
+            <div class="up-panel">давление
+            <input id="p_in_reactor" class="input-big">
             <div>
-            Турбина 1
+                <div style="display:flex;">
+            Турбина 1 <div>
+                        АПП
+                        <div id="APP_t1_s" class="signal"></div>
+                    </div>
+                </div>
             <div style="display:flex;">
                 ОБР
         <input id="obr_t1" class="input-big">
@@ -21,8 +27,7 @@
             <input id="w_e1" class="input-big">
                 </div>
             <div>
-                давление
-            <input id="p_in_reactor" class="input-big">
+
                 дав пусковое
                 <input id="p_start1" class="input-big">
                 </div>
@@ -30,8 +35,14 @@
                 G max
                 <input id="g_max_t1" class="input-big">
                 </div>
+
             </div>
-            Турбина 2
+           <div style="display:flex;">
+            Турбина 2 <div>
+                        АПП
+                        <div id="APP_t2_s" class="signal"></div>
+                    </div>
+                </div>
             <div style="display:flex;">
                 ОБР
         <input id="obr_t2" class="input-big">
@@ -46,6 +57,7 @@
                 <div>
                 G max
                 <input id="g_max_t2" class="input-big">
+
                 </div>
             </div>
                 <div style="display:flex;">
@@ -77,19 +89,21 @@
             </div>
             </div>
                 </div>
-            <div class="down-panel" style="display:flex">
+            <div class="down-panel" style="">
                 <div >
-                    Турбина 1
+                    Турбина 1<br>
                 <button onclick="re.t1.turn_on_or_down()">ВКЛ</button>
                     пар <button onclick="re.t1.set_unset_up_direction()">🡅</button>
                     <button onclick="re.t1.set_unset_down_direction()">🡇</button>
+                    <button onclick="re.t1.start()">ПУСК</button>
                     </div>
-                <button onclick="re.t1.start()">ПУСК</button>
+
                 <div>
-                    Турбина 2
+                    Турбина 2<br>
                 <button onclick="re.t2.turn_on_or_down()">ВКЛ</button>
-                    пар <button onclick="re.t1.set_unset_up_direction()">🡅</button>
-                    <button onclick="re.t1.set_unset_down_direction()">🡇</button>
+                    пар <button onclick="re.t2.set_unset_up_direction()">🡅</button>
+                    <button onclick="re.t2.set_unset_down_direction()">🡇</button>
+                    <button onclick="re.t2.start()">ПУСК</button>
                     </div>
                 <div style="display:flex;">
                     <div >
@@ -306,6 +320,7 @@ W
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 <script src="/static/javascript/app.js"></script>
 <script src="/static/javascript/UI.js"></script>
+<script src="/static/javascript/az_classes.js"></script>
 
 <script src="/static/javascript/reactor.js"></script>
 {% if not copy %}

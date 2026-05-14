@@ -1,144 +1,3 @@
-class Az{
-    constructor(reactor){
-        this.az_run = false;
-        this.az_5 = 0;
-        this.az_1 = 0;
-        this.az_2 = 0;
-        this.az_b = 0;
-        this.lar = false;
-        this.baz_k = [[1, 4], [3, 3], [3, 5], [4, 1], [4, 7], [5, 3], [5, 5], [7, 4]];
-        this.reactor = reactor;
-    }
-
-    turn_on_or_down_lar(){
-        this.lar = !this.lar;
-        ui_power("lar_s", this.lar);
-    }
-
-    set_position_az5(){
-        var flag = true;
-        for (let i = 0; i < 9; i++) {
-            for (let j = 0; j < 9; j++) {
-                if(this.reactor.sterg[i][j] < 100){
-                    if (this.reactor.sterg[i][j] + 20 <= 100){
-                        this.reactor.sterg[i][j] += 20;
-                        flag = false;
-                    } else{
-                        this.reactor.sterg[i][j] = 100;
-                    }
-                }
-                show_mnemo_i_j(this.reactor.sterg[i][j], i, j);
-            }
-        }
-        this.az_5 = !flag;
-        return flag;
-    }
-
-    set_position_baz(){
-        var flag = true;
-        for (let i = 0; i < this.baz_k.length; i++) {
-                if(this.reactor.sterg[this.baz_k[i][0]][this.baz_k[i][1]] < 100){
-                    if (this.reactor.sterg[this.baz_k[i][0]][this.baz_k[i][1]] + 25 <= 100){
-                        this.reactor.sterg[this.baz_k[i][0]][this.baz_k[i][1]] += 25;
-                        flag = false;
-                    } else{
-                        this.reactor.sterg[this.baz_k[i][0]][this.baz_k[i][1]] = 100;
-                    }
-                }
-                show_mnemo_i_j(this.reactor.sterg[this.baz_k[i][0]][this.baz_k[i][1]], this.baz_k[i][0], this.baz_k[i][1]);
-        }
-        this.az_b = !flag;
-        return flag;
-    }
-
-    az5(){
-        this.az_run = 1;
-        this.az_5 = true;
-    }
-
-    baz(){
-        this.az_run = true;
-        this.az_b = true;
-    }
-
-    check_az_work(){
-        if (this.az_5 || this.az_1 || this.az_2 || this.az_b){
-            this.az_run = true;
-        } else{
-            this.az_run = false;
-        }
-    }
-
-    check_error_alerts(){
-        if (this.reactor.w_q > 3200){
-            my_alert("alert_power_q");
-        }
-        if (this.reactor.t1.obr > 3000){
-             my_alert("alert_high_turnovers1");
-        }
-        if ( this.reactor.t2.obr > 3000){
-            my_alert("alert_high_turnovers2");
-        }
-        if (this.reactor.t1.w_e > 500){
-            my_alert("alert_high_e_power_t1");
-        }
-        if (this.reactor.t2.w_e > 500){
-            my_alert("alert_high_e_power_t2");
-        }
-        if (this.reactor.t1.broken){
-            my_alert("error_t1");
-        }
-        if (this.reactor.t2.broken){
-            my_alert("error_t2");
-        }
-        if (this.reactor.T_2_H2O >= 260){
-            my_alert("alert_high_temperature2");
-        }
-        if (this.reactor.T_2_H2O >= 265){
-            my_alert("alert_high_temperatureBS");
-        }
-        if(this.az_5){
-            my_alert("alert_az_5");
-        }
-         if(this.az_b){
-            my_alert("alert_baz");
-        }
-        if(this.az_1){
-            my_alert("alert_az_1");
-        }
-        if(this.az_2){
-            my_alert("alert_az_2");
-        }
-        var k = Object.keys(this.reactor.gcn);
-        for (i = 0; i < k.length; i++){
-            if  (this.reactor.gcn[k[i]].broken){
-                my_alert(`${k[i]}_error`);
-            };
-        }
-        if (this.reactor.v_inBS < 33){
-            my_alert("h_lower_water_level_BS");
-        }
-    }
-
-    update(){
-        if (this.az_run){
-            if (this.az_5){
-                this.set_position_az5();
-            }
-            if (this.az_b){
-                this.set_position_baz();
-            }
-        }
-        this.check_error_alerts();
-        this.check_az_work();
-        return this.az_run;
-    }
-}
-
-
-class DAz extends Az{
-
-}
 class Turnover{
     constructor(id_turnover){
         this.work = false;
@@ -147,25 +6,25 @@ class Turnover{
         this.p_start = 700000;
         this.broken = false;
         this.v_down = 200;
-        this.g = 2000;
         this.g_max = 0;
         this.g_max_teor = 3000;
         this.direction = 0;
+        this.id_turnover = id_turnover;
     }
 
     turn_on_or_down(){
         this.work = !this.work;
+        ui_power(`APP_${this.id_turnover}_s`, this.work)
+
 
     }
 
     set_g_max(){
-//        console.log( this.max_g + this.direcmax_gtion * 200, this.max_g + this.direction * 200 <= this.g_max_teor);
             if (0 <= this.g_max + this.direction * 200 && this.g_max + this.direction * 200 <= this.g_max_teor){
                 this.g_max += this.direction * 200;
             } else {
                 this.direction = 0;
             }
-            console.log("g_max")
     }
 
     set_unset_up_direction() {
@@ -175,8 +34,14 @@ class Turnover{
             } else {
                 this.direction = 1;
             }
-            console.log("set");
         }
+    }
+
+    break_t(){
+        this.broken = true;
+        this.work = false;
+        this.g_max = 0;
+        this.direction = false;
     }
 
     set_unset_down_direction() {
@@ -186,22 +51,27 @@ class Turnover{
             } else {
                 this.direction = -1;
             }
-
         }
     }
 
     start(){
-        if(this.p_start >= 680000){
+        if(this.p_start >= 680000 && !this.broken){
         this.obr = 350;
         this.p_start = 20000;
         }
     }
 
 
-    update(){
-         if (this.direction != 0){
-            this.set_g_max();
-        }
+
+
+    update(g_re){
+//         if (this.direction != 0){
+//            this.set_g_max();
+//        } в  reactor update
+        var current_g = g_re;
+            if (g_re > this.g_max){
+                current_g = this.g_max;
+            }
         if (!this.work && this.obr > 0){
             if (this.obr - this.v_down >= 0){
                 this.obr -= this.v_down;
@@ -209,18 +79,31 @@ class Turnover{
                 this.obr = 0;
             }
 
-        } else if (this.work && this.obr > 2951){
-            if (this.g < this.g_max){
-                this.w_e = (this.g - 272.41) / 4.71;
-            } else if (this.g_max >= 272.41){
-                this.w_e = (this.g_max - 272.41) / 4.71;
+        } else if (this.work && this.obr >= 3000){
+
+            if (current_g >= 272.41){
+                this.w_e = (g_re - 272.41) / 4.71;
             } else{
                 this.w_e = 0;
+                this.obr -= this.v_down;
+
             }
         } else {
             this.w_e = 0;
-            if (this.obr!= 0 && this.g_max >= 1000 && this.g>= 1000 && this.obr + 50 <= 3000 ){
-                this.obr += 50;
+//            console.log(current_g, "g", current_g / 20, this.obr!= 0, this.g_max >= 1000, this.g >= 1000, this.obr + current_g / 20 <= 3000  );
+            if (this.obr != 0 && current_g >= 1000 && this.obr + current_g / 20 <= 3000 ){
+                this.obr += current_g / 20;
+                if (current_g / 20 >= 75){
+                    this.break_t();
+                }
+            } else if (this.obr != 0 && current_g >= 1000){
+                this.obr = 3000;
+            } else{
+                if (this.obr - this.v_down >= 0){
+                    this.obr -= this.v_down;
+                } else {
+                    this.obr = 0;
+                }
             }
         }
     }
@@ -251,7 +134,7 @@ class Pump{
             this.work = false;
             this.direction = -1;
             ui_power(`${this.id_pump}_s`, false);
-        } else {
+        } else if (!this.broken){
             this.work = true
             ui_power(`${this.id_pump}_s`, true);
         }
@@ -328,6 +211,7 @@ class Reactor{
                 this.sterg[i][j] = 100;
             }
         }
+        this.g = 2000;
         this.lar = [[3, 4], [4, 3], [4, 5], [5, 4]];
         this.w_lar = 0;
         this.laz = [[2,2], [2,4], [2, 6], [4, 2], [4, 6], [6, 2], [6, 4], [6, 6]];
@@ -433,8 +317,30 @@ class Reactor{
                 this.set_s_position(this.chosen[i][0], this.chosen[i][1], this.direction);
             }
          }
-         this.t1.update();
-         this.t2.update();
+         if ( this.t1.direction != 0){
+             this.t1.set_g_max();
+        }
+        if ( this.t2.direction != 0){
+             this.t2.set_g_max();
+        }
+         var g1 = this.g;
+         var g2 = this.g;
+         if (this.t1.g_max + this.t2.g_max >= this.g){
+            if (this.t2.g_max == this.t1.g_max){
+                g1 = this.g / 2;
+                g2 = g1;
+            } else {
+                if (this.t1.g_max < this.t2.g_max){
+                    g2 = (this.g / 2) * (this.t2.g_max / this.t1.g_max);
+                    g1 = this.g - g2;
+                } else {
+                    g1 = (this.g / 2) * (this.t1.g_max / this.t2.g_max);
+                    g2 = this.g - g1;
+                }
+            }
+         }
+         this.t1.update(g1);
+         this.t2.update(g2);
          this.v_inBS -= (this.gcn["1_n"].g + this.gcn["1_a"].g) / 3600;
          this.v_inBS += (this.gcn["2_n"].g + this.gcn["2_a"].g) / 3600;
          this.h_braban_s = Math.sqrt(Math.abs((6.25 - Math.sqrt(39.0625 - 4 * (this.v_inBS / 33)* (this.v_inBS / 33))) / 2));
@@ -474,6 +380,5 @@ class RemoteControl extends Reactor{
 //         setup_UI(this);
     }
 }
-
 
 
