@@ -223,25 +223,40 @@
         <div style="" class="column-bsm ">
             <div class="up-panel">
             <div style="display:flex;">
+                <div>
+                    <div>
+                    <div>
+                Т воды в БС<br>
+            <input id="T_H2O1" class="input-big">
+                </div>
+                    <div> уровень воды<br>
+                    <input id="h_braban_s1" class="input-big">
+                </div>
+                    </div>
+                    <div>
+                    <div>
+                Т воды в БС<br>
+            <input id="T_H2O2" class="input-big">
+                </div>
+                    <div> уровень воды<br>
+                    <input id="h_braban_s2" class="input-big">
+                </div>
+                    </div>
+                </div>
             <div>
             Т реактора<br>
             <input id="T_reactor" class="input-big">
                 </div>
-            <div>
-                Т воды в БС<br>
-            <input id="T_H2O" class="input-big">
-                </div>
+
                 <div>
                 Т воды в 2 контуре<br>
             <input id="T_2_H2O" class="input-big">
                 </div>
             </div>
             <div>
-                <div> уровень воды<br>
-                    <input id="h_braban_s" class="input-big">
-                </div>
+
                 <div style="display:flex;">
-        {% for j in range(1, 4)%}
+        {% for j in range(1, 5)%}
                 <div style="">
             ГЦН{{j}}
             <input id="{{j}}_n" class="input-big">
@@ -256,7 +271,6 @@
             <div >
             ГЦН{{j}}<br>
             <input id="{{j}}_a" class="input-big"><br>
-
 W
                 <input class="input-big"><div>
                     питаниe<div id="{{j}}_a_s" class="signal"></div>
@@ -286,7 +300,7 @@ W
             <div class="down-panel" style="display:flex;">
                 <p>
                     <div class="panel-item">
-                {% for j in range(1, 4)%}
+                {% for j in range(1, 5)%}
                 <div style="height:70px;">
                 ГЦН{{j}}<br>
                 <button onclick="re.gcn['{{j}}_n'].turn_on_or_down()">ВКЛ</button>
@@ -312,6 +326,8 @@ W
                         </div>
             {% endfor %}
             </div>
+                <button onclick="re.bs1.turn_or_down()">ВКЛ1</button>
+                <button onclick="re.bs2.turn_or_down()">ВКЛ1</button>
                 </div>
         </div>
     </div>
@@ -323,6 +339,7 @@ W
 <script src="/static/javascript/az_classes.js"></script>
 <script src="/static/javascript/turnover_classes.js"></script>
 <script src="/static/javascript/pump_classes.js"></script>
+<script src="/static/javascript/BS_classes.js"></script>
 
 <script src="/static/javascript/reactor.js"></script>
 {% if not copy %}

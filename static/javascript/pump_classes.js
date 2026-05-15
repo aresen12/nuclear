@@ -4,7 +4,7 @@ class Pump{
         this.g = 0;
         this.work = false;
         this.direction = 0;
-        this.max_g = 8000;
+        this.max_g = 24000;
         this.id_pump = id_pump;
         this.broken = false;
     }

@@ -56,8 +56,6 @@ class Reactor{
         this.kpd = 0.32;
         this.w_q = 3300;
         this.p_in_reactor = 700000;
-        this.h_braban_s = 10;
-        this.v_inBS = 33;
 //        this.v_inAZ = ;
         this.reactivnost = 0;
         this.direction = 0; // -1 - down 1 - up
@@ -66,6 +64,7 @@ class Reactor{
             "1_n": new Pump("1_n"),
             "2_n": new Pump("2_n"),
             "3_n": new Pump("3_n"),
+            "4_n": new Pump("4_n"),
             "1_a": new Pump("1_a"),
             "2_a": new Pump("2_a"),
             "3_a": new Pump("3_a"),
@@ -74,9 +73,11 @@ class Reactor{
         this.rdg2 = new Rdg("rdg2");
         this.t1 = new Turnover("t1");
         this.t2 = new Turnover("t2");
+        this.bs1 = new BS(1);
+        this.bs2 = new BS(2);
         this.T_reactor = 80;
-        this.T_H2O = 80;
         this.T_2_H2O = 25;
+        this.T_PVS = 280;
         this.az = new Az(this);
     }
 
@@ -160,37 +161,25 @@ class Reactor{
         if ( this.t2.direction != 0){
              this.t2.set_g_max();
         }
-         var g1 = this.t1.g_max;
-         var g2 = this.t2.g_max;
-         if (this.t1.g_max + this.t2.g_max >= this.g){
-            if (this.t2.g_max == this.t1.g_max){
-                g1 = this.g / 2;
-                g2 = g1;
-            } else {
-                if (this.t1.g_max > this.t2.g_max && this.t1.g_max <= this.g){
-                    g1 = this.t1.g_max;
-                    g2 = this.g - g1;
-                }else if (this.t1.g_max < this.t2.g_max && this.t2.g_max <= this.g){
-                        g2 = this.t2.g_max;
-                        g1 = this.g - g2;
-
-                } else if (this.t2.g_max == 0){
-                    g1 = this.g;
-                    g2 = 0;
-                } else if(this.t1.g_max == 0){
-                    g1 = 0;
-                    g2 = this.g;
-                }else{
-                    g1 = this.g / 2;
-                g2 = g1;
-                }
-            }
+        var g1;
+        var g2;
+        if (this.bs1.work && this.bs2.work){
+            g1 = this.g / 2;
+            g2 = g1;
+         } else if (this.bs1.work){
+             g1 = this.g;
+             g2 = 0;
+         } else if (this.bs2.work){
+            g1 = 0;
+             g2 = this.g;
          }
-         this.t1.update(g1, this.p_in_reactor);
-         this.t2.update(g2, this.p_in_reactor);
-         this.v_inBS -= (this.gcn["1_n"].g + this.gcn["1_a"].g) / 3600;
-         this.v_inBS += (this.gcn["2_n"].g + this.gcn["2_a"].g) / 3600;
-         this.h_braban_s = Math.sqrt(Math.abs((6.25 - Math.sqrt(39.0625 - 4 * (this.v_inBS / 33)* (this.v_inBS / 33))) / 2));
+         console.log(g1, g2);
+          this.bs1.update(this.gcn["1_n"].g, this.gcn["3_n"].g, g1, this.T_2_H2O, this.T_PVS);
+          this.bs2.update(this.gcn["2_n"].g, this.gcn["4_n"].g, g2, this.T_2_H2O, this.T_PVS);
+         this.t1.update(this.bs1.m_sep, this.p_in_reactor);
+         this.t2.update(this.bs2.m_sep, this.p_in_reactor);
+//         this.v_inBS -= (this.gcn["1_n"].g + this.gcn["1_a"].g) / 3600;
+//         this.v_inBS += (this.gcn["2_n"].g + this.gcn["2_a"].g) / 3600;
          setup_UI(this);
          send_update();
     }

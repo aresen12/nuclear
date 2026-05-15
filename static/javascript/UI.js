@@ -45,16 +45,13 @@ function chosen(i, j){
 
 function setup_UI(reactor){
 //    console.log("setup");
+//СУЗ
     document.getElementById("W_Q").value = reactor.w_q;
+    document.getElementById("reactivnost").value = reactor.reactivnost;
+//    Турбины
     document.getElementById("w_e1").value = reactor.t1.w_e;
     document.getElementById("w_e2").value = reactor.t2.w_e;
-    var k = Object.keys(reactor.gcn);
-    for (i = 0; i < k.length; i++){
-        document.getElementById(k[i]).value = reactor.gcn[k[i]].g;
-    }
     document.getElementById("T_reactor").value = reactor.T_reactor;
-    document.getElementById("T_H2O").value = reactor.T_H2O;
-    document.getElementById("T_2_H2O").value = reactor.T_2_H2O;
     document.getElementById("obr_t1").value = reactor.t1.obr;
     document.getElementById("obr_t2").value = reactor.t2.obr;
     document.getElementById("rdg1_p").value = reactor.rdg1.power_e;
@@ -64,8 +61,17 @@ function setup_UI(reactor){
     document.getElementById("p_start2").value = reactor.t2.p_start;
     document.getElementById("g_max_t1").value = reactor.t1.g_max;
     document.getElementById("g_max_t2").value = reactor.t2.g_max;
-    document.getElementById("h_braban_s").value = reactor.h_braban_s;
-    document.getElementById("reactivnost").value = reactor.reactivnost;
+//    Насосы
+var k = Object.keys(reactor.gcn);
+    for (i = 0; i < k.length; i++){
+        document.getElementById(k[i]).value = reactor.gcn[k[i]].g;
+    }
+    document.getElementById("T_2_H2O").value = reactor.T_2_H2O;
+//    БС
+    document.getElementById("h_braban_s1").value = reactor.bs1.h_braban_s;
+    document.getElementById("T_H2O1").value = reactor.bs1.T_H2O;
+    document.getElementById("h_braban_s2").value = reactor.bs2.h_braban_s;
+    document.getElementById("T_H2O2").value = reactor.bs2.T_H2O;
     if (copy){
         show_mnemo(reactor);
     }
