@@ -1,60 +1,3 @@
-class Pump{
-    constructor(id_pump){
-//    g max 8000
-        this.g = 0;
-        this.work = false;
-        this.direction = 0;
-        this.max_g = 8000;
-        this.id_pump = id_pump;
-        this.broken = false;
-    }
-
-    set_g(){
-            if (0 <= this.g + this.direction * 400 && this.g + this.direction * 400 <= this.max_g){
-                this.g += this.direction * 400;
-            } else {
-                this.direction = 0;
-            }
-    }
-
-    turn_on_or_down(){
-        if (this.work ){
-            this.work = false;
-            this.direction = -1;
-            ui_power(`${this.id_pump}_s`, false);
-        } else if (!this.broken){
-            this.work = true
-            ui_power(`${this.id_pump}_s`, true);
-        }
-    }
-
-    set_unset_up_direction() {
-        if (this.work){
-        if (this.direction == 1){
-            this.direction = 0;
-        } else {
-            this.direction = 1;
-        }
-        }
-    }
-
-    set_unset_down_direction() {
-        if (this.work){
-        if (this.direction == -1){
-            this.direction = 0;
-        } else {
-            this.direction = -1;
-        }
-        }
-    }
-
-    update(){
-        if (this.direction != 0){
-            this.set_g();
-        }
-    }
-}
-
 class Rdg{
     constructor(id_rdg){
         this.work = false;
@@ -87,6 +30,13 @@ class Rdg{
     }
 
 
+}
+
+
+class DRdg extends Rdg{
+    turn_on_or_down(){
+        socket.emit("method_send", {"room": room_id, "function": "turn_on_or_down_rdg", "id_rdg": this.id_rdg});
+    }
 }
 
 
@@ -182,7 +132,6 @@ class Reactor{
 
     chosen_delete(i2){
         chosen(this.chosen[i2][0], this.chosen[i2][1]);
-//        console.log(this.chosen.splice(i2, 0), i2)
         this.chosen.splice(i2, 1);
 
         }
@@ -211,24 +160,34 @@ class Reactor{
         if ( this.t2.direction != 0){
              this.t2.set_g_max();
         }
-         var g1 = this.g;
-         var g2 = this.g;
+         var g1 = this.t1.g_max;
+         var g2 = this.t2.g_max;
          if (this.t1.g_max + this.t2.g_max >= this.g){
             if (this.t2.g_max == this.t1.g_max){
                 g1 = this.g / 2;
                 g2 = g1;
             } else {
-                if (this.t1.g_max < this.t2.g_max){
-                    g2 = (this.g / 2) * (this.t2.g_max / this.t1.g_max);
-                    g1 = this.g - g2;
-                } else {
-                    g1 = (this.g / 2) * (this.t1.g_max / this.t2.g_max);
+                if (this.t1.g_max > this.t2.g_max && this.t1.g_max <= this.g){
+                    g1 = this.t1.g_max;
                     g2 = this.g - g1;
+                }else if (this.t1.g_max < this.t2.g_max && this.t2.g_max <= this.g){
+                        g2 = this.t2.g_max;
+                        g1 = this.g - g2;
+
+                } else if (this.t2.g_max == 0){
+                    g1 = this.g;
+                    g2 = 0;
+                } else if(this.t1.g_max == 0){
+                    g1 = 0;
+                    g2 = this.g;
+                }else{
+                    g1 = this.g / 2;
+                g2 = g1;
                 }
             }
          }
-         this.t1.update(g1);
-         this.t2.update(g2);
+         this.t1.update(g1, this.p_in_reactor);
+         this.t2.update(g2, this.p_in_reactor);
          this.v_inBS -= (this.gcn["1_n"].g + this.gcn["1_a"].g) / 3600;
          this.v_inBS += (this.gcn["2_n"].g + this.gcn["2_a"].g) / 3600;
          this.h_braban_s = Math.sqrt(Math.abs((6.25 - Math.sqrt(39.0625 - 4 * (this.v_inBS / 33)* (this.v_inBS / 33))) / 2));
@@ -246,6 +205,16 @@ class RemoteControl extends Reactor{
         this.az = new DAz(this);
         this.t1 = new DTurnover("t1");
         this.t2 = new DTurnover("t2");
+        this.rdg1 = new DRdg("rdg1");
+        this.rdg2 = new DRdg("rdg2");
+        this.gcn = {
+            "1_n": new DPump("1_n"),
+            "2_n": new DPump("2_n"),
+            "3_n": new DPump("3_n"),
+            "1_a": new DPump("1_a"),
+            "2_a": new DPump("2_a"),
+            "3_a": new DPump("3_a"),
+        }
     }
     chosen_delete(i2){
         send_chosen_delete(i2);

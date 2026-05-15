@@ -1,0 +1,71 @@
+class Pump{
+    constructor(id_pump){
+//    g max 8000
+        this.g = 0;
+        this.work = false;
+        this.direction = 0;
+        this.max_g = 8000;
+        this.id_pump = id_pump;
+        this.broken = false;
+    }
+
+    set_g(){
+            if (0 <= this.g + this.direction * 400 && this.g + this.direction * 400 <= this.max_g){
+                this.g += this.direction * 400;
+            } else {
+                this.direction = 0;
+            }
+    }
+
+    turn_on_or_down(){
+        if (this.work ){
+            this.work = false;
+            this.direction = -1;
+            ui_power(`${this.id_pump}_s`, false);
+        } else if (!this.broken){
+            this.work = true
+            ui_power(`${this.id_pump}_s`, true);
+        }
+    }
+
+    set_unset_up_direction() {
+        if (this.work){
+        if (this.direction == 1){
+            this.direction = 0;
+        } else {
+            this.direction = 1;
+        }
+        }
+    }
+
+    set_unset_down_direction() {
+        if (this.work){
+        if (this.direction == -1){
+            this.direction = 0;
+        } else {
+            this.direction = -1;
+        }
+        }
+    }
+
+    update(){
+        if (this.direction != 0){
+            this.set_g();
+        }
+    }
+}
+
+
+class DPump extends Pump {
+    set_unset_down_direction() {
+       socket.emit("method_send", {"room": room_id, "function": "set_unset_down_direction_pump", "id_pump": this.id_pump});
+    }
+
+    set_unset_up_direction() {
+        socket.emit("method_send", {"room": room_id, "function": "set_unset_up_direction_pump", "id_pump": this.id_pump});
+    }
+
+    turn_on_or_down(){
+        socket.emit("method_send", {"room": room_id, "function": "turn_on_or_down_pump", "id_pump": this.id_pump});
+    }
+}

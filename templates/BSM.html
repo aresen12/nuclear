@@ -89,22 +89,22 @@
             </div>
             </div>
                 </div>
-            <div class="down-panel" style="">
+            <div class="down-panel" style="display:flex;">
+                {% for i in range(1, 3)%}
                 <div >
-                    Турбина 1<br>
-                <button onclick="re.t1.turn_on_or_down()">ВКЛ</button>
-                    пар <button onclick="re.t1.set_unset_up_direction()">🡅</button>
-                    <button onclick="re.t1.set_unset_down_direction()">🡇</button>
-                    <button onclick="re.t1.start()">ПУСК</button>
+                    Турбина {{i}}<br>
+                <button onclick="re.t{{i}}.turn_on_or_down()">ВКЛ</button>
+                    пар <button onclick="re.t{{i}}.set_unset_up_direction()">🡅</button>
+                    <button onclick="re.t{{i}}.set_unset_down_direction()">🡇</button>
+                    <button onclick="re.t{{i}}.start()">ПУСК</button><br>
+                    <div style="display:flex;">
+                    пар <button id="t{{i}}_direction_steam" onclick="re.t{{i}}.set_steam_direction()">\ </button><div>
+                    <div>Пусковой отсек</div>
+                    <div>Турбина</div>
+                </div></div>
                     </div>
+                {% endfor %}
 
-                <div>
-                    Турбина 2<br>
-                <button onclick="re.t2.turn_on_or_down()">ВКЛ</button>
-                    пар <button onclick="re.t2.set_unset_up_direction()">🡅</button>
-                    <button onclick="re.t2.set_unset_down_direction()">🡇</button>
-                    <button onclick="re.t2.start()">ПУСК</button>
-                    </div>
                 <div style="display:flex;">
                     <div >
                     РДГ1
@@ -322,6 +322,7 @@ W
 <script src="/static/javascript/UI.js"></script>
 <script src="/static/javascript/az_classes.js"></script>
 <script src="/static/javascript/turnover_classes.js"></script>
+<script src="/static/javascript/pump_classes.js"></script>
 
 <script src="/static/javascript/reactor.js"></script>
 {% if not copy %}

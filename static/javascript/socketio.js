@@ -88,35 +88,62 @@ socket.on('method_send', (data) => {
             re.az.baz();
         } else if(data["function"] == "set_unset_up_direction"){
             re.set_unset_up_direction();
-        } if(data["function"] == "turn_on_or_down_turnover"){
+        } else if(data["function"] == "turn_on_or_down_turnover"){
             if (data["id_t"] == "t1"){
                 re.t1.turn_on_or_down();
             } else {
                 re.t2.turn_on_or_down();
             }
-        }if(data["function"] == "start_turnover"){
+        } else if(data["function"] == "start_turnover"){
             if (data["id_t"] == "t1"){
                 re.t1.start();
             } else {
                 re.t2.start();
             }
-        }if(data["function"] == "set_unset_down_direction_turnover"){
+        } else if(data["function"] == "set_unset_down_direction_turnover"){
             if (data["id_t"] == "t1"){
                 re.t1.set_unset_down_direction();
             } else {
                 re.t2.set_unset_down_direction();
             }
-        }if(data["function"] == "set_unset_up_direction_turnover"){
+        } else if(data["function"] == "set_unset_up_direction_turnover"){
             if (data["id_t"] == "t1"){
                 re.t1.set_unset_up_direction();
             } else {
                 re.t2.set_unset_up_direction();
             }
         }
+        if (data["function"] == "set_steam_direction_turnover"){
+            if (data["id_t"] == "t1"){
+                console.log("test");
+                re.t1.set_steam_direction();
+            } else {
+                re.t2.set_steam_direction();
+            }
+        }
+        if (data["function"] == "turn_on_or_down_rdg"){
+            if (data["id_rdg"] == "rdg1"){
+                console.log("test");
+                re.rdg1.turn_on_or_down();
+            } else {
+                re.rdg1.turn_on_or_down();
+            }
+        }
+        if (data["function"] == "set_unset_down_direction_pump"){
+            re.gcn[data["id_pump"]].set_unset_down_direction();
+        }
+        if (data["function"] == "set_unset_up_direction_pump"){
+            re.gcn[data["id_pump"]].set_unset_up_direction();
+        }
+        if (data["function"] == "turn_on_or_down_pump"){
+            re.gcn[data["id_pump"]].turn_on_or_down();
+        }
 
     } else {
          if (data["function"] == "ui_power"){
             ui_power(data["id_div"], data["flag"]);
+        } else if (data["function"] == "set_direction_ui"){
+            set_direction_ui(data["flag"], data["id_div"]);
         }
     }
 });
@@ -178,4 +205,12 @@ socket.on('update', (data) => {
 
 socket.on('connect', () => {
     socket.emit('join', {room: room_id});
+});
+
+socket.on('join_event', (data) => {
+   alert(`Пользователь ${data["name"]} вошёл`);
+});
+
+socket.on('leave_event', (data) => {
+    alert(`Пользователь ${data["name"]} вышел`);
 });

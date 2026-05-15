@@ -10,12 +10,13 @@ def handle_connect():
     if current_user.is_authenticated:
         join_room(f'u{current_user.id}')
 
+
 @socketio.on('join')
 def on_join(data):
     room = data['room']
-
     join_room(room)
-        # emit('join_event', {"id_user": current_user.id, "users": users}, to=room)
+    if current_user.is_authenticated:
+        emit('join_event', {"name": current_user.name}, to=room)
 
 
 @socketio.on('leave')
@@ -23,7 +24,7 @@ def on_leave(data):
     room = data['room']
     leave_room(room)
     if current_user.is_authenticated:
-        emit('leave_event', {"id_user": current_user.id}, to=room)
+        emit('leave_event', {"name": current_user.name}, to=room)
 
 
 @socketio.on("chosen_delete")

@@ -81,4 +81,17 @@ function ui_power(id_div, flag){
     if (!copy){
         socket.emit("method_send", {"room": room_id, "function": "ui_power", "id_div": id_div, "flag": flag});
     }
+}set_direction_ui
+
+
+function set_direction_ui(flag, id_div){
+    if (!copy){
+    socket.emit("method_send", {"room": room_id, "function": "set_direction_ui", "flag": flag, "id_div": id_div});
+    }
+//    console.log(document.getElementById("t1_direction_steam"), id_div, flag);
+    if (flag){
+        document.getElementById(id_div).textContent = "\\";
+    } else {
+        document.getElementById(id_div).textContent = "/";
+    }
 }
