@@ -1,16 +1,16 @@
 class Turnover{
     constructor(id_turnover){
         this.work = false;
-        this.w_e = 0;
-        this.obr = 0;
-        this.p_start = 200000;
-        this.broken = false;
-        this.v_down = 200;
-        this.g_max = 0;
-        this.g_max_teor = 3000;
+        this.w_e = 0; // электрическая энергия
+        this.obr = 0; // обороты
+        this.p_start = 200000; // стартовое давление стартует при 70000 ПА
+        this.broken = false; // сломан или нет
+        this.v_down = 200; // скорость снижения оборотов при потере момента
+        this.g_max = 0; // сколько может в конкретный момент пройти, если есть чему
+        this.g_max_teor = 3000;  // максимальный расход через турбину
         this.direction = 0;
         this.id_turnover = id_turnover;
-        this.steam_direction = 1;
+        this.steam_direction = 1; // направление пара 1- турбина 2 - пусковой отсек
     }
 
     turn_on_or_down(){

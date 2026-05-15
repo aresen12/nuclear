@@ -42,24 +42,22 @@ class DRdg extends Rdg{
 
 class Reactor{
     constructor(){
-        this.sterg = [];
+        this.sterg = []; // стержние ввод в процентах
         for (let i = 0; i < 9; i++) {
             this.sterg[i] = [];
             for (let j = 0; j < 9; j++) {
                 this.sterg[i][j] = 100;
             }
         }
-        this.g = 0;
-        this.lar = [[3, 4], [4, 3], [4, 5], [5, 4]];
-        this.w_lar = 0;
-        this.laz = [[2,2], [2,4], [2, 6], [4, 2], [4, 6], [6, 2], [6, 4], [6, 6]];
-        this.kpd = 0.32;
-        this.w_q = 3300;
+        this.lar = [[3, 4], [4, 3], [4, 5], [5, 4]]; // координаты стержней ЛАР
+        this.w_lar = 0; // мощность ЛАР
+        this.w_q = 3300; //
         this.p_in_reactor = 700000;
 //        this.v_inAZ = ;
         this.reactivnost = 0;
         this.direction = 0; // -1 - down 1 - up
         this.chosen = []; // выбранные стержни
+        // насосы
         this.gcn = {
             "1_n": new Pump("1_n"),
             "2_n": new Pump("2_n"),
@@ -70,15 +68,16 @@ class Reactor{
             "3_a": new Pump("3_a"),
         }
         this.rdg1 = new Rdg("rdg1");
-        this.rdg2 = new Rdg("rdg2");
+        this.rdg2 = new Rdg("rdg2"); // Резервные дизель генераторы
         this.t1 = new Turnover("t1");
         this.t2 = new Turnover("t2");
         this.bs1 = new BS(1);
-        this.bs2 = new BS(2);
-        this.T_reactor = 80;
-        this.T_2_H2O = 25;
-        this.T_PVS = 280;
-        this.az = new Az(this);
+        this.bs2 = new BS(2); //
+        this.T_reactor = 80; // температура самого реактора(не где не используеться)
+        this.T_2_H2O = 25; // температура во втором контуре
+        this.T_PVS = 280; // температкра параводяной смеси
+        this.az = new Az(this); // класс аварийной защиты
+        this.pr = 0; // процент пара
     }
 
     set_unset_up_direction() {
@@ -161,21 +160,21 @@ class Reactor{
         if ( this.t2.direction != 0){
              this.t2.set_g_max();
         }
-        var g1 = 0;
-        var g2 = 0;
-        if (this.bs1.work && this.bs2.work){
-            g1 = this.g / 2;
-            g2 = g1;
-         } else if (this.bs1.work){
-             g1 = this.g;
-             g2 = 0;
-         } else if (this.bs2.work){
-            g1 = 0;
-             g2 = this.g;
-         }
-         console.log(g1, g2);
-          this.bs1.update(this.gcn["1_n"].g, this.gcn["3_n"].g, g1, this.T_2_H2O, this.T_PVS);
-          this.bs2.update(this.gcn["2_n"].g, this.gcn["4_n"].g, g2, this.T_2_H2O, this.T_PVS);
+//        var g1 = 0;
+//        var g2 = 0;
+//        if (this.bs1.work && this.bs2.work){
+//            g1 = this.g / 2;
+//            g2 = g1;
+//         } else if (this.bs1.work){
+//             g1 = this.g;
+//             g2 = 0;
+//         } else if (this.bs2.work){
+//            g1 = 0;
+//             g2 = this.g;
+//         }
+//         console.log(g1, g2);
+          this.bs1.update(this.gcn["1_n"].g, this.gcn["3_n"].g, this.pr, this.T_2_H2O, this.T_PVS);
+          this.bs2.update(this.gcn["2_n"].g, this.gcn["4_n"].g, this.pr,, this.T_2_H2O, this.T_PVS);
          this.t1.update(this.bs1.m_sep, this.p_in_reactor);
          this.t2.update(this.bs2.m_sep, this.p_in_reactor);
 //         this.v_inBS -= (this.gcn["1_n"].g + this.gcn["1_a"].g) / 3600;

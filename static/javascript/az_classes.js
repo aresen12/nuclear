@@ -1,11 +1,12 @@
 class Az{
     constructor(reactor){
-        this.az_run = false;
-        this.az_5 = 0;
+        this.az_run = false; // работает ли АЗ
+        this.az_5 = 0; // идентефикация работы конкретной аварийной защиты
         this.az_1 = 0;
         this.az_2 = 0;
         this.az_b = 0;
         this.lar = false;
+        this.laz = [[2,2], [2,4], [2, 6], [4, 2], [4, 6], [6, 2], [6, 4], [6, 6]]; // координаты стрежней ЛАЗ
         this.baz_k = [[1, 4], [3, 3], [3, 5], [4, 1], [4, 7], [5, 3], [5, 5], [7, 4]];
         this.reactor = reactor;
     }

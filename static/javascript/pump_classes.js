@@ -1,12 +1,12 @@
 class Pump{
     constructor(id_pump){
 //    g max 8000
-        this.g = 0;
+        this.g = 0; // расход воды м3/ч
         this.work = false;
-        this.direction = 0;
-        this.max_g = 24000;
+        this.direction = 0; // направление понижения или повышения расхода
+        this.max_g = 24000; // макс расход
         this.id_pump = id_pump;
-        this.broken = false;
+        this.broken = false; // сломан или нет
     }
 
     set_g(){
