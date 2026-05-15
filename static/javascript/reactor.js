@@ -49,7 +49,7 @@ class Reactor{
                 this.sterg[i][j] = 100;
             }
         }
-        this.g = 2000;
+        this.g = 0;
         this.lar = [[3, 4], [4, 3], [4, 5], [5, 4]];
         this.w_lar = 0;
         this.laz = [[2,2], [2,4], [2, 6], [4, 2], [4, 6], [6, 2], [6, 4], [6, 6]];
@@ -161,8 +161,8 @@ class Reactor{
         if ( this.t2.direction != 0){
              this.t2.set_g_max();
         }
-        var g1;
-        var g2;
+        var g1 = 0;
+        var g2 = 0;
         if (this.bs1.work && this.bs2.work){
             g1 = this.g / 2;
             g2 = g1;
