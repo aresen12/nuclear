@@ -3,7 +3,7 @@ class Turnover{
         this.work = false;
         this.w_e = 0; // электрическая энергия
         this.obr = 0; // обороты
-        this.p_start = 200000; // стартовое давление стартует при 70000 ПА
+        this.p_start = 2; // стартовое давление стартует при 70000 ПА
         this.broken = false; // сломан или нет
         this.v_down = 200; // скорость снижения оборотов при потере момента
         this.g_max = 0; // сколько может в конкретный момент пройти, если есть чему
@@ -54,9 +54,9 @@ class Turnover{
     }
 
     start(){
-        if(this.p_start >= 680000 && !this.broken){
+        if(this.p_start >= 6.8 && !this.broken){
         this.obr = 350;
-        this.p_start = 20000;
+        this.p_start = 2;
         }
     }
 
@@ -72,11 +72,11 @@ class Turnover{
     }
 
     update_p_start(g_c, p_in_reactor){
-        let v = (g_c / 120) * 20000;
+        let v = (g_c / 12000) * 20000;
         if (this.p_start < p_in_reactor){
             if (this.p_start + v <= p_in_reactor ){
                 this.p_start += v;
-            } else if (this.p_start + v >= p_in_reactor && p_in_reactor >= 70000){
+            } else if (this.p_start + v >= p_in_reactor && p_in_reactor >= 7){
                 this.p_start = p_in_reactor;
             }
         }

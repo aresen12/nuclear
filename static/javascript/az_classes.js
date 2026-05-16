@@ -71,7 +71,7 @@ class Az{
     }
 
     check_error_alerts(){
-        if (this.reactor.w_q > 3200){
+        if (this.reactor.thermal_power / 1e6 > 3200){
             my_alert("alert_power_q");
         }
         if (this.reactor.t1.obr > 3000){

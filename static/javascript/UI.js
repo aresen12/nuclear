@@ -46,12 +46,12 @@ function chosen(i, j){
 function setup_UI(reactor){
 //    console.log("setup");
 //СУЗ
-    document.getElementById("W_Q").value = reactor.w_q;
-    document.getElementById("reactivnost").value = reactor.reactivnost;
+    document.getElementById("W_Q").value = reactor.thermal_power / 1e6;
+    document.getElementById("reactivnost").value = reactor.rho_total;
 //    Турбины
     document.getElementById("w_e1").value = reactor.t1.w_e;
     document.getElementById("w_e2").value = reactor.t2.w_e;
-    document.getElementById("T_reactor").value = reactor.T_reactor;
+    document.getElementById("T_reactor").value = reactor.outlet_temp;
     document.getElementById("obr_t1").value = reactor.t1.obr;
     document.getElementById("obr_t2").value = reactor.t2.obr;
     document.getElementById("rdg1_p").value = reactor.rdg1.power_e;

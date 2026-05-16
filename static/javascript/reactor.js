@@ -1,3 +1,27 @@
+var THERMAL_POWER_NOMINAL = 3200e6;  // # Вт
+var CP_WATER = 4400;  // Дж/(кг*K)
+var LH_VAPORIZATION = 1.6e6;  // Дж/кг (Удельная теплота испарения)
+var COOLANT_MASS = 150000;  // кг воды в контуре
+var FUEL_HEAT_CAPACITY = 2.4e8;  // Дж/K
+var GRAPHITE_HEAT_CAPACITY = 8.5e8; // # Дж/K
+var GRAPHITE_DIRECT_HEATING = 0.055;  //# 5.5% энергии идет в графит
+
+// НЕЙТРОНЫ ТАМ ЧТО ТО КИНЕТИКА
+BETA = 0.0065;
+LAMBDA_PROMPT = 0.0001;
+var DELAYED_GROUPS = [
+    {"beta": 0.00021, "lambda": 0.0124},
+    {"beta": 0.00140, "lambda": 0.0305},
+    {"beta": 0.00125, "lambda": 0.1110},
+    {"beta": 0.00255, "lambda": 0.3010},
+    {"beta": 0.00074, "lambda": 1.1400},
+    {"beta": 0.00035, "lambda": 3.0100},
+];
+
+var ALPHA_VOID = 0.00055;
+var ALPHA_FUEL = -0.000011;
+var ALPHA_GRAPHITE = 0.000005;
+
 class Rdg{
     constructor(id_rdg){
         this.work = false;
@@ -42,19 +66,22 @@ class DRdg extends Rdg{
 
 class Reactor{
     constructor(){
-        this.sterg = []; // стержние ввод в процентах
-        for (let i = 0; i < 9; i++) {
-            this.sterg[i] = [];
-            for (let j = 0; j < 9; j++) {
-                this.sterg[i][j] = 100;
-            }
-        }
+        this.sterg = [
+        [-1, -1, 0, 0, 0, 100, 100, -1, -1],
+        [-1, 0, 0, 100, 100, 100, 100, 100, -1],
+        [100, 100, 100, 0, 0, 100, 100, 100, 100],
+        [100, 100, 0, 0, 0, 0, 0, 0, 0],
+        [100, 100, 0, 0, 0, 0, 0, 0, 100],
+        [100, 0, 0, 0, 0, 0, 0, 0, 100],
+        [100, 100, 0, 0, 0, 0, 0, 0, 100],
+        [-1, 100, 0, 0, 100, 0, 0, 0, -1],
+        [-1, -1, 100, 100, 100, 100, 100, -1, -1]]
         this.lar = [[3, 4], [4, 3], [4, 5], [5, 4]]; // координаты стержней ЛАР
         this.w_lar = 0; // мощность ЛАР
-        this.w_q = 3300; //
-        this.p_in_reactor = 700000;
+//        this.w_q = 3300; //
+        this.p_in_reactor = 6.6;
 //        this.v_inAZ = ;
-        this.reactivnost = 0;
+//        this.reactivnost = 0;
         this.direction = 0; // -1 - down 1 - up
         this.chosen = []; // выбранные стержни
         // насосы
@@ -73,11 +100,29 @@ class Reactor{
         this.t2 = new Turnover("t2");
         this.bs1 = new BS(1);
         this.bs2 = new BS(2); //
-        this.T_reactor = 80; // температура самого реактора(не где не используеться)
+//        this.T_reactor = 80; // температура самого реактора(не где не используеться)
         this.T_2_H2O = 25; // температура во втором контуре
-        this.T_PVS = 280; // температкра параводяной смеси
+//        this.T_PVS = 280; // температкра параводяной смеси
         this.az = new Az(this); // класс аварийной защиты
-        this.pr = 0; // процент пара
+//        this.pr = 0; // процент пара
+        this.t_boil = this.get_boiling_point(this.p_in_reactor)
+        this.temp_in = (this.bs1.T_H2O + this.bs2.T_H2O) / 2; // прописать для случая с одним БС
+        this.thermal_power = 1200e6;
+        this.rho_total = 0;
+        this.fuel_temp = this.temp_in + 250.0;
+        this.graphite_temp = this.temp_in + 180.0;
+        this.coolant_temp = this.temp_in + 10.0;
+        this.outlet_temp = this.coolant_temp;
+        this.void_fraction = 0.15;
+        this.BASE_FUEL_TEMP = this.fuel_temp;
+        this.BASE_GRAPHITE_TEMP = this.graphite_temp;
+        this.BASE_VOID = this.void_fraction;
+        this.precursors = [];
+        this.gcn["1_n"].work = true;
+        this.gcn["1_n"].g = 24000;
+        for (let i = 0; i < DELAYED_GROUPS.length; i++){
+            this.precursors.push((DELAYED_GROUPS[i]["beta"] / (LAMBDA_PROMPT * DELAYED_GROUPS[i]["lambda"])) * this.thermal_power);
+    }
     }
 
     set_unset_up_direction() {
@@ -135,7 +180,26 @@ class Reactor{
         this.chosen.splice(i2, 1);
 
         }
+     get_boiling_point(p_mpa){
+        return 179.9 + p_mpa * 14.3;
+    }
 
+    calculate_rods_reactivity(){
+        let summ = 0;
+        for (let i = 0; i < 9; i++){
+            for (let j = 0; j < 9; j++){
+                if (this.sterg[i][j] != -1){
+                    summ += this.sterg[i][j];
+                }
+            }
+        }
+        let rods  = summ / 69;
+        console.log(rods);
+
+        let rad = Math.PI * (rods / 100.0);
+        let eff = 0.5 * (1.0 - Math.cos(rad));
+        return 0.018 * (0.52 - eff);
+    }
 
      update(){
          this.az.update();
@@ -148,6 +212,69 @@ class Reactor{
         for (i = 0; i < k.length; i++){
             this.gcn[k[i]].update();
         }
+         this.temp_in = (this.bs1.T_H2O + this.bs2.T_H2O) / 2;
+         console.log(this.temp_in);
+         this.rho_void = ALPHA_VOID * (this.void_fraction - this.BASE_VOID) * 100.0;
+         this.rho_fuel = ALPHA_FUEL * (this.fuel_temp - this.BASE_FUEL_TEMP);
+        this.rho_graphite = ALPHA_GRAPHITE * (this.graphite_temp - this.BASE_GRAPHITE_TEMP);
+        this.rho_rods = this.calculate_rods_reactivity();
+        if (this.fuel_temp > 2400.0){
+            this.rho_fuel *= 0.1;
+        }
+        let water_flow = (this.gcn["1_n"].g + this.gcn["2_n"].g) / 3.6;
+        this.rho_total = this.rho_rods + this.rho_void + this.rho_void + this.rho_graphite;
+         // 2. НЕЙТРОННАЯ КИНЕТИКА (Интегрирование лавины)
+//        console.log(this.rho_rods, this.rho_void, this.rho_void, this.rho_graphite);
+        let dt = 0.001;
+        for (let _ = 0; _ < 1000; _++){
+            let delayed_sum = 0;
+            for (let i = 0; i < DELAYED_GROUPS.length; i++){
+//                console.log(i, this.precursors)
+                delayed_sum += DELAYED_GROUPS[i]["lambda"] * this.precursors[i];
+            }
+            let dP_dt = ((this.rho_total - BETA) / LAMBDA_PROMPT) * this.thermal_power + delayed_sum;
+//            console.log(((this.rho_total - BETA) / LAMBDA_PROMPT))
+            this.thermal_power += dP_dt * dt;
+            if (this.thermal_power < 1e4){
+                this.thermal_power = 1e4;
+            }
+            for (let i = 0; i < DELAYED_GROUPS.length; i++){
+                let dC_dt = (DELAYED_GROUPS[i]["beta"] / LAMBDA_PROMPT) * this.thermal_power - DELAYED_GROUPS[i]["lambda"] * this.precursors[i];
+//                console.log(dC_dt, this.thermal_power)
+                this.precursors[i] += dC_dt * dt;
+             }
+         }
+        // 3. ТЕПЛООБМЕН (При экстремальном перегреве теплосъем деградирует)
+
+        let heat_transfer_coeff = 3.1e6;
+        if (this.fuel_temp > 2000.0){
+            heat_transfer_coeff = 0.5e6;
+        }
+        let heat_to_water = (this.fuel_temp -this.coolant_temp) * heat_transfer_coeff;
+
+        // Нагрев урана и графита
+        this.fuel_temp += ((this.thermal_power * (1.0 - GRAPHITE_DIRECT_HEATING) - heat_to_water) / FUEL_HEAT_CAPACITY);
+        let graphite_heat_from_fuel = (this.fuel_temp - this.graphite_temp) * 1.8e5;
+        this.graphite_temp += ((this.thermal_power * GRAPHITE_DIRECT_HEATING + graphite_heat_from_fuel) / GRAPHITE_HEAT_CAPACITY);
+
+        // 4. ТЕРМОДИНАМИКА ТЕПЛОНОСИТЕЛЯ (Расход и Давление — строгие константы)
+        let coolant_heating = heat_to_water / (COOLANT_MASS * CP_WATER);
+        let coolant_cooling = ((this.coolant_temp - this.temp_in) * water_flow / COOLANT_MASS);
+        this.coolant_temp += (coolant_heating - coolant_cooling);
+
+        // Выходная температура
+        this.outlet_temp = this.temp_in + (heat_to_water / (water_flow * CP_WATER));
+        let target_void = 0.0;
+        // Фазовый переход
+        if (this.outlet_temp > this.t_boil){
+            let excess_heat = (this.outlet_temp - this.t_boil) * water_flow * CP_WATER
+            target_void = Math.min(1.0, excess_heat / (water_flow * LH_VAPORIZATION + 1e5))
+            this.outlet_temp = this.t_boil + (this.outlet_temp - this.t_boil) * 0.05;
+            }
+        // Сглаживание инерции пара
+        this.void_fraction += (target_void - this.void_fraction) * 0.4;
+
+
          console.log("update");
          if (this.direction != 0){
             for (let i = 0; i < this.chosen.length; i++){
@@ -160,25 +287,11 @@ class Reactor{
         if ( this.t2.direction != 0){
              this.t2.set_g_max();
         }
-//        var g1 = 0;
-//        var g2 = 0;
-//        if (this.bs1.work && this.bs2.work){
-//            g1 = this.g / 2;
-//            g2 = g1;
-//         } else if (this.bs1.work){
-//             g1 = this.g;
-//             g2 = 0;
-//         } else if (this.bs2.work){
-//            g1 = 0;
-//             g2 = this.g;
-//         }
-//         console.log(g1, g2);
-          this.bs1.update(this.gcn["1_n"].g, this.gcn["3_n"].g, this.pr, this.T_2_H2O, this.T_PVS);
-          this.bs2.update(this.gcn["2_n"].g, this.gcn["4_n"].g, this.pr,, this.T_2_H2O, this.T_PVS);
+         this.bs1.update(this.gcn["1_n"].g, this.gcn["3_n"].g, this.void_fraction, this.T_2_H2O, 250);
+          this.bs2.update(this.gcn["2_n"].g, this.gcn["4_n"].g, this.void_fraction, this.T_2_H2O, 250);
          this.t1.update(this.bs1.m_sep, this.p_in_reactor);
          this.t2.update(this.bs2.m_sep, this.p_in_reactor);
-//         this.v_inBS -= (this.gcn["1_n"].g + this.gcn["1_a"].g) / 3600;
-//         this.v_inBS += (this.gcn["2_n"].g + this.gcn["2_a"].g) / 3600;
+         console.log("water", water_flow, "Т ТВЭЛ", this.fuel_temp,"T вых", this.outlet_temp, "пар", this.void_fraction)
          setup_UI(this);
          send_update();
     }

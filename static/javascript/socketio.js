@@ -208,7 +208,7 @@ socket.on('connect', () => {
 });
 
 socket.on('join_event', (data) => {
-   alert(`Пользователь ${data["name"]} вошёл`);
+//   alert(`Пользователь ${data["name"]} вошёл`);
 });
 
 socket.on('leave_event', (data) => {
