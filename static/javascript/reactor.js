@@ -67,21 +67,18 @@ class DRdg extends Rdg{
 class Reactor{
     constructor(){
         this.sterg = [
-        [-1, -1, 0, 0, 0, 100, 100, -1, -1],
-        [-1, 0, 0, 100, 100, 100, 100, 100, -1],
-        [100, 100, 100, 0, 0, 100, 100, 100, 100],
-        [100, 100, 0, 0, 0, 0, 0, 0, 0],
-        [100, 100, 0, 0, 0, 0, 0, 0, 100],
+        [-1, -1, 0, 0, 0, 100, 0, -1, -1],
+        [-1, 0, 0, 100,     0, 0, 100, 100, -1],
+        [100, 100, 100, 100, 0, 100, 0, 100, 100],
+        [100, 0, 0, 0, 0, 100, 0, 0, 100],
+        [100, 0, 0, 0, 0, 0, 0, 0, 100],
         [100, 0, 0, 0, 0, 0, 0, 0, 100],
         [100, 100, 0, 0, 0, 0, 0, 0, 100],
-        [-1, 100, 0, 0, 100, 0, 0, 0, -1],
+        [-1, 100, 0, 0, 0, 0, 0, 0, -1],
         [-1, -1, 100, 100, 100, 100, 100, -1, -1]]
         this.lar = [[3, 4], [4, 3], [4, 5], [5, 4]]; // координаты стержней ЛАР
         this.w_lar = 0; // мощность ЛАР
-//        this.w_q = 3300; //
-        this.p_in_reactor = 6.6;
-//        this.v_inAZ = ;
-//        this.reactivnost = 0;
+        this.p_in_reactor = 6.5;
         this.direction = 0; // -1 - down 1 - up
         this.chosen = []; // выбранные стержни
         // насосы
@@ -101,7 +98,7 @@ class Reactor{
         this.bs1 = new BS(1);
         this.bs2 = new BS(2); //
 //        this.T_reactor = 80; // температура самого реактора(не где не используеться)
-        this.T_2_H2O = 25; // температура во втором контуре
+        this.T_2_H2O = 200; // температура во втором контуре
 //        this.T_PVS = 280; // температкра параводяной смеси
         this.az = new Az(this); // класс аварийной защиты
 //        this.pr = 0; // процент пара
@@ -118,11 +115,16 @@ class Reactor{
         this.BASE_GRAPHITE_TEMP = this.graphite_temp;
         this.BASE_VOID = this.void_fraction;
         this.precursors = [];
-        this.gcn["1_n"].work = true;
+        this.gcn["1_n"].turn_on_or_down();
+        this.gcn["2_n"].turn_on_or_down();
+        this.gcn["3_n"].turn_on_or_down();
         this.gcn["1_n"].g = 24000;
+        this.gcn["3_n"].g = 800;
+        this.gcn["2_n"].g = 0;
         for (let i = 0; i < DELAYED_GROUPS.length; i++){
             this.precursors.push((DELAYED_GROUPS[i]["beta"] / (LAMBDA_PROMPT * DELAYED_GROUPS[i]["lambda"])) * this.thermal_power);
     }
+    show_mnemo(this);
     }
 
     set_unset_up_direction() {
@@ -164,19 +166,22 @@ class Reactor{
         for (let i2 = 0; i2 < this.chosen.length; i2++){
             if (this.chosen[i2][0] == i && this.chosen[i2][1] == j){
                 this.chosen_delete(i2);
-            return;
+                socket.emit("method_send", {"room": room_id, "function": "chosen_delete", "i": i, "j": j});
+                return;
             }
         }
         this.chosen_add(i, j);
+
     }
 
     chosen_add(i, j){
-        chosen(i, j);
+        chosen(i, j, true);
+        socket.emit("method_send", {"room": room_id, "function": "chosen_add_show", "i": i, "j": j});
         this.chosen.push([i, j]);
     }
 
     chosen_delete(i2){
-        chosen(this.chosen[i2][0], this.chosen[i2][1]);
+        chosen(this.chosen[i2][0], this.chosen[i2][1], false);
         this.chosen.splice(i2, 1);
 
         }
@@ -212,6 +217,7 @@ class Reactor{
         for (i = 0; i < k.length; i++){
             this.gcn[k[i]].update();
         }
+//        if (this.gcn)
          this.temp_in = (this.bs1.T_H2O + this.bs2.T_H2O) / 2;
          console.log(this.temp_in);
          this.rho_void = ALPHA_VOID * (this.void_fraction - this.BASE_VOID) * 100.0;
@@ -222,14 +228,13 @@ class Reactor{
             this.rho_fuel *= 0.1;
         }
         let water_flow = (this.gcn["1_n"].g + this.gcn["2_n"].g) / 3.6;
-        this.rho_total = this.rho_rods + this.rho_void + this.rho_void + this.rho_graphite;
+        this.rho_total = this.rho_rods + this.rho_void + this.rho_fuel + this.rho_graphite;
          // 2. НЕЙТРОННАЯ КИНЕТИКА (Интегрирование лавины)
 //        console.log(this.rho_rods, this.rho_void, this.rho_void, this.rho_graphite);
         let dt = 0.001;
         for (let _ = 0; _ < 1000; _++){
             let delayed_sum = 0;
             for (let i = 0; i < DELAYED_GROUPS.length; i++){
-//                console.log(i, this.precursors)
                 delayed_sum += DELAYED_GROUPS[i]["lambda"] * this.precursors[i];
             }
             let dP_dt = ((this.rho_total - BETA) / LAMBDA_PROMPT) * this.thermal_power + delayed_sum;
@@ -240,10 +245,10 @@ class Reactor{
             }
             for (let i = 0; i < DELAYED_GROUPS.length; i++){
                 let dC_dt = (DELAYED_GROUPS[i]["beta"] / LAMBDA_PROMPT) * this.thermal_power - DELAYED_GROUPS[i]["lambda"] * this.precursors[i];
-//                console.log(dC_dt, this.thermal_power)
                 this.precursors[i] += dC_dt * dt;
              }
          }
+
         // 3. ТЕПЛООБМЕН (При экстремальном перегреве теплосъем деградирует)
 
         let heat_transfer_coeff = 3.1e6;
@@ -275,7 +280,7 @@ class Reactor{
         this.void_fraction += (target_void - this.void_fraction) * 0.4;
 
 
-         console.log("update");
+//         console.log("update");
          if (this.direction != 0){
             for (let i = 0; i < this.chosen.length; i++){
                 this.set_s_position(this.chosen[i][0], this.chosen[i][1], this.direction);
@@ -287,11 +292,11 @@ class Reactor{
         if ( this.t2.direction != 0){
              this.t2.set_g_max();
         }
-         this.bs1.update(this.gcn["1_n"].g, this.gcn["3_n"].g, this.void_fraction, this.T_2_H2O, 250);
-          this.bs2.update(this.gcn["2_n"].g, this.gcn["4_n"].g, this.void_fraction, this.T_2_H2O, 250);
+         this.bs1.update(this.gcn["1_n"].g, this.gcn["3_n"].g, this.void_fraction, this.T_2_H2O, this.outlet_temp, this.t1.g_max);
+          this.bs2.update(this.gcn["2_n"].g, this.gcn["4_n"].g, this.void_fraction, this.T_2_H2O, this.outlet_temp,  this.t1.g_max);
          this.t1.update(this.bs1.m_sep, this.p_in_reactor);
          this.t2.update(this.bs2.m_sep, this.p_in_reactor);
-         console.log("water", water_flow, "Т ТВЭЛ", this.fuel_temp,"T вых", this.outlet_temp, "пар", this.void_fraction)
+//         console.log("water", water_flow, "Т ТВЭЛ", this.fuel_temp,"T вых", this.outlet_temp, "пар", this.void_fraction, "rho void", this.rho_void, "rho t", this.rho_total )
          setup_UI(this);
          send_update();
     }
@@ -312,6 +317,7 @@ class RemoteControl extends Reactor{
             "1_n": new DPump("1_n"),
             "2_n": new DPump("2_n"),
             "3_n": new DPump("3_n"),
+            "4_n": new DPump("4_n"),
             "1_a": new DPump("1_a"),
             "2_a": new DPump("2_a"),
             "3_a": new DPump("3_a"),
@@ -335,7 +341,8 @@ class RemoteControl extends Reactor{
 
     chosen_current(i, j){
         socket.emit("chosen_current", {"i": i, "j": j, "room": room_id});
-        chosen(i, j);
+//        chosen(i, j);
+        console.log("choosen_sss")
     }
 
     update(){

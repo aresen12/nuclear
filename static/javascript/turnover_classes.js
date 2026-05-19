@@ -54,7 +54,7 @@ class Turnover{
     }
 
     start(){
-        if(this.p_start >= 6.8 && !this.broken){
+        if(this.p_start >= 6 && !this.broken){
         this.obr = 350;
         this.p_start = 2;
         }
@@ -76,7 +76,7 @@ class Turnover{
         if (this.p_start < p_in_reactor){
             if (this.p_start + v <= p_in_reactor ){
                 this.p_start += v;
-            } else if (this.p_start + v >= p_in_reactor && p_in_reactor >= 7){
+            } else if (this.p_start + v >= p_in_reactor && p_in_reactor >= 6){
                 this.p_start = p_in_reactor;
             }
         }

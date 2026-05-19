@@ -11,16 +11,22 @@ function send_update(){
     var data = {
     "room": room_id,
     "sterg": re.sterg,
+    "bs1": {"v_inBS":re.bs1.v_inBS,
+            "h_braban_s":re.bs1.h_braban_s,"T_H2O": re.bs1.T_H2O,
+        "m_sep": re.bs1.m_sep
+        },
+        "bs2": {"v_inBS":re.bs2.v_inBS,
+            "h_braban_s":re.bs2.h_braban_s,"T_H2O": re.bs2.T_H2O,
+        "m_sep": re.bs2.m_sep
+        },
+            "fuel_temp":re.fuel_temp,
             "w_lar": re.w_lar,
-            "v_inBS":re.v_inBS,
-            "h_braban_s":re.h_braban_s,
             "p_in_reactor":re.p_in_reactor,
-            "w_q":re.w_q,
-            "reactivnost":re.reactivnost,
+            "thermal_power":re.thermal_power,
+            "rho_total":re.rho_total,
             "chosen":re.chosen,
             "direction": re.direction,
-            "T_reactor":re.T_reactor,
-            "T_H2O":re.T_H2O,
+            "outlet_temp":re.outlet_temp,
             "T_2_H2O": re.T_2_H2O,
             "t1":{"w_e":re.t1.w_e,
             "obr":re.t1.obr,
@@ -82,6 +88,7 @@ socket.on('set_unset_down_direction', (data) => {
 
 socket.on('method_send', (data) => {
     if (!copy){
+
         if(data["function"] == "az5"){
             re.az.az5();
         } else if(data["function"] == "baz"){
@@ -138,12 +145,18 @@ socket.on('method_send', (data) => {
         if (data["function"] == "turn_on_or_down_pump"){
             re.gcn[data["id_pump"]].turn_on_or_down();
         }
-
     } else {
          if (data["function"] == "ui_power"){
             ui_power(data["id_div"], data["flag"]);
         } else if (data["function"] == "set_direction_ui"){
             set_direction_ui(data["flag"], data["id_div"]);
+        }
+        if (data["function"] == "chosen_add_show"){
+           console.log("chosen_add_show");
+           chosen(data["i"], data["j"], true);
+        }
+                if (data["function"] == "chosen_delete"){
+chosen(data["i"], data["j"], false);
         }
     }
 });
@@ -160,15 +173,19 @@ socket.on('chosen_current', (data) => {
 socket.on('update', (data) => {
     if (copy){
     re.w_lar = data["w_lar"];
-    re.v_inBS = data["v_inBS"];
-    re.h_braban_s = data["h_braban_s"];
+    re.bs1.v_inBS = data["bs1"]["v_inBS"];
+    re.bs1.h_braban_s = data["bs1"]["h_braban_s"];
+    re.bs1.T_H2O = data["bs1"]["T_H2O"];
+    re.bs2.v_inBS = data["bs2"]["v_inBS"];
+    re.bs2.h_braban_s = data["bs2"]["h_braban_s"];
+    re.bs2.T_H2O = data["bs2"]["T_H2O"];
     re.p_in_reactor = data["p_in_reactor"];
-    re.w_q = data["w_q"];
+    re.thermal_power = data["thermal_power"];
     re.chosen = data["chosen"];
-    re.reactivnost = data["reactivnost"];
+    re.rho_total = data["rho_total"];
     re.direction = data["direction"];
-    re.T_reactor = data["T_reactor"];
-    re.T_H2O = data["T_H2O"];
+    re.fuel_temp = data["fuel_temp"];
+    re.outlet_temp = data["outlet_temp"];
     re.T_2_H2O = data["T_2_H2O"];
     re.sterg = data["sterg"];
     var k = Object.keys(data["gcn"]);

@@ -34,6 +34,7 @@
                 <div>
                 G max
                 <input id="g_max_t1" class="input-big">
+                    <input id="m_sep1" class="input-big">
                 </div>
 
             </div>
@@ -57,7 +58,7 @@
                 <div>
                 G max
                 <input id="g_max_t2" class="input-big">
-
+                <input id="m_sep2" class="input-big">
                 </div>
             </div>
                 <div style="display:flex;">
@@ -145,7 +146,7 @@
                     </div>
             <div style="display:flex;">
                 <div>
-                <div class="alert-error">Большая реактивность</div>
+                <div id="high_rho_total" class="alert-error">Большая реактивность</div>
                 <div id="alert_power_q" class="alert-error">Высокая мощность</div>
                 <div id="alert_baz" class="alert-error">БАЗ</div>
                 <div id="alert_az_1" class="alert-error">АЗ-1</div>
@@ -244,8 +245,10 @@
                 </div>
                     </div>
             <div>
-            Т реактора<br>
+            Т ПВС    Т_твэл<br>
             <input id="T_reactor" class="input-big">
+
+            <input id="fuel_temp" class="input-big">
                 </div>
 
                 <div>
@@ -283,8 +286,14 @@ W
 
             <div class="errors-table" style="display:flex;">
                 <div>
-                <div id="h_lower_water_level_BS" class="alert-error">Уровень воды в БС опасно низкий</div>
-                <div id="1_n_error" class="alert-error">ГНЦ1 неисправен</div>
+                <div id="h_lower_water_level_BS1" class="alert-error">Уровень воды в БС1 опасно низкий</div>
+                <div id="h_lower_water_level_BS2" class="alert-error">Уровень воды в БС2 опасно низкий</div>
+                <div id="h_high_water_level_BS1" class="alert-error">Уровень воды в БС1 выше нормы</div>
+                <div id="h_high_water_level_BS2" class="alert-error">Уровень воды в БС2 выше нормы</div>
+
+                </div>
+                <div>
+                    <div id="1_n_error" class="alert-error">ГНЦ1 неисправен</div>
                 <div id="2_n_error" class="alert-error">ГНЦ2 неисправен</div>
                 <div id="3_n_error" class="alert-error">ГНЦ3 неисправен</div>
                 <div id="1_a_error" class="alert-error">АГНЦ1 неисправен</div>
@@ -293,23 +302,23 @@ W
                 <div id="2_a_error" class="alert-error">АГНЦ2 неисправен</div>
                 <div id="3_a_error" class="alert-error">АГНЦ3 неисправен</div>
                 <div id="alert_high_temperature2" class="alert-error">высокая температура2</div>
-                <div id="alert_high_temperatureBS" class="alert-error">высокая температура в БС</div>
+
             </div>
+                <div>
+                    <div id="alert_high_temperatureBS1" class="alert-error">высокая температура в БС1</div>
+                    <div id="alert_high_temperatureBS2" class="alert-error">высокая температура в БС2</div>
+                </div>
             </div>
                 </div>
             <div class="down-panel" style="display:flex;">
                 <p>
                     <div class="panel-item">
                 {% for j in range(1, 5)%}
-                <div style="height:70px;">
+                <div style="height:50px;">
                 ГЦН{{j}}<br>
                 <button onclick="re.gcn['{{j}}_n'].turn_on_or_down()">ВКЛ</button>
                 <button onclick="re.gcn['{{j}}_n'].set_unset_up_direction()">🡅</button>
                     <button onclick="re.gcn['{{j}}_n'].set_unset_down_direction()">🡇</button>
-                <div>
-                    <button>Грубо</button>
-                    <button>Мелко</button>
-                </div>
                     </div>
                 {% endfor %}
                     </p>
@@ -331,6 +340,7 @@ W
                 </div>
         </div>
     </div>
+    <audio id="play" src="/static/rbmk-scram-sound.mp3" style="display:none;"></audio>
 </div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>

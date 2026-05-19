@@ -1,5 +1,6 @@
 class Az{
     constructor(reactor){
+        this.sound = false;
         this.az_run = false; // работает ли АЗ
         this.az_5 = 0; // идентефикация работы конкретной аварийной защиты
         this.az_1 = 0;
@@ -71,53 +72,102 @@ class Az{
     }
 
     check_error_alerts(){
+        let flag = false;
         if (this.reactor.thermal_power / 1e6 > 3200){
+//            if (this.reactor.thermal_power / 1e6 >= 3500){
+//                this.az5();
+//            }
             my_alert("alert_power_q");
+            flag = true;
         }
         if (this.reactor.t1.obr > 3000){
              my_alert("alert_high_turnovers1");
+             flag = true;
         }
         if ( this.reactor.t2.obr > 3000){
             my_alert("alert_high_turnovers2");
+            flag = true;
         }
         if (this.reactor.t1.w_e > 500){
             my_alert("alert_high_e_power_t1");
+            flag = true;
         }
         if (this.reactor.t2.w_e > 500){
             my_alert("alert_high_e_power_t2");
+            flag = true;
         }
         if (this.reactor.t1.broken){
             my_alert("error_t1");
+            flag = true;
         }
         if (this.reactor.t2.broken){
             my_alert("error_t2");
+            flag = true;
         }
         if (this.reactor.T_2_H2O >= 260){
             my_alert("alert_high_temperature2");
+            flag = true;
         }
-        if (this.reactor.T_2_H2O >= 265){
-            my_alert("alert_high_temperatureBS");
+        if (this.reactor.bs1.T_H2O > 271){
+            my_alert("alert_high_temperatureBS1");
+            flag = true;
+        }
+        if (this.reactor.bs2.T_H2O > 271){
+            my_alert("alert_high_temperatureBS2");
+            flag = true;
+        }
+        if (this.reactor.bs1.v_inBS >= 100){
+            my_alert("h_high_water_level_BS1");
+            flag = true;
+        }
+        if (this.reactor.bs2.v_inBS >= 100){
+            my_alert("h_high_water_level_BS2");
+            flag = true;
         }
         if(this.az_5){
             my_alert("alert_az_5");
+            flag = true;
         }
          if(this.az_b){
             my_alert("alert_baz");
+            flag = true;
         }
         if(this.az_1){
             my_alert("alert_az_1");
+            flag = true;
         }
         if(this.az_2){
             my_alert("alert_az_2");
+            flag = true;
         }
         var k = Object.keys(this.reactor.gcn);
         for (i = 0; i < k.length; i++){
             if  (this.reactor.gcn[k[i]].broken){
                 my_alert(`${k[i]}_error`);
+                flag = true;
             };
         }
-        if (this.reactor.v_inBS < 33){
-            my_alert("h_lower_water_level_BS");
+        if (this.reactor.bs1.v_inBS < 66){
+            my_alert("h_lower_water_level_BS1");
+            flag = true;
+        }
+        if (this.reactor.bs2.v_inBS < 66){
+            my_alert("h_lower_water_level_BS2");
+            flag = true;
+        }
+        if (this.reactor.rho_total > 0.003){
+            my_alert("high_rho_total");
+            flag = true;
+        }
+
+        if (flag && !this.sound){
+                this.sound = true;
+                playAudio();
+
+        }
+        else if (!flag && this.sound){
+            this.sound = false;
+            document.getElementById("play").pause();
         }
     }
 

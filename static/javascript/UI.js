@@ -7,6 +7,18 @@ function show_mnemo(reactor){
 }
 
 
+function show_chosen(reactor){
+//    for (let i = 0; i < 9; i++) {
+//        for (let j = 0; j < 9; j++) {
+//            chosen(i, j, false);
+//        }
+//    }
+//    for (let i = 0; i < reactor.chosen.length; i++){
+////        console.log(reactor.chosen);
+//        chosen( reactor.chosen[i][0],  reactor.chosen[i][1], true);
+//    }
+}
+
 function show_mnemo_i_j(value, i, j){
     try{
         var m = document.getElementById(`m${i}_${j}`);
@@ -35,8 +47,8 @@ function my_alert(id_error){
 
 
 
-function chosen(i, j){
-    if (document.getElementById(`s${i}_${j}`).style.border != "1px solid white"){
+function chosen(i, j, flag){
+    if (flag){
         document.getElementById(`s${i}_${j}`).style.border = "1px solid white";
     } else {
         document.getElementById(`s${i}_${j}`).style.border = "1px solid black";
@@ -46,7 +58,7 @@ function chosen(i, j){
 function setup_UI(reactor){
 //    console.log("setup");
 //СУЗ
-    document.getElementById("W_Q").value = reactor.thermal_power / 1e6;
+    document.getElementById("W_Q").value = `${(reactor.thermal_power / 1e6 ).toFixed(0)}`;
     document.getElementById("reactivnost").value = reactor.rho_total;
 //    Турбины
     document.getElementById("w_e1").value = reactor.t1.w_e;
@@ -69,24 +81,33 @@ var k = Object.keys(reactor.gcn);
     document.getElementById("T_2_H2O").value = reactor.T_2_H2O;
 //    БС
     document.getElementById("h_braban_s1").value = reactor.bs1.h_braban_s;
+    document.getElementById("fuel_temp").value = reactor.fuel_temp;
     document.getElementById("T_H2O1").value = reactor.bs1.T_H2O;
     document.getElementById("h_braban_s2").value = reactor.bs2.h_braban_s;
+    document.getElementById("m_sep2").value = reactor.bs2.m_sep;
+    document.getElementById("m_sep1").value = reactor.bs1.m_sep;
     document.getElementById("T_H2O2").value = reactor.bs2.T_H2O;
     if (copy){
         show_mnemo(reactor);
+        show_chosen(reactor)
     }
 }
 
 
 function ui_power(id_div, flag){
+
     if(flag) {
         document.getElementById(id_div).style.background = "green";
     } else {
         document.getElementById(id_div).style.background = "red";
     }
+    try{
     if (!copy){
         socket.emit("method_send", {"room": room_id, "function": "ui_power", "id_div": id_div, "flag": flag});
     }
+   } catch(error){
+   }
+
 }set_direction_ui
 
 
