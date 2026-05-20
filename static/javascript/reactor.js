@@ -76,8 +76,6 @@ class Reactor{
         [100, 100, 0, 0, 0, 0, 0, 0, 100],
         [-1, 100, 0, 0, 0, 0, 0, 0, -1],
         [-1, -1, 100, 100, 100, 100, 100, -1, -1]]
-        this.lar = [[3, 4], [4, 3], [4, 5], [5, 4]]; // координаты стержней ЛАР
-        this.w_lar = 0; // мощность ЛАР
         this.p_in_reactor = 6.5;
         this.direction = 0; // -1 - down 1 - up
         this.chosen = []; // выбранные стержни
@@ -141,10 +139,6 @@ class Reactor{
         } else {
             this.direction = -1;
         }
-    }
-
-    set_w_lar(w){
-        this.w_lar = w;
     }
 
 
@@ -325,10 +319,6 @@ class RemoteControl extends Reactor{
     }
     chosen_delete(i2){
         send_chosen_delete(i2);
-    }
-
-    set_w_lar(w){
-        socket.emit("set_w_lar", {"w": w, "room": room_id});
     }
 
     set_unset_up_direction(){

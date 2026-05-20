@@ -7,14 +7,53 @@ class Az{
         this.az_2 = 0;
         this.az_b = 0;
         this.lar = false;
+        this.lar_k = [[3, 4], [4, 3], [4, 5], [5, 4]]; // координаты стержней ЛАР
         this.laz = [[2,2], [2,4], [2, 6], [4, 2], [4, 6], [6, 2], [6, 4], [6, 6]]; // координаты стрежней ЛАЗ
         this.baz_k = [[1, 4], [3, 3], [3, 5], [4, 1], [4, 7], [5, 3], [5, 5], [7, 4]];
         this.reactor = reactor;
+        this.power_lar = 0
     }
 
     turn_on_or_down_lar(){
         this.lar = !this.lar;
         ui_power("lar_s", this.lar);
+    }
+
+    set_w_lar(w){
+        this.power_lar = w * 1e6;
+    }
+
+
+    set_position_lar(direction){
+        var flag = true;
+        for (let i = 0; i < this.lar_k.length; i++) {
+
+                if(direction < 0 && this.reactor.sterg[this.lar_k[i][0]][this.lar_k[i][1]] < 100){
+                    if (this.reactor.sterg[this.lar_k[i][0]][this.lar_k[i][1]] + 5 <= 100){
+                        this.reactor.sterg[this.lar_k[i][0]][this.lar_k[i][1]] += 5;
+                        flag = false;
+                    } else{
+                        this.reactor.sterg[this.lar_k[i][0]][this.lar_k[i][1]] = 100;
+                    }
+                } else if (direction > 0 && this.reactor.sterg[this.lar_k[i][0]][this.lar_k[i][1]] > 0) {
+                    flag = false;
+                    this.reactor.sterg[this.lar_k[i][0]][this.lar_k[i][1]] -= 5;
+                }
+                show_mnemo_i_j(this.reactor.sterg[this.lar_k[i][0]][this.lar_k[i][1]], this.lar_k[i][0], this.lar_k[i][1]);
+        }
+        return flag;
+    }
+
+    update_lar(){
+        if (this.lar){
+            if (this.reactor.rho_total > 0.0005){
+                this.set_position_lar(-1);
+            } else if (this.reactor.thermal_power - 50 > this.power_lar){
+                this.set_position_lar(-1);
+            } else if (this.reactor.thermal_power + 50 < this.power_lar){
+                this.set_position_lar(1);
+            }
+        }
     }
 
     set_position_az5(){
@@ -74,9 +113,9 @@ class Az{
     check_error_alerts(){
         let flag = false;
         if (this.reactor.thermal_power / 1e6 > 3200){
-//            if (this.reactor.thermal_power / 1e6 >= 3500){
-//                this.az5();
-//            }
+            if (this.reactor.thermal_power / 1e6 >= 3700){
+                this.az5();
+            }
             my_alert("alert_power_q");
             flag = true;
         }
@@ -155,7 +194,7 @@ class Az{
             my_alert("h_lower_water_level_BS2");
             flag = true;
         }
-        if (this.reactor.rho_total > 0.003){
+        if (this.reactor.rho_total > 0.0005){
             my_alert("high_rho_total");
             flag = true;
         }
@@ -182,6 +221,7 @@ class Az{
         }
         this.check_error_alerts();
         this.check_az_work();
+        this.update_lar();
         return this.az_run;
     }
 }
@@ -194,5 +234,9 @@ class DAz extends Az{
 
     baz(){
         socket.emit("method_send", {"room": room_id, "function": "baz"});
+    }
+
+    set_w_lar(w){
+        socket.emit("set_w_lar", {"w": w, "room": room_id});
     }
 }

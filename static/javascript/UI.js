@@ -87,6 +87,7 @@ var k = Object.keys(reactor.gcn);
     document.getElementById("m_sep2").value = reactor.bs2.m_sep;
     document.getElementById("m_sep1").value = reactor.bs1.m_sep;
     document.getElementById("T_H2O2").value = reactor.bs2.T_H2O;
+    document.getElementById("power_lar_show").value = reactor.az.power_lar  / 1e6 ;
     if (copy){
         show_mnemo(reactor);
         show_chosen(reactor)
