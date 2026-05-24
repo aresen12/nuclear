@@ -113,6 +113,26 @@ def add_new_reactor():
         return redirect("/")
 
 
+@application.route("/info/syz")
+def info_syz():
+    return render_template("syz_info.html")
+
+
+@application.route("/info/turnover")
+def info_turnover():
+    return render_template("turnover_info.html")
+
+
+@application.route("/info/freeze")
+def info_freeze():
+    return render_template("freeze_info.html")
+
+
+@application.route("/info")
+def info():
+    return render_template("info.html")
+
+
 if __name__ == "__main__":
     socketio.run(application, host='0.0.0.0', debug=True, allow_unsafe_werkzeug=True)
 

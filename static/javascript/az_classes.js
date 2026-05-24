@@ -12,6 +12,7 @@ class Az{
         this.baz_k = [[1, 4], [3, 3], [3, 5], [4, 1], [4, 7], [5, 3], [5, 5], [7, 4]];
         this.reactor = reactor;
         this.power_lar = 0
+        this.current_errors = [];
     }
 
     turn_on_or_down_lar(){
@@ -112,7 +113,9 @@ class Az{
 
     check_error_alerts(){
         let flag = false;
+        let c_e = [];
         if (this.reactor.thermal_power / 1e6 > 3200){
+            c_e.push("alert_power_q");
             if (this.reactor.thermal_power / 1e6 >= 3700){
                 this.az5();
             }
@@ -122,92 +125,116 @@ class Az{
         if (this.reactor.t1.obr > 3000){
              my_alert("alert_high_turnovers1");
              flag = true;
+             c_e.push("alert_high_turnovers1");
         }
         if ( this.reactor.t2.obr > 3000){
             my_alert("alert_high_turnovers2");
             flag = true;
+            c_e.push("alert_high_turnovers2");
         }
         if (this.reactor.t1.w_e > 500){
             my_alert("alert_high_e_power_t1");
+            c_e.push("alert_high_e_power_t1");
             flag = true;
         }
         if (this.reactor.t2.w_e > 500){
             my_alert("alert_high_e_power_t2");
             flag = true;
+            c_e.push("alert_high_e_power_t2");
         }
         if (this.reactor.t1.broken){
             my_alert("error_t1");
             flag = true;
+            c_e.push("error_t1");
         }
         if (this.reactor.t2.broken){
             my_alert("error_t2");
             flag = true;
+            c_e.push("error_t2");
         }
         if (this.reactor.T_2_H2O >= 260){
             my_alert("alert_high_temperature2");
             flag = true;
+            c_e.push("alert_high_temperature2");
         }
         if (this.reactor.bs1.T_H2O > 271){
             my_alert("alert_high_temperatureBS1");
             flag = true;
+            c_e.push("alert_high_temperatureBS1");
         }
         if (this.reactor.bs2.T_H2O > 271){
             my_alert("alert_high_temperatureBS2");
             flag = true;
+            c_e.push("alert_high_temperatureBS2");
         }
         if (this.reactor.bs1.v_inBS >= 100){
             my_alert("h_high_water_level_BS1");
             flag = true;
+            c_e.push("h_high_water_level_BS1");
         }
         if (this.reactor.bs2.v_inBS >= 100){
             my_alert("h_high_water_level_BS2");
             flag = true;
+            c_e.push("h_high_water_level_BS2");
         }
         if(this.az_5){
             my_alert("alert_az_5");
             flag = true;
+            c_e.push("alert_az_5");
         }
          if(this.az_b){
             my_alert("alert_baz");
             flag = true;
+            c_e.push("alert_baz");
         }
         if(this.az_1){
             my_alert("alert_az_1");
             flag = true;
+            c_e.push("alert_az_1");
         }
         if(this.az_2){
             my_alert("alert_az_2");
             flag = true;
+            c_e.push("alert_az_2");
         }
         var k = Object.keys(this.reactor.gcn);
         for (i = 0; i < k.length; i++){
             if  (this.reactor.gcn[k[i]].broken){
                 my_alert(`${k[i]}_error`);
                 flag = true;
+                c_e.push(`${k[i]}_error`);
             };
         }
         if (this.reactor.bs1.v_inBS < 66){
             my_alert("h_lower_water_level_BS1");
             flag = true;
+            c_e.push("h_lower_water_level_BS1");
         }
         if (this.reactor.bs2.v_inBS < 66){
             my_alert("h_lower_water_level_BS2");
             flag = true;
+            c_e.push("h_lower_water_level_BS2");
         }
         if (this.reactor.rho_total > 0.0005){
             my_alert("high_rho_total");
             flag = true;
+            c_e.push("high_rho_total");
         }
 
         if (flag && !this.sound){
                 this.sound = true;
                 playAudio();
-
         }
         else if (!flag && this.sound){
             this.sound = false;
             document.getElementById("play").pause();
         }
+        for (let i = 0; i < this.current_errors.length; i++){
+            if (!c_e.includes(this.current_errors[i])){
+                stop_alert(this.current_errors[i]);
+            }
+        }
+        this.current_errors = c_e;
     }
 
     update(){

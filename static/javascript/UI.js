@@ -45,6 +45,11 @@ function my_alert(id_error){
 }
 
 
+function stop_alert(id_error){
+    var div = document.getElementById(id_error);
+    div.style.background = "";
+}
+
 
 
 function chosen(i, j, flag){

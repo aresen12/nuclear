@@ -6,6 +6,18 @@
 
 }
 
+.exit-btn{
+position:absolute;
+right: 10px;
+top:0px;
+background:#FFC107;
+padding:10px;
+border-radius: 3px;
+text-decoration:none;
+color:black;
+z-index:100;
+}
+
 .signal{
     background: red;
     width:10px;
