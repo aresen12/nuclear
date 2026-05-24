@@ -25,6 +25,9 @@ function show_mnemo_i_j(value, i, j){
         if (value == 100){
             m.style.background = "green";
             m.textContent = "";
+        } else if (value >= 50){
+            m.style.background = "#faf74d";
+            m.textContent = value;
         } else {
             m.style.background = "red";
             m.textContent = value;
