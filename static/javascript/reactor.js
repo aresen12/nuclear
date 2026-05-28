@@ -26,15 +26,16 @@ class Rdg{
     constructor(id_rdg){
         this.work = false;
         this.power_e = 0;
-        this.max_power_e = 10000; // KW
+        this.max_power_e = 20000; // KW
         this.direction = 0;
         this.id_rdg = id_rdg;
+        this.speed = 500;
     }
 
     update(){
         if (this.direction != 0){
-            if (0 <= this.power_e + this.direction * 1000  && this.power_e + this.direction * 1000 <= this.max_power_e){
-                    this.power_e += this.direction * 1000;
+            if (0 <= this.power_e + this.direction * this.speed  && this.power_e + this.direction * this.speed <= this.max_power_e){
+                    this.power_e += this.direction * this.speed;
                 } else {
                     this.direction = 0;
                 }
@@ -67,14 +68,14 @@ class DRdg extends Rdg{
 class Reactor{
     constructor(){
         this.sterg = [
-        [-1, -1, 0, 0, 0, 100, 0, -1, -1],
-        [-1, 0, 0, 100,     0, 0, 100, 100, -1],
-        [100, 100, 100, 100, 0, 100, 0, 100, 100],
-        [100, 0, 0, 0, 0, 100, 0, 0, 100],
+        [-1, -1, 100, 100, 100, 100, 100, -1, -1],
+        [-1, 100, 100, 0, 0, 0, 100, 100, -1],
+        [100, 100, 0, 0, 0, 0, 0, 100, 100],
+        [100, 0, 0, 0, 0, 0, 0, 0, 100],
         [100, 0, 0, 0, 0, 0, 0, 0, 100],
         [100, 0, 0, 0, 0, 0, 0, 0, 100],
         [100, 100, 0, 0, 0, 0, 0, 0, 100],
-        [-1, 100, 0, 0, 0, 0, 0, 0, -1],
+        [-1, 100, 0, 0, 0, 0, 0, 100, -1],
         [-1, -1, 100, 100, 100, 100, 100, -1, -1]]
         this.p_in_reactor = 6.5;
         this.direction = 0; // -1 - down 1 - up
@@ -95,14 +96,11 @@ class Reactor{
         this.t2 = new Turnover("t2");
         this.bs1 = new BS(1);
         this.bs2 = new BS(2); //
-//        this.T_reactor = 80; // температура самого реактора(не где не используеться)
         this.T_2_H2O = 200; // температура во втором контуре
-//        this.T_PVS = 280; // температкра параводяной смеси
         this.az = new Az(this); // класс аварийной защиты
-//        this.pr = 0; // процент пара
         this.t_boil = this.get_boiling_point(this.p_in_reactor)
         this.temp_in = (this.bs1.T_H2O + this.bs2.T_H2O) / 2; // прописать для случая с одним БС
-        this.thermal_power = 1200e6;
+        this.thermal_power = 0e6;
         this.rho_total = 0;
         this.fuel_temp = this.temp_in + 250.0;
         this.graphite_temp = this.temp_in + 180.0;
@@ -116,9 +114,12 @@ class Reactor{
         this.gcn["1_n"].turn_on_or_down();
         this.gcn["2_n"].turn_on_or_down();
         this.gcn["3_n"].turn_on_or_down();
-        this.gcn["1_n"].g = 24000;
-        this.gcn["3_n"].g = 800;
+        this.gcn["1_n"].g = 12000;
+        this.gcn["3_n"].g = 1200;
         this.gcn["2_n"].g = 0;
+        this.w_e = 0;
+        this.rdg1.power_e = this.rdg1.max_power_e;
+        this.rdg1.turn_on_or_down();
         for (let i = 0; i < DELAYED_GROUPS.length; i++){
             this.precursors.push((DELAYED_GROUPS[i]["beta"] / (LAMBDA_PROMPT * DELAYED_GROUPS[i]["lambda"])) * this.thermal_power);
     }
@@ -131,6 +132,7 @@ class Reactor{
         } else {
             this.direction = 1;
         }
+        ui_direction(this.direction);
     }
 
     set_unset_down_direction() {
@@ -139,6 +141,7 @@ class Reactor{
         } else {
             this.direction = -1;
         }
+        ui_direction(this.direction);
     }
 
 
@@ -290,6 +293,30 @@ class Reactor{
           this.bs2.update(this.gcn["2_n"].g, this.gcn["4_n"].g, this.void_fraction, this.T_2_H2O, this.outlet_temp,  this.t1.g_max);
          this.t1.update(this.bs1.m_sep, this.p_in_reactor);
          this.t2.update(this.bs2.m_sep, this.p_in_reactor);
+         this.w_e = this.t1.w_e * 1000 + this.t2.w_e * 1000 + this.rdg1.power_e + this.rdg2.power_e;
+         let w_e_use = 0;
+         var k = Object.keys(this.gcn);
+
+         for (i = 0; i < k.length; i++){
+            w_e_use += this.gcn[k[i]].w_e;
+        }
+//        console.log(w_e_use, this.w_e);
+        let w = ["3_n", "4_n", "2_n", "1_n", "3_a", "2_a", "1_a"];
+        let j = 0;
+        while (this.w_e < w_e_use){
+            console.log(this.gcn[w[j]], w[j]);
+            if (this.gcn[w[j]].work){
+                this.gcn[w[j]].turn_on_or_down();
+            }
+            w_e_use = 0;
+            for (i = 0; i < k.length; i++){
+                w_e_use += this.gcn[k[i]].w_e;
+            }
+            j++;
+            if (j >= k.length){
+                break;
+            }
+        }
 //         console.log("water", water_flow, "Т ТВЭЛ", this.fuel_temp,"T вых", this.outlet_temp, "пар", this.void_fraction, "rho void", this.rho_void, "rho t", this.rho_total )
          setup_UI(this);
          send_update();

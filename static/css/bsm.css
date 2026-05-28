@@ -38,6 +38,10 @@ z-index:100;
 
 }
 
+.cow {
+    width:70px;
+}
+
 .panel-item{
     padding:10px;
 }

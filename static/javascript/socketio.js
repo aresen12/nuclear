@@ -20,7 +20,7 @@ function send_update(){
         "m_sep": re.bs2.m_sep
         },
             "fuel_temp":re.fuel_temp,
-            "w_lar": re.w_lar,
+            "w_ar": re.w_lar,
             "p_in_reactor":re.p_in_reactor,
             "thermal_power":re.thermal_power,
             "rho_total":re.rho_total,

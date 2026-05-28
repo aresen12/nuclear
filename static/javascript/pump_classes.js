@@ -7,6 +7,7 @@ class Pump{
         this.max_g = 24000; // макс расход
         this.id_pump = id_pump;
         this.broken = false; // сломан или нет
+        this.w_e = 0;
     }
 
     set_g(){
@@ -22,8 +23,11 @@ class Pump{
             this.work = false;
             this.direction = -1;
             ui_power(`${this.id_pump}_s`, false);
+            turn(`${this.id_pump}_btn`, false);
+            this.w_e = 0;
         } else if (!this.broken){
             this.work = true
+            turn(`${this.id_pump}_btn`, true);
             ui_power(`${this.id_pump}_s`, true);
         }
     }
@@ -51,6 +55,15 @@ class Pump{
     update(){
         if (this.direction != 0){
             this.set_g();
+        }
+        if (this.work){
+            this.w_e = this.g * 0.5375;
+        }
+        if (this.broken && this.work){
+            this.work = false;
+            this.direction = -1;
+            ui_power(`${this.id_pump}_s`, false);
+            turn(`${this.id_pump}_btn`, false);
         }
     }
 }

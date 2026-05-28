@@ -95,13 +95,13 @@ def main():
     users = db_sess.query(User).all()
     reactors = db_sess.query(Reactor).all()
     db_sess.close()
-    return render_template("main.html", title='главная', users=users, reactors=reactors)
+    return render_template("main.html", title='симулятор ядерного реактора', users=users, reactors=reactors)
 
 
 @application.route("/add_new_reactor", methods=["GET", "POST"])
 def add_new_reactor():
     if request.method == "GET":
-        return render_template("new_reactor.html")
+        return render_template("new_reactor.html", title="симулятор ядерного реактора")
     else:
         db_sess = db_session.create_session()
         reactor = Reactor()
@@ -130,7 +130,7 @@ def info_freeze():
 
 @application.route("/info")
 def info():
-    return render_template("info.html")
+    return render_template("info.html",  title="симулятор упралением ядерного реактора")
 
 
 if __name__ == "__main__":

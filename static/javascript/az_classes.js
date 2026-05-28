@@ -1,58 +1,58 @@
 class Az{
     constructor(reactor){
+        this.mode = 0 // 0 - откл 1- азс 2 -азср
         this.sound = false;
         this.az_run = false; // работает ли АЗ
         this.az_5 = 0; // идентефикация работы конкретной аварийной защиты
         this.az_1 = 0;
         this.az_2 = 0;
         this.az_b = 0;
-        this.lar = false;
-        this.lar_k = [[3, 4], [4, 3], [4, 5], [5, 4]]; // координаты стержней ЛАР
+        this.ar = false;
+        this.ar_k = [[3, 4], [4, 3], [4, 5], [5, 4]]; // координаты стержней ЛАР
         this.laz = [[2,2], [2,4], [2, 6], [4, 2], [4, 6], [6, 2], [6, 4], [6, 6]]; // координаты стрежней ЛАЗ
         this.baz_k = [[1, 4], [3, 3], [3, 5], [4, 1], [4, 7], [5, 3], [5, 5], [7, 4]];
         this.reactor = reactor;
-        this.power_lar = 0
+        this.power_ar = 0
         this.current_errors = [];
     }
 
-    turn_on_or_down_lar(){
-        this.lar = !this.lar;
-        ui_power("lar_s", this.lar);
+    turn_on_or_down_ar(){
+        this.ar = !this.ar;
+        ui_power("lar_s", this.ar);
     }
 
-    set_w_lar(w){
-        this.power_lar = w * 1e6;
+    set_w_ar(w){
+        this.power_ar = w * 1e6;
     }
 
 
-    set_position_lar(direction){
+    set_position_ar(direction){
         var flag = true;
-        for (let i = 0; i < this.lar_k.length; i++) {
-
-                if(direction < 0 && this.reactor.sterg[this.lar_k[i][0]][this.lar_k[i][1]] < 100){
-                    if (this.reactor.sterg[this.lar_k[i][0]][this.lar_k[i][1]] + 5 <= 100){
-                        this.reactor.sterg[this.lar_k[i][0]][this.lar_k[i][1]] += 5;
+        for (let i = 0; i < this.ar_k.length; i++) {
+                if(direction < 0 && this.reactor.sterg[this.ar_k[i][0]][this.ar_k[i][1]] < 100){
+                    if (this.reactor.sterg[this.ar_k[i][0]][this.ar_k[i][1]] + 5 <= 100){
+                        this.reactor.sterg[this.ar_k[i][0]][this.ar_k[i][1]] += 5;
                         flag = false;
                     } else{
-                        this.reactor.sterg[this.lar_k[i][0]][this.lar_k[i][1]] = 100;
+                        this.reactor.sterg[this.ar_k[i][0]][this.ar_k[i][1]] = 100;
                     }
-                } else if (direction > 0 && this.reactor.sterg[this.lar_k[i][0]][this.lar_k[i][1]] > 0) {
+                } else if (direction > 0 && this.reactor.sterg[this.ar_k[i][0]][this.ar_k[i][1]] > 0) {
                     flag = false;
-                    this.reactor.sterg[this.lar_k[i][0]][this.lar_k[i][1]] -= 5;
+                    this.reactor.sterg[this.ar_k[i][0]][this.ar_k[i][1]] -= 5;
                 }
-                show_mnemo_i_j(this.reactor.sterg[this.lar_k[i][0]][this.lar_k[i][1]], this.lar_k[i][0], this.lar_k[i][1]);
+                show_mnemo_i_j(this.reactor.sterg[this.ar_k[i][0]][this.ar_k[i][1]], this.ar_k[i][0], this.ar_k[i][1]);
         }
         return flag;
     }
 
-    update_lar(){
-        if (this.lar){
+    update_ar(){
+        if (this.ar){
             if (this.reactor.rho_total > 0.0005){
-                this.set_position_lar(-1);
-            } else if (this.reactor.thermal_power - 50 > this.power_lar){
-                this.set_position_lar(-1);
-            } else if (this.reactor.thermal_power + 50 < this.power_lar){
-                this.set_position_lar(1);
+                this.set_position_ar(-1);
+            } else if (this.reactor.thermal_power - 50 > this.power_ar){
+                this.set_position_ar(-1);
+            } else if (this.reactor.thermal_power + 50 < this.power_ar){
+                this.set_position_ar(1);
             }
         }
     }
@@ -62,8 +62,8 @@ class Az{
         for (let i = 0; i < 9; i++) {
             for (let j = 0; j < 9; j++) {
                 if(this.reactor.sterg[i][j] < 100){
-                    if (this.reactor.sterg[i][j] + 20 <= 100){
-                        this.reactor.sterg[i][j] += 20;
+                    if (this.reactor.sterg[i][j] + 10 <= 100){
+                        this.reactor.sterg[i][j] += 10;
                         flag = false;
                     } else{
                         this.reactor.sterg[i][j] = 100;
@@ -73,6 +73,9 @@ class Az{
             }
         }
         this.az_5 = !flag;
+        if (flag){
+            turn("az_btn", 0);
+        }
         return flag;
     }
 
@@ -90,15 +93,22 @@ class Az{
                 show_mnemo_i_j(this.reactor.sterg[this.baz_k[i][0]][this.baz_k[i][1]], this.baz_k[i][0], this.baz_k[i][1]);
         }
         this.az_b = !flag;
+        if (flag){
+            turn("baz_btn", 0);
+        }
         return flag;
     }
 
-    az5(){
-        this.az_run = 1;
-        this.az_5 = true;
+    az5(manual){
+        if (manual || this.mode != 0){
+            turn("az_btn", 1);
+            this.az_run = 1;
+            this.az_5 = true;
+        }
     }
 
     baz(){
+        turn("baz_btn", 1);
         this.az_run = true;
         this.az_b = true;
     }
@@ -108,6 +118,27 @@ class Az{
             this.az_run = true;
         } else{
             this.az_run = false;
+        }
+    }
+
+
+    azs_start(){
+        if (this.mode == 1){
+            this.mode = 0;
+            turn("azs_start", 0);
+        } else {
+            this.mode = 1;
+            turn("azs_start", 1);
+        }
+    }
+
+    azsr_start(){
+        if (this.mode == 2){
+            this.mode = 0;
+            turn("azsr_start", 0);
+        } else {
+            this.mode = 2;
+            turn("azsr_start", 1);
         }
     }
 
@@ -248,7 +279,7 @@ class Az{
         }
         this.check_error_alerts();
         this.check_az_work();
-        this.update_lar();
+        this.update_ar();
         return this.az_run;
     }
 }

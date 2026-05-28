@@ -3,8 +3,8 @@ function sterg(i, j){
 
 }
 
-function set_w_lar(){
-    re.az.set_w_lar(document.getElementById("w_lar").value);
+function set_w_ar(){
+    re.az.set_w_ar(document.getElementById("w_ar").value);
 }
 
 
