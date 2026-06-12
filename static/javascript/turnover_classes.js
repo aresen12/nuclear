@@ -11,11 +11,16 @@ class Turnover{
         this.direction = 0;
         this.id_turnover = id_turnover;
         this.steam_direction = 1; // направление пара 1- турбина 2 - пусковой отсек
+        this.time = 0;
     }
 
     turn_on_or_down(){
         this.work = !this.work;
-        ui_power(`APP_${this.id_turnover}_s`, this.work)
+        ui_power(`APP_${this.id_turnover}_s`, this.work);
+        turn(`${this.id_turnover}_t_btn`, this.work);
+        if (!this.work){
+            re.az.temporary_alert.push(new TemporaryAlert(`turn_down_${this.id_turnover}`, 1))
+        }
     }
 
     set_g_max(){
@@ -89,15 +94,21 @@ class Turnover{
             current_g = 0;
         }
         if (!this.work && this.obr > 0){
-            if (this.obr - this.v_down >= 0){
-                this.obr -= this.v_down;
-            } else {
-                this.obr = 0;
+            if (this.time < 10){
+                this.time += 1;
+                return;
+            }else {
+                if (this.obr - this.v_down >= 0){
+                    this.obr -= this.v_down;
+                } else {
+                    this.obr = 0;
+                }
             }
         } else if (this.work && this.obr >= 3000){
             if (current_g >= 272.41){
                 this.w_e = (current_g - 272.41) / 4.71;
             } else{
+                re.az.temporary_alert.push(new TemporaryAlert(`m_down_${this.id_turnover}`, 1));
                 this.w_e = 0;
                 this.obr -= this.v_down;
             }

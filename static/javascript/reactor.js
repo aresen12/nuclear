@@ -29,17 +29,30 @@ class Rdg{
         this.max_power_e = 20000; // KW
         this.direction = 0;
         this.id_rdg = id_rdg;
-        this.speed = 500;
+        this.speed = 75; // 40 c быстрее чернобыльских на 5 с
+        this.obr = 0;
+    }
+
+    start_ui(){
+        this.work = true;
+        this.power_e = this.max_power_e;
+        this.obr = 3000;
+        ui_power(`${this.id_rdg}_s`, true);
     }
 
     update(){
         if (this.direction != 0){
-            if (0 <= this.power_e + this.direction * this.speed  && this.power_e + this.direction * this.speed <= this.max_power_e){
-                    this.power_e += this.direction * this.speed;
+            if (0 <= this.obr + this.direction * this.speed  && this.obr + this.direction * this.speed <= 3000){
+                    this.obr += this.direction * this.speed;
                 } else {
                     this.direction = 0;
                 }
         }
+            if (this.obr == 3000){
+                this.power_e = this.max_power_e;
+            } else {
+                this.power_e = 0;
+            }
     }
 
     turn_on_or_down(){
@@ -70,11 +83,11 @@ class Reactor{
         this.sterg = [
         [-1, -1, 100, 100, 100, 100, 100, -1, -1],
         [-1, 100, 100, 0, 0, 0, 100, 100, -1],
-        [100, 100, 0, 0, 0, 0, 0, 100, 100],
-        [100, 0, 0, 0, 0, 0, 0, 0, 100],
-        [100, 0, 0, 0, 0, 0, 0, 0, 100],
-        [100, 0, 0, 0, 0, 0, 0, 0, 100],
-        [100, 100, 0, 0, 0, 0, 0, 0, 100],
+        [100, 100, 0, 100, 0, 100, 0, 100, 100],
+        [100, 0, 100, 0, 0, 0, 100, 0, 100],
+        [100, 0, 0, 0, 100, 0, 0, 0, 100],
+        [100, 0, 100, 0, 0, 0, 100, 0, 100],
+        [100, 100, 0, 100, 0, 100, 0, 100, 100],
         [-1, 100, 0, 0, 0, 0, 0, 100, -1],
         [-1, -1, 100, 100, 100, 100, 100, -1, -1]]
         this.p_in_reactor = 6.5;
@@ -114,12 +127,11 @@ class Reactor{
         this.gcn["1_n"].turn_on_or_down();
         this.gcn["2_n"].turn_on_or_down();
         this.gcn["3_n"].turn_on_or_down();
-        this.gcn["1_n"].g = 12000;
+        this.gcn["1_n"].g = 6000;
         this.gcn["3_n"].g = 1200;
         this.gcn["2_n"].g = 0;
         this.w_e = 0;
-        this.rdg1.power_e = this.rdg1.max_power_e;
-        this.rdg1.turn_on_or_down();
+        this.rdg1.start_ui();
         for (let i = 0; i < DELAYED_GROUPS.length; i++){
             this.precursors.push((DELAYED_GROUPS[i]["beta"] / (LAMBDA_PROMPT * DELAYED_GROUPS[i]["lambda"])) * this.thermal_power);
     }

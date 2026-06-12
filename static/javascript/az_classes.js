@@ -1,3 +1,30 @@
+class TemporaryAlert{
+    constructor(id_, type){
+        this.id = id_;
+        this.time = 0;
+        this.max_time = 4;
+        this.type = type; // 1 - 2 - 3 - характеризует кому из операторов реагировать
+    }
+
+    show(){
+        my_alert(this.id);
+    }
+
+    delete_show(){
+        stop_alert(this.id);
+    }
+
+    update(){
+        this.time += 1;
+        if (this.time >= this.max_time){
+            this.delete_show();
+            return true;
+        }
+        this.show();
+        return false;
+    }
+}
+
 class Az{
     constructor(reactor){
         this.mode = 0 // 0 - откл 1- азс 2 -азср
@@ -14,6 +41,7 @@ class Az{
         this.reactor = reactor;
         this.power_ar = 0
         this.current_errors = [];
+        this.temporary_alert = [];
     }
 
     turn_on_or_down_ar(){
@@ -147,8 +175,11 @@ class Az{
         let c_e = [];
         if (this.reactor.thermal_power / 1e6 > 3200){
             c_e.push("alert_power_q");
-            if (this.reactor.thermal_power / 1e6 >= 3700){
+            if (this.reactor.thermal_power / 1e6 >= 3250){
                 this.az5();
+            }
+            if(this.reactor.thermal_power / 1e6 > 3300){
+                alert("Вы взорвали реактор!");
             }
             my_alert("alert_power_q");
             flag = true;
@@ -198,12 +229,22 @@ class Az{
             flag = true;
             c_e.push("alert_high_temperatureBS2");
         }
-        if (this.reactor.bs1.v_inBS >= 100){
+        if (this.reactor.bs1.v_inBS >= 70){
+            if (this.reactor.bs1.v_inBS >= 74){
+                c_e.push("level_down1");
+                my_alert("level_down1");
+                this.reactor.bs1.level_down();
+            }
             my_alert("h_high_water_level_BS1");
             flag = true;
             c_e.push("h_high_water_level_BS1");
         }
-        if (this.reactor.bs2.v_inBS >= 100){
+        if (this.reactor.bs2.v_inBS >= 70){
+            if (this.reactor.bs2.v_inBS >= 74){
+                c_e.push("level_down2");
+                my_alert("level_down2");
+                this.reactor.bs2.level_down();
+            }
             my_alert("h_high_water_level_BS2");
             flag = true;
             c_e.push("h_high_water_level_BS2");
@@ -228,6 +269,11 @@ class Az{
             flag = true;
             c_e.push("alert_az_2");
         }
+        console.log(this.temporary_alert);
+        if (this.temporary_alert.length > 0 && this.temporary_alert[this.temporary_alert.length - 1].time == 0 && !this.sound){
+            this.sound = true;
+            playAudio();
+        }
         var k = Object.keys(this.reactor.gcn);
         for (i = 0; i < k.length; i++){
             if  (this.reactor.gcn[k[i]].broken){
@@ -246,13 +292,14 @@ class Az{
             flag = true;
             c_e.push("h_lower_water_level_BS2");
         }
-        if (this.reactor.rho_total > 0.0005){
+        if (this.reactor.rho_total > 0.00055){
             my_alert("high_rho_total");
             flag = true;
             c_e.push("high_rho_total");
         }
 
-        if (flag && !this.sound){
+
+        if (flag && !this.sound && this.current_errors.length < c_e.length){
                 this.sound = true;
                 playAudio();
         }
@@ -268,6 +315,12 @@ class Az{
         this.current_errors = c_e;
     }
 
+    stop_sound(){
+        this.sound = false;
+            document.getElementById("play").pause();
+    }
+
+
     update(){
         if (this.az_run){
             if (this.az_5){
@@ -280,6 +333,15 @@ class Az{
         this.check_error_alerts();
         this.check_az_work();
         this.update_ar();
+        var c_index = [];
+        for (let i = 0; i < this.temporary_alert.length; i++){
+            if (this.temporary_alert[i].update()){
+                c_index.push(i);
+            }
+        }
+        for (let i = 0; i < c_index.length; i++){
+            this.temporary_alert.splice(c_index[i], 1);
+        }
         return this.az_run;
     }
 }

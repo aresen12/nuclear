@@ -82,14 +82,21 @@
                     <input id="rdg2_p" class="input-big">
                         </div>
                 </div>
-            <div>
+            <div style="display:flex;">
+                <div>
                 <div id="alert_high_e_power_t1" class="alert-error">Высокая мощность Турбины 1</div>
                 <div id="alert_high_turnovers1" class="alert-error">Высокие обороты Турбины 1</div>
                 <div id="alert_high_turnovers2" class="alert-error">Высокие обороты Турбины 2</div>
-
+            </div>
+                <div>
                 <div id="alert_high_e_power_t2" class="alert-error">Высокая мощность Турбины 2</div>
-                <div id="error_t1" class="alert-error">Турбина1 неисправна</div>
-                <div id="error_t2" class="alert-error">Турбина2 неисправна</div>
+                <div id="error_t1" class="alert-error">ТГ1 неиспр</div>
+                <div id="error_t2" class="alert-error">ТГ2 неиспр</div>
+                <div id="turn_down_t2" class="alert-error">ТГ2 откл</div>
+                <div id="turn_down_t1" class="alert-error">ТГ1 откл</div>
+                <div id="m_down_t1" class="alert-error">ТГ1 потеря момента</div>
+                <div id="m_down_t2" class="alert-error">ТГ2 потеря момента</div>
+                    </div>
             </div>
             </div>
                 </div>
@@ -97,9 +104,20 @@
                 {% for i in range(1, 3)%}
                 <div >
                     Турбина {{i}}<br>
-                <button onclick="re.t{{i}}.turn_on_or_down()">ВКЛ</button>
-                    пар <button onclick="re.t{{i}}.set_unset_up_direction()">🡅</button>
-                    <button onclick="re.t{{i}}.set_unset_down_direction()">🡇</button>
+                    <div><button class="az-btn" onclick="re.t{{i}}.turn_on_or_down()">ВКЛ
+                 <div id="t{{i}}_t_btn">
+                     <svg  version="1.1" xmlns="http://www.w3.org/2000/svg" width="20px"
+                           height="20px" viewBox="0 0 32 32" xml:space="preserve" fill="#000000">
+                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                         <g id="SVGRepo_iconCarrier"> <style type="text/css"> .puchipuchi_een{fill:#111918;} </style>
+                             <path class="puchipuchi_een" d="M30,17c0,7.72-6.28,14-14,14S2,24.72,2,17C2,10.311,6.718,4.71,13,3.332v4.129 C8.948,8.739,6,12.531,6,17c0,5.514,4.486,10,10,10s10-4.486,10-10c0-4.469-2.948-8.261-7-9.539V3.332C25.282,4.71,30,10.311,30,17z M16,13c1.104,0,2-0.896,2-2V3c0-1.104-0.896-2-2-2s-2,0.896-2,2v8C14,12.104,14.896,13,16,13z">
+
+                             </path> </g></svg>
+                </div></button></div>
+<!--                <button onclick="re.t{{i}}.turn_on_or_down()">ВКЛ</button>-->
+                    пар <button class="black-btn" onclick="re.t{{i}}.set_unset_up_direction()">Б</button>
+                    <button class="black-btn" onclick="re.t{{i}}.set_unset_down_direction()">М</button>
                     <button onclick="re.t{{i}}.start()">ПУСК</button><br>
                     <div style="display:flex;">
                     пар <button id="t{{i}}_direction_steam" onclick="re.t{{i}}.set_steam_direction()">\ </button><div>
@@ -129,7 +147,7 @@
             Реактивность
         <input id="reactivnost" class="input-big">
                 <div style="display:flex;">
-                    <div>ЛАР<br>
+                    <div>АР<br>
                     Включен<div id="lar_s" class="signal"></div>
                         <input class="input-big" id="power_lar_show">
                         Извлекать
@@ -150,6 +168,9 @@
                 </div>
             {% endfor %}
                         </div>
+                    <div>
+                        АЗС АЗСР <br> Т графита<input class="input-big" id="grafit_temp">
+                    </div>
                     </div>
             <div style="display:flex;">
                 <div>
@@ -172,7 +193,7 @@
                 <div><div id="alert_laz_7" class="alert-error">ЛАЗ-7</div>
                 <div id="alert_laz_8" class="alert-error">ЛАЗ-8</div>
                 <div id="alert_laz_9" class="alert-error">ЛАЗ-9</div>
-                    <div class="alert-error">АР неисправен</div>
+                    <div class="alert-error">АР неиспр</div>
                 </div>
 <!--                <div>Критически низкая мощность</div>-->
 
@@ -269,7 +290,7 @@
                 <div class="cow">
                     <button class="black-btn" onclick="re.set_unset_up_direction()">Извлек</button>
             <button class="black-btn"  onclick="re.set_unset_down_direction()">Опуск</button>
-            <button>Звук</button>
+            <button  class="black-btn"  onclick="re.az.stop_sound()">Съём звука</button>
             <button>Мигание</button>
                 </div>
 <div>
@@ -376,17 +397,18 @@ W
                 <div id="h_lower_water_level_BS2" class="alert-error">Уровень воды в БС2 опасно низкий</div>
                 <div id="h_high_water_level_BS1" class="alert-error">Уровень воды в БС1 выше нормы</div>
                 <div id="h_high_water_level_BS2" class="alert-error">Уровень воды в БС2 выше нормы</div>
+                </div>
+                <div>
+                    <div id="level_down1" class="alert-error">Cброс БС1</div>
+                <div id="level_down2" class="alert-error">Cброс БС2</div>
+                    <div id="1_n_error" class="alert-error">ГНЦ1 неиспр</div>
+                <div id="2_n_error" class="alert-error">ГНЦ2 неиспр</div>
+                <div id="3_n_error" class="alert-error">ГНЦ3 неиспр</div>
 
                 </div>
-                <div>
-                    <div id="1_n_error" class="alert-error">ГНЦ1 неисправен</div>
-                <div id="2_n_error" class="alert-error">ГНЦ2 неисправен</div>
-                <div id="3_n_error" class="alert-error">ГНЦ3 неисправен</div>
-                <div id="1_a_error" class="alert-error">АГНЦ1 неисправен</div>
-                </div>
-                <div>
-                <div id="2_a_error" class="alert-error">АГНЦ2 неисправен</div>
-                <div id="3_a_error" class="alert-error">АГНЦ3 неисправен</div>
+                <div><div id="1_a_error" class="alert-error">АГНЦ1 неиспр</div>
+                <div id="2_a_error" class="alert-error">АГНЦ2 неиспр</div>
+                <div id="3_a_error" class="alert-error">АГНЦ3 неиспр</div>
                 <div id="alert_high_temperature2" class="alert-error">высокая температура2</div>
 
             </div>

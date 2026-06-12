@@ -32,6 +32,11 @@ class BS{
     }
 
 
+    level_down(){
+        this.v_inBS -= 0.25;
+        this.h_braban_s = this.v_inBS;
+    }
+
     turn_or_down(){
         this.work = !this.work;
 //        ui_power(`APP_${this.id_turnover}_s`, this.work)
