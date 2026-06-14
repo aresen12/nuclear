@@ -2,7 +2,7 @@ class TemporaryAlert{
     constructor(id_, type){
         this.id = id_;
         this.time = 0;
-        this.max_time = 4;
+        this.max_time = 10;
         this.type = type; // 1 - 2 - 3 - характеризует кому из операторов реагировать
     }
 
@@ -42,11 +42,17 @@ class Az{
         this.power_ar = 0
         this.current_errors = [];
         this.temporary_alert = [];
+        this.period_power = 0;
+        this.last_power = this.reactor.thermal_power;
+        this.ozr_ar = 0;
     }
 
     turn_on_or_down_ar(){
         this.ar = !this.ar;
         ui_power("lar_s", this.ar);
+        if (!this.ar){
+           this.temporary_alert.push(new TemporaryAlert('ar_turn_down', 2))
+        }
     }
 
     set_w_ar(w){
@@ -56,6 +62,7 @@ class Az{
 
     set_position_ar(direction){
         var flag = true;
+        this.ozr_ar = 0;
         for (let i = 0; i < this.ar_k.length; i++) {
                 if(direction < 0 && this.reactor.sterg[this.ar_k[i][0]][this.ar_k[i][1]] < 100){
                     if (this.reactor.sterg[this.ar_k[i][0]][this.ar_k[i][1]] + 5 <= 100){
@@ -68,8 +75,10 @@ class Az{
                     flag = false;
                     this.reactor.sterg[this.ar_k[i][0]][this.ar_k[i][1]] -= 5;
                 }
+                this.ozr_ar += this.reactor.sterg[this.ar_k[i][0]][this.ar_k[i][1]];
                 show_mnemo_i_j(this.reactor.sterg[this.ar_k[i][0]][this.ar_k[i][1]], this.ar_k[i][0], this.ar_k[i][1]);
         }
+        this.ozr_ar /= 4;
         return flag;
     }
 
@@ -90,7 +99,7 @@ class Az{
         for (let i = 0; i < 9; i++) {
             for (let j = 0; j < 9; j++) {
                 if(this.reactor.sterg[i][j] < 100){
-                    if (this.reactor.sterg[i][j] + 10 <= 100){
+                    if (this.reactor.sterg[i][j] + 10 <= 100 && this.reactor.sterg[i][j] >= 0){
                         this.reactor.sterg[i][j] += 10;
                         flag = false;
                     } else{
@@ -154,6 +163,7 @@ class Az{
         if (this.mode == 1){
             this.mode = 0;
             turn("azs_start", 0);
+            this.temporary_alert.push(new TemporaryAlert('azs_turn_down', 2))
         } else {
             this.mode = 1;
             turn("azs_start", 1);
@@ -164,10 +174,31 @@ class Az{
         if (this.mode == 2){
             this.mode = 0;
             turn("azsr_start", 0);
+            this.temporary_alert.push(new TemporaryAlert('azsr_turn_down', 2))
         } else {
             this.mode = 2;
             turn("azsr_start", 1);
         }
+    }
+
+    check_azs(){
+        this.period_power = (this.reactor.thermal_power - this.last_power) / 1e6;
+        if (this.period_power > 0.25 && this.mode == 1){
+            my_alert("high_speed_power");
+            this.current_errors.push("high_speed_power");
+            if (!this.sound){
+                this.sound = true;
+                playAudio();
+            }
+            if (this.period_power > 0.4){
+                this.az5();
+                this.azs_turn_down();
+            }
+            if (this.thermal_power > 700){
+                this.azs_turn_down();
+            }
+        }
+        this.last_power = this.reactor.thermal_power;
     }
 
     check_error_alerts(){
@@ -183,6 +214,16 @@ class Az{
             }
             my_alert("alert_power_q");
             flag = true;
+        }
+        if (this.ozr_ar > 50){
+             my_alert("m_ozr_ar");
+             flag = true;
+             c_e.push("m_ozr_ar");
+        }
+        if (this.reactor.ozr < 5.78){
+             my_alert("m_ozr");
+             flag = true;
+             c_e.push("m_ozr");
         }
         if (this.reactor.t1.obr > 3000){
              my_alert("alert_high_turnovers1");
@@ -269,7 +310,6 @@ class Az{
             flag = true;
             c_e.push("alert_az_2");
         }
-        console.log(this.temporary_alert);
         if (this.temporary_alert.length > 0 && this.temporary_alert[this.temporary_alert.length - 1].time == 0 && !this.sound){
             this.sound = true;
             playAudio();
@@ -303,7 +343,7 @@ class Az{
                 this.sound = true;
                 playAudio();
         }
-        else if (!flag && this.sound){
+        else if (!flag && this.sound && this.temporary_alert.length == 0){
             this.sound = false;
             document.getElementById("play").pause();
         }
@@ -333,6 +373,7 @@ class Az{
         this.check_error_alerts();
         this.check_az_work();
         this.update_ar();
+        this.check_azs();
         var c_index = [];
         for (let i = 0; i < this.temporary_alert.length; i++){
             if (this.temporary_alert[i].update()){

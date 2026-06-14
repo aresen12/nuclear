@@ -169,7 +169,11 @@
             {% endfor %}
                         </div>
                     <div>
-                        АЗС АЗСР <br> Т графита<input class="input-big" id="grafit_temp">
+                        АЗС АЗСР
+                        <br> Т графита<input class="input-big" id="grafit_temp">
+                        <br> Скор<input class="input-big" id="speed_power">
+                        <br> ОЗР АР<input class="input-big" id="ozr_ar">
+                        <br> ОЗР<input class="input-big" id="ozr">
                     </div>
                     </div>
             <div style="display:flex;">
@@ -194,7 +198,16 @@
                 <div id="alert_laz_8" class="alert-error">ЛАЗ-8</div>
                 <div id="alert_laz_9" class="alert-error">ЛАЗ-9</div>
                     <div class="alert-error">АР неиспр</div>
+                    <div id="ar_turn_down" class="alert-error">АР откл</div>
+                    <div id="azsr_turn_down" class="alert-error">АЗСР откл</div>
                 </div>
+                <div>
+                    <div id="azs_turn_down" class="alert-error">АЗС откл</div>
+                    <div id="high_speed_power" class="alert-error">Превыш Скор</div>
+                    <div id="m_ozr_ar" class="alert-error">М ОЗР АР</div>
+                    <div id="m_ozr" class="alert-error">М ОЗР</div>
+                </div>
+
 <!--                <div>Критически низкая мощность</div>-->
 
 
@@ -393,28 +406,37 @@ W
 
             <div class="errors-table" style="display:flex;">
                 <div>
-                <div id="h_lower_water_level_BS1" class="alert-error">Уровень воды в БС1 опасно низкий</div>
-                <div id="h_lower_water_level_BS2" class="alert-error">Уровень воды в БС2 опасно низкий</div>
-                <div id="h_high_water_level_BS1" class="alert-error">Уровень воды в БС1 выше нормы</div>
-                <div id="h_high_water_level_BS2" class="alert-error">Уровень воды в БС2 выше нормы</div>
-                </div>
-                <div>
+                <div id="h_lower_water_level_BS1" class="alert-error">УВ БС1 опасно низкий</div>
+                <div id="h_lower_water_level_BS2" class="alert-error">УВ БС2 опасно низкий</div>
+                <div id="h_high_water_level_BS1" class="alert-error">УВ БС1 выше нормы</div>
+                <div id="h_high_water_level_BS2" class="alert-error">УВ БС2 выше нормы</div>
                     <div id="level_down1" class="alert-error">Cброс БС1</div>
                 <div id="level_down2" class="alert-error">Cброс БС2</div>
+                </div>
+                <div>
+
                     <div id="1_n_error" class="alert-error">ГНЦ1 неиспр</div>
                 <div id="2_n_error" class="alert-error">ГНЦ2 неиспр</div>
                 <div id="3_n_error" class="alert-error">ГНЦ3 неиспр</div>
-
-                </div>
-                <div><div id="1_a_error" class="alert-error">АГНЦ1 неиспр</div>
+                    <div id="1_a_error" class="alert-error">АГНЦ1 неиспр</div>
                 <div id="2_a_error" class="alert-error">АГНЦ2 неиспр</div>
                 <div id="3_a_error" class="alert-error">АГНЦ3 неиспр</div>
-                <div id="alert_high_temperature2" class="alert-error">высокая температура2</div>
 
+                </div>
+                <div>
+                <div id="alert_high_temperature2" class="alert-error">ВТ ББ</div>
+<div id="alert_high_temperatureBS1" class="alert-error">ВТ БС1</div>
+                    <div id="alert_high_temperatureBS2" class="alert-error">ВТ БС2</div>
+                    <div id="1_n_turn_down" class="alert-error">ГНЦ1 ОТКЛ</div>
             </div>
                 <div>
-                    <div id="alert_high_temperatureBS1" class="alert-error">высокая температура в БС1</div>
-                    <div id="alert_high_temperatureBS2" class="alert-error">высокая температура в БС2</div>
+
+                <div id="2_n_turn_down" class="alert-error">ГНЦ2 ОТКЛ</div>
+                <div id="3_n_turn_down" class="alert-error">ГНЦ3 ОТКЛ</div>
+                <div id="4_n_turn_down" class="alert-error">ГНЦ4 ОТКЛ</div>
+                    <div id="1_a_turn_down" class="alert-error">АГНЦ1 ОТКЛ</div>
+                <div id="2_a_turn_down" class="alert-error">АГНЦ2 ОТКЛ</div>
+                <div id="3_a_turn_down" class="alert-error">АГНЦ3 ОТКЛ</div>
                 </div>
             </div>
                 </div>
@@ -449,15 +471,24 @@ W
         {% for j in range(1, 4)%}
                     <div>
             ГЦН{{j}}
-                <button  onclick="re.gcn['{{j}}_a'].turn_on_or_down()">ВКЛ</button>
+                <button class="az-btn" onclick="re.gcn['{{j}}_a'].turn_on_or_down()">
+                    <div id="{{j}}_a_btn">
+                     <svg  version="1.1" xmlns="http://www.w3.org/2000/svg" width="20px"
+                           height="20px" viewBox="0 0 32 32" xml:space="preserve" fill="#000000">
+                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                         <g id="SVGRepo_iconCarrier"> <style type="text/css"> .puchipuchi_een{fill:#111918;} </style>
+                             <path class="puchipuchi_een" d="M30,17c0,7.72-6.28,14-14,14S2,24.72,2,17C2,10.311,6.718,4.71,13,3.332v4.129 C8.948,8.739,6,12.531,6,17c0,5.514,4.486,10,10,10s10-4.486,10-10c0-4.469-2.948-8.261-7-9.539V3.332C25.282,4.71,30,10.311,30,17z M16,13c1.104,0,2-0.896,2-2V3c0-1.104-0.896-2-2-2s-2,0.896-2,2v8C14,12.104,14.896,13,16,13z">
+
+                             </path> </g></svg>
+                </div>
+                    ВКЛ</button>
                     <button class="black-btn" onclick="re.gcn['{{j}}_a'].set_unset_up_direction()">Б</button>
                     <button class="black-btn" onclick="re.gcn['{{j}}_a'].set_unset_down_direction()">М</button>
                         </div>
             {% endfor %}
             </div>
-                <button onclick="re.bs1.turn_or_down()">ВКЛ1</button>
-                <button onclick="re.bs2.turn_or_down()">ВКЛ1</button>
-                </div>
+                                </div>
         </div>
     </div>
     <audio id="play" src="/static/rbmk-scram-sound.mp3" style="display:none;"></audio>

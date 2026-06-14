@@ -24,6 +24,7 @@ class Pump{
             this.direction = -1;
             ui_power(`${this.id_pump}_s`, false);
             turn(`${this.id_pump}_btn`, false);
+            re.az.temporary_alert.push(new TemporaryAlert(`${this.id_pump}_turn_down`, 3))
             this.w_e = 0;
         } else if (!this.broken){
             this.work = true

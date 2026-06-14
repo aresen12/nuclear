@@ -55,15 +55,17 @@ function chosen(i, j, flag){
 }
 
 function setup_UI(reactor){
-//    console.log("setup");
 //СУЗ
     document.getElementById("W_Q").value = `${(reactor.thermal_power / 1e6 ).toFixed(0)}`;
     document.getElementById("reactivnost").value = reactor.rho_total;
+    document.getElementById("speed_power").value = reactor.az.period_power;
+    document.getElementById("ozr_ar").value = reactor.az.ozr_ar;
+    document.getElementById("ozr").value = reactor.ozr;
+    document.getElementById("grafit_temp").value = reactor.graphite_temp;
 //    Турбины
     document.getElementById("w_e1").value = reactor.t1.w_e;
     document.getElementById("w_e2").value = reactor.t2.w_e;
     document.getElementById("T_reactor").value = reactor.outlet_temp;
-    document.getElementById("grafit_temp").value = reactor.graphite_temp;
     document.getElementById("obr_t1").value = reactor.t1.obr;
     document.getElementById("obr_t2").value = reactor.t2.obr;
     document.getElementById("rdg1_p").value = reactor.rdg1.power_e;

@@ -131,11 +131,29 @@ class Reactor{
         this.gcn["3_n"].g = 1200;
         this.gcn["2_n"].g = 0;
         this.w_e = 0;
+        this.ozr = 0;
+        this.time = 0;
+        this.update_ozr();
         this.rdg1.start_ui();
         for (let i = 0; i < DELAYED_GROUPS.length; i++){
             this.precursors.push((DELAYED_GROUPS[i]["beta"] / (LAMBDA_PROMPT * DELAYED_GROUPS[i]["lambda"])) * this.thermal_power);
     }
     show_mnemo(this);
+
+    }
+
+    update_ozr(){
+    this.ozr = 0;
+        let k = 0;
+        for (let i = 0; i < this.sterg.length; i++){
+            for (let j = 0; j < this.sterg[i].length; j++){
+                if (this.sterg[i][j] != -1){
+                    this.ozr += this.sterg[i][j];
+                    k += 1;
+                }
+            }
+        }
+        this.ozr /= k;
     }
 
     set_unset_up_direction() {
@@ -194,28 +212,21 @@ class Reactor{
         this.chosen.splice(i2, 1);
 
         }
+
+
      get_boiling_point(p_mpa){
         return 179.9 + p_mpa * 14.3;
     }
 
     calculate_rods_reactivity(){
-        let summ = 0;
-        for (let i = 0; i < 9; i++){
-            for (let j = 0; j < 9; j++){
-                if (this.sterg[i][j] != -1){
-                    summ += this.sterg[i][j];
-                }
-            }
-        }
-        let rods  = summ / 69;
-        console.log(rods);
-
-        let rad = Math.PI * (rods / 100.0);
+        let rad = Math.PI * (this.ozr / 100.0);
         let eff = 0.5 * (1.0 - Math.cos(rad));
         return 0.018 * (0.52 - eff);
     }
 
      update(){
+        this.time += 1;
+         this.update_ozr();
          this.az.update();
          if (this.az.az_run){
             this.direction = 0;
@@ -329,6 +340,7 @@ class Reactor{
                 break;
             }
         }
+
 //         console.log("water", water_flow, "Т ТВЭЛ", this.fuel_temp,"T вых", this.outlet_temp, "пар", this.void_fraction, "rho void", this.rho_void, "rho t", this.rho_total )
          setup_UI(this);
          send_update();
