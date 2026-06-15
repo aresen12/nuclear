@@ -84,14 +84,17 @@
                 </div>
             <div style="display:flex;">
                 <div>
-                <div id="alert_high_e_power_t1" class="alert-error">Высокая мощность Турбины 1</div>
-                <div id="alert_high_turnovers1" class="alert-error">Высокие обороты Турбины 1</div>
-                <div id="alert_high_turnovers2" class="alert-error">Высокие обороты Турбины 2</div>
+                <div id="alert_high_e_power_t1" class="alert-error">Высокая мощность ТГ1</div>
+                <div id="alert_high_turnovers1" class="alert-error">Высокие обороты ТГ1</div>
+                <div id="alert_high_turnovers2" class="alert-error">Высокие обороты ТГ2</div>
+                <div id="alert_high_e_power_t2" class="alert-error">Высокая мощность ТГ2</div>
+                   <div id="error_t1" class="alert-error">ТГ1 неиспр</div>
+                <div id="error_t2" class="alert-error">ТГ2 неиспр</div>
             </div>
                 <div>
-                <div id="alert_high_e_power_t2" class="alert-error">Высокая мощность Турбины 2</div>
-                <div id="error_t1" class="alert-error">ТГ1 неиспр</div>
-                <div id="error_t2" class="alert-error">ТГ2 неиспр</div>
+
+                <div id="turn_down_rdg2" class="alert-error">РДГ2 откл</div>
+                <div id="turn_down_rdg1" class="alert-error">РДГ1 откл</div>
                 <div id="turn_down_t2" class="alert-error">ТГ2 откл</div>
                 <div id="turn_down_t1" class="alert-error">ТГ1 откл</div>
                 <div id="m_down_t1" class="alert-error">ТГ1 потеря момента</div>
@@ -379,9 +382,13 @@
             <div>
 
                 <div style="display:flex;">
-        {% for j in range(1, 5)%}
+        {% for j in range(1, 5) %}
                 <div style="">
-            ГЦН{{j}}
+                    {% if j < 3 %}
+                     ГЦН{{j}}
+                    {% else %}
+                    ПЭН{{j - 2 }}
+                    {% endif %}
             <input id="{{j}}_n" class="input-big">
                     <div>
                     питаниe<div id="{{j}}_n_s" class="signal"></div>
@@ -445,7 +452,11 @@ W
                     <div class="panel-item">
                 {% for j in range(1, 5)%}
                 <div style="height:50px;display:flex;" >
-                ГЦН{{j}}<br>
+                {% if j < 3 %}
+                     ГЦН{{j}}
+                    {% else %}
+                    ПЭН{{j - 2 }}
+                    {% endif %}<br>
                 <button class="az-btn" onclick="re.gcn['{{j}}_n'].turn_on_or_down()">ВКЛ
                  <div id="{{j}}_n_btn">
                      <svg  version="1.1" xmlns="http://www.w3.org/2000/svg" width="20px"

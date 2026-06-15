@@ -1,8 +1,9 @@
 class TemporaryAlert{
-    constructor(id_, type){
+    constructor(id_, type, does_stop){
         this.id = id_;
         this.time = 0;
         this.max_time = 10;
+        this.does_stop = does_stop;
         this.type = type; // 1 - 2 - 3 - характеризует кому из операторов реагировать
     }
 
@@ -11,7 +12,16 @@ class TemporaryAlert{
     }
 
     delete_show(){
+        console.log(this.max_time % 2 == 0, this.does_stop);
+        if (this.does_stop){
+             if (this.max_time % 2 != 0){
+                my_alert(this.id);
+            }
+            return;
+        } else {
         stop_alert(this.id);
+        }
+
     }
 
     update(){
@@ -397,7 +407,8 @@ class DAz extends Az{
         socket.emit("method_send", {"room": room_id, "function": "baz"});
     }
 
-    set_w_lar(w){
-        socket.emit("set_w_lar", {"w": w, "room": room_id});
+    set_w_ar(w){
+        socket.emit("set_w_ar", {"w": w, "room": room_id});
     }
+
 }

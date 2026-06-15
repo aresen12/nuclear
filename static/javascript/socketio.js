@@ -11,6 +11,10 @@ function send_update(){
     var data = {
     "room": room_id,
     "sterg": re.sterg,
+    "ozr": re.ozr,
+    "graphite_temp": re.graphite_temp,
+    "ozr_ar": re.az.ozr_ar,
+    "power_ar": re.az.power_ar,
     "bs1": {"v_inBS":re.bs1.v_inBS,
             "h_braban_s":re.bs1.h_braban_s,"T_H2O": re.bs1.T_H2O,
         "m_sep": re.bs1.m_sep
@@ -20,7 +24,6 @@ function send_update(){
         "m_sep": re.bs2.m_sep
         },
             "fuel_temp":re.fuel_temp,
-            "w_ar": re.w_lar,
             "p_in_reactor":re.p_in_reactor,
             "thermal_power":re.thermal_power,
             "rho_total":re.rho_total,
@@ -74,9 +77,10 @@ socket.on('chosen_delete', (data) => {
     }
 });
 
-socket.on('set_w_lar', (data) => {
+socket.on('set_w_ar', (data) => {
     if (!copy){
-        re.set_w_lar(data["w"]);
+        re.az.set_w_ar(data["w"]);
+
     }
 });
 socket.on('set_unset_down_direction', (data) => {
@@ -130,10 +134,9 @@ socket.on('method_send', (data) => {
         }
         if (data["function"] == "turn_on_or_down_rdg"){
             if (data["id_rdg"] == "rdg1"){
-                console.log("test");
                 re.rdg1.turn_on_or_down();
             } else {
-                re.rdg1.turn_on_or_down();
+                re.rdg2.turn_on_or_down();
             }
         }
         if (data["function"] == "set_unset_down_direction_pump"){
@@ -166,13 +169,11 @@ chosen(data["i"], data["j"], false);
 socket.on('chosen_current', (data) => {
     if (!copy){
     re.chosen_current(data["i"], data["j"]);
-    console.log("test")
     }
 });
 
 socket.on('update', (data) => {
     if (copy){
-    re.w_lar = data["w_lar"];
     re.bs1.v_inBS = data["bs1"]["v_inBS"];
     re.bs1.h_braban_s = data["bs1"]["h_braban_s"];
     re.bs1.T_H2O = data["bs1"]["T_H2O"];
@@ -188,10 +189,15 @@ socket.on('update', (data) => {
     re.outlet_temp = data["outlet_temp"];
     re.T_2_H2O = data["T_2_H2O"];
     re.sterg = data["sterg"];
+    re.ozr = data["ozr"];
+    re.graphite_temp = data["graphite_temp"];
+    re.az.ozr_ar = data["ozr_ar"];
+    re.az.power_ar = data["power_ar"];
     var k = Object.keys(data["gcn"]);
     for (let i = 0; i < k.length; i++){
         re.gcn[k[i]].g = data["gcn"][k[i]]["g"];
         re.gcn[k[i]].work = data["gcn"][k[i]]["work"];
+        turn(`${k[i]}_btn`, data["gcn"][k[i]]["work"]);
         re.gcn[k[i]].broken = data["gcn"][k[i]]["broken"];
     }
     re.t1.w_e = data["t1"]["w_e"];

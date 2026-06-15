@@ -1,6 +1,7 @@
 class Pump{
-    constructor(id_pump){
+    constructor(id_pump, speed){
 //    g max 8000
+        this.speed = speed;
         this.g = 0; // расход воды м3/ч
         this.work = false;
         this.direction = 0; // направление понижения или повышения расхода
@@ -11,11 +12,11 @@ class Pump{
     }
 
     set_g(){
-            if (0 <= this.g + this.direction * 400 && this.g + this.direction * 400 <= this.max_g){
-                this.g += this.direction * 400;
-            } else {
-                this.direction = 0;
-            }
+        if (0 <= this.g + this.direction * this.speed && this.g + this.direction * this.speed <= this.max_g){
+            this.g += this.direction * this.speed;
+        } else {
+            this.direction = 0;
+        }
     }
 
     turn_on_or_down(){

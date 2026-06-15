@@ -32,6 +32,10 @@ def chosen_delete(data):
     emit("chosen_delete", data, to=data['room'])
 
 
+@socketio.on("set_w_ar")
+def set_w_ar(data):
+    emit("set_w_ar", data, to=data['room'])
+
 @socketio.on("set_unset_down_direction")
 def set_unset_down_direction(data):
     emit("set_unset_down_direction", data, to=data['room'])

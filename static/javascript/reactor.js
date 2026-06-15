@@ -60,6 +60,7 @@ class Rdg{
             this.work = false;
             this.direction = -1;
             ui_power(`${this.id_rdg}_s`, false);
+            re.az.temporary_alert.push(new TemporaryAlert(`turn_down_${this.id_rdg}`, 1, true))
         } else {
             this.work = true
             this.direction = 1;
@@ -95,10 +96,10 @@ class Reactor{
         this.chosen = []; // выбранные стержни
         // насосы
         this.gcn = {
-            "1_n": new Pump("1_n"),
-            "2_n": new Pump("2_n"),
-            "3_n": new Pump("3_n"),
-            "4_n": new Pump("4_n"),
+            "1_n": new Pump("1_n", 400),
+            "2_n": new Pump("2_n", 400),
+            "3_n": new Pump("3_n", 100),
+            "4_n": new Pump("4_n", 100),
             "1_a": new Pump("1_a"),
             "2_a": new Pump("2_a"),
             "3_a": new Pump("3_a"),
@@ -237,9 +238,7 @@ class Reactor{
         for (i = 0; i < k.length; i++){
             this.gcn[k[i]].update();
         }
-//        if (this.gcn)
-         this.temp_in = (this.bs1.T_H2O + this.bs2.T_H2O) / 2;
-         console.log(this.temp_in);
+         this.temp_in = (this.bs1.T_H2O * this.gcn["1_n"].g + this.bs2.T_H2O * this.gcn["2_n"].g) / ((this.gcn["1_n"].g + this.gcn["2_n"].g));
          this.rho_void = ALPHA_VOID * (this.void_fraction - this.BASE_VOID) * 100.0;
          this.rho_fuel = ALPHA_FUEL * (this.fuel_temp - this.BASE_FUEL_TEMP);
         this.rho_graphite = ALPHA_GRAPHITE * (this.graphite_temp - this.BASE_GRAPHITE_TEMP);
@@ -300,7 +299,6 @@ class Reactor{
         this.void_fraction += (target_void - this.void_fraction) * 0.4;
 
 
-//         console.log("update");
          if (this.direction != 0){
             for (let i = 0; i < this.chosen.length; i++){
                 this.set_s_position(this.chosen[i][0], this.chosen[i][1], this.direction);
@@ -319,7 +317,6 @@ class Reactor{
          this.w_e = this.t1.w_e * 1000 + this.t2.w_e * 1000 + this.rdg1.power_e + this.rdg2.power_e;
          let w_e_use = 0;
          var k = Object.keys(this.gcn);
-
          for (i = 0; i < k.length; i++){
             w_e_use += this.gcn[k[i]].w_e;
         }
@@ -340,8 +337,6 @@ class Reactor{
                 break;
             }
         }
-
-//         console.log("water", water_flow, "Т ТВЭЛ", this.fuel_temp,"T вых", this.outlet_temp, "пар", this.void_fraction, "rho void", this.rho_void, "rho t", this.rho_total )
          setup_UI(this);
          send_update();
     }
@@ -391,8 +386,5 @@ class RemoteControl extends Reactor{
          if (this.az.az_run){
             this.direction = 0;
          }
-//         setup_UI(this);
     }
 }
-
-
