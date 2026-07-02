@@ -39,6 +39,16 @@ function my_alert(id_error){
 }
 
 
+function red_alert(id_error){
+    var div = document.getElementById(id_error);
+    if (div.style.background == ""){
+        div.style.background = "red";
+    } else {
+        div.style.background = "";
+    }
+}
+
+
 function stop_alert(id_error){
     var div = document.getElementById(id_error);
     div.style.background = "";

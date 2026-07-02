@@ -1,4 +1,3 @@
-import os
 from flask import (
     Blueprint, redirect, render_template, request,
 )
@@ -7,6 +6,7 @@ from data.user import User
 from flask_login import current_user
 from flask_socketio import emit
 import json
+
 rs = Blueprint('simylator', __name__, url_prefix='/b')
 s = [
         [0, 0, 1, 1, 1, 1, 1, 0, 0],
@@ -22,9 +22,11 @@ s = [
 
 @rs.route("/<id_re>")
 def bsm(id_re):
-    return render_template("BSM.html", s=s, id_reactor=int(id_re), copy=False)
+    return render_template("BSM.html", s=s, id_reactor=int(id_re), copy=False,
+                           title="Блочный щит управления", description="Блочный щит управления РБМК-1000")
 
 
 @rs.route("/user/<id_re>")
 def bsm_user(id_re):
-    return render_template("BSM.html", s=s, id_reactor=int(id_re), copy=True)
+    return render_template("BSM.html", s=s, id_reactor=int(id_re), copy=True,
+                           title="Блочный щит управления", description="Блочный щит управления РБМК-1000")

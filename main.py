@@ -32,9 +32,6 @@ def logout():
 
 db_session.global_init('db/master.db')
 application.register_blueprint(rs)
-# application.register_blueprint(api)
-# application.register_blueprint(panel)
-# application.register_blueprint(chats_server)
 socketio.init_app(application)
 
 
@@ -83,11 +80,6 @@ def reqister():
     return render_template('register.html', title='Регистрация', form=form)
 
 
-@application.route("/reset_password")
-def reset_pass_def():
-    return render_template("reset_password.html")
-
-
 @application.route("/main", methods=["GET"])
 @application.route("/", methods=["GET"])
 def main():
@@ -103,29 +95,33 @@ def add_new_reactor():
     if request.method == "GET":
         return render_template("new_reactor.html", title="симулятор ядерного реактора")
     else:
-        db_sess = db_session.create_session()
-        reactor = Reactor()
-        reactor.name = request.form["name"]
-        reactor.list_users = request.form["users"]
-        db_sess.add(reactor)
-        db_sess.commit()
-        db_sess.close()
-        return redirect("/")
+        if current_user.is_authenticated:
+            db_sess = db_session.create_session()
+            reactor = Reactor()
+            reactor.name = request.form["name"]
+            reactor.list_users = request.form["users"]
+            reactor.main_player = current_user.id
+            db_sess.add(reactor)
+            db_sess.commit()
+            db_sess.close()
+            return redirect("/")
+        else:
+            return redirect("/login")
 
 
 @application.route("/info/syz")
 def info_syz():
-    return render_template("syz_info.html")
+    return render_template("syz_info.html", title="СУЗ РБМК-1000")
 
 
 @application.route("/info/turnover")
 def info_turnover():
-    return render_template("turnover_info.html")
+    return render_template("turnover_info.html", title="Турбина РБМК")
 
 
 @application.route("/info/freeze")
 def info_freeze():
-    return render_template("freeze_info.html")
+    return render_template("freeze_info.html", title="Охлаждение реактора")
 
 
 @application.route("/info")

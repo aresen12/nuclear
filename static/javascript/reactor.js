@@ -110,7 +110,7 @@ class Reactor{
         this.t2 = new Turnover("t2");
         this.bs1 = new BS(1);
         this.bs2 = new BS(2); //
-        this.T_2_H2O = 200; // температура во втором контуре
+        this.T_2_H2O = 190; // температура во втором контуре
         this.az = new Az(this); // класс аварийной защиты
         this.t_boil = this.get_boiling_point(this.p_in_reactor)
         this.temp_in = (this.bs1.T_H2O + this.bs2.T_H2O) / 2; // прописать для случая с одним БС
@@ -131,6 +131,7 @@ class Reactor{
         this.gcn["1_n"].g = 6000;
         this.gcn["3_n"].g = 1200;
         this.gcn["2_n"].g = 0;
+        this.speed_SYZ = 1;
         this.w_e = 0;
         this.ozr = 0;
         this.time = 0;
@@ -158,6 +159,9 @@ class Reactor{
     }
 
     set_unset_up_direction() {
+        if (!this.az.power_SYZ){
+            return;
+        }
         if (this.direction == 1){
             this.direction = 0;
         } else {
@@ -179,15 +183,19 @@ class Reactor{
 
     set_s_position(i, j, direction){
         if (direction == 1){
-            if (this.sterg[i][j] - 5 >= 0){
-                this.sterg[i][j] -= 5;
+            if (this.sterg[i][j] - this.speed_SYZ >= 0){
+                this.sterg[i][j] -= this.speed_SYZ;
             }
         } else {
-            if (this.sterg[i][j] + 5 <= 100){
-                this.sterg[i][j] += 5;
+            if (this.sterg[i][j] + this.speed_SYZ <= 100){
+                this.sterg[i][j] += this.speed_SYZ;
             }
         }
         show_mnemo_i_j(this.sterg[i][j], i, j)
+    }
+
+    set_speed_SYZ(speed){
+        this.speed_SYZ = speed;
     }
 
     chosen_current(i, j){

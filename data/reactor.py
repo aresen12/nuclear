@@ -10,6 +10,7 @@ class Reactor(SqlAlchemyBase, UserMixin, SerializerMixin):
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
     name = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    main_player = sqlalchemy.Column(sqlalchemy.Integer,  nullable=False)
     list_users = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     data_json = sqlalchemy.Column(sqlalchemy.String, nullable=True)
 

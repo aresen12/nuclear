@@ -55,6 +55,8 @@ class Az{
         this.period_power = 0;
         this.last_power = this.reactor.thermal_power;
         this.ozr_ar = 0;
+        this.time_stop_az = 0;
+        this.power_SYZ = true;
     }
 
     turn_on_or_down_ar(){
@@ -63,6 +65,16 @@ class Az{
         if (!this.ar){
            this.temporary_alert.push(new TemporaryAlert('ar_turn_down', 2))
         }
+    }
+
+    turn_on_or_down_power_SYZ(){
+        this.power_SYZ = !this.power_SYZ;
+        if (this.power_SYZ){
+            turn("key_power_btn", 0);
+        } else {
+            turn("key_power_btn", 1);
+        }
+
     }
 
     set_w_ar(w){
@@ -74,7 +86,7 @@ class Az{
         var flag = true;
         this.ozr_ar = 0;
         for (let i = 0; i < this.ar_k.length; i++) {
-                if(direction < 0 && this.reactor.sterg[this.ar_k[i][0]][this.ar_k[i][1]] < 100){
+                if(direction < 0 && this.reactor.sterg[this.ar_k[i][0]][this.ar_k[i][1]] + 5 < 100){
                     if (this.reactor.sterg[this.ar_k[i][0]][this.ar_k[i][1]] + 5 <= 100){
                         this.reactor.sterg[this.ar_k[i][0]][this.ar_k[i][1]] += 5;
                         flag = false;
@@ -96,12 +108,32 @@ class Az{
         if (this.ar){
             if (this.reactor.rho_total > 0.0005){
                 this.set_position_ar(-1);
+            } else if (this.period_power > 5) {
+                this.set_position_ar(-1);
             } else if (this.reactor.thermal_power - 50 > this.power_ar){
                 this.set_position_ar(-1);
             } else if (this.reactor.thermal_power + 50 < this.power_ar){
                 this.set_position_ar(1);
             }
         }
+    }
+
+    set_position_power(){
+            var flag = true;
+        for (let i = 0; i < 9; i++) {
+            for (let j = 0; j < 9; j++) {
+                if(this.reactor.sterg[i][j] < 100){
+                    if (this.reactor.sterg[i][j] + 2 <= 100 && this.reactor.sterg[i][j] >= 0){
+                        this.reactor.sterg[i][j] += 2;
+                        flag = false;
+                    } else{
+                        this.reactor.sterg[i][j] = 100;
+                    }
+                }
+                show_mnemo_i_j(this.reactor.sterg[i][j], i, j);
+            }
+        }
+        return flag;
     }
 
     set_position_az5(){
@@ -148,10 +180,19 @@ class Az{
 
     az5(manual){
         if (manual || this.mode != 0){
+            red_alert("az_call");
+            if (!manual){
+                setTimeout(() => {
+                    this.az_5 = true;
+            }, 2000);
+            } else {
+                this.az_5 = true;
+            }
             turn("az_btn", 1);
             this.az_run = 1;
-            this.az_5 = true;
+
         }
+
     }
 
     baz(){
@@ -192,23 +233,27 @@ class Az{
     }
 
     check_azs(){
-        this.period_power = (this.reactor.thermal_power - this.last_power) / 1e6;
-        if (this.period_power > 0.25 && this.mode == 1){
+        if (this.reactor.time % 2 == 0){
+            this.period_power = (this.reactor.thermal_power - this.last_power) / 1e6;
+            this.last_power = this.reactor.thermal_power;
+        }
+
+        if (this.period_power > 10 && this.mode == 1){
             my_alert("high_speed_power");
             this.current_errors.push("high_speed_power");
             if (!this.sound){
                 this.sound = true;
                 playAudio();
             }
-            if (this.period_power > 0.4){
+            if (this.period_power > 15){
                 this.az5();
-                this.azs_turn_down();
+                this.azs_start();
             }
             if (this.thermal_power > 700){
-                this.azs_turn_down();
+                this.azs_start();
             }
         }
-        this.last_power = this.reactor.thermal_power;
+
     }
 
     check_error_alerts(){
@@ -370,8 +415,19 @@ class Az{
             document.getElementById("play").pause();
     }
 
+    stop_az(){
+        this.time_stop_az = 5;
+    }
 
     update(){
+        if (this.time_stop_az > 0){
+            this.time_stop_az -= 1;
+            this.az_run = false;
+        }
+        if (!this.power_SYZ){
+            this.set_position_power();
+
+        }
         if (this.az_run){
             if (this.az_5){
                 this.set_position_az5();

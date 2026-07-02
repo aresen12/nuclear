@@ -209,6 +209,8 @@
                     <div id="high_speed_power" class="alert-error">Превыш Скор</div>
                     <div id="m_ozr_ar" class="alert-error">М ОЗР АР</div>
                     <div id="m_ozr" class="alert-error">М ОЗР</div>
+                    <div id="az_call" class="alert-error">аз набран</div>
+
                 </div>
 
 <!--                <div>Критически низкая мощность</div>-->
@@ -220,8 +222,9 @@
                  <div>
             <!--            аз -->
             <div class="az">
-                <button class="az-btn">
-                <div id="az1_btn">
+
+                <button class="az-btn" style="width:80px;" onclick="re.az.turn_on_or_down_power_SYZ()">
+                    <div id="key_power_btn">
 <svg  version="1.1" xmlns="http://www.w3.org/2000/svg" width="20px"
                            height="20px" viewBox="0 0 32 32" xml:space="preserve" fill="#000000">
                          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -230,20 +233,7 @@
                              <path class="puchipuchi_een" d="M30,17c0,7.72-6.28,14-14,14S2,24.72,2,17C2,10.311,6.718,4.71,13,3.332v4.129 C8.948,8.739,6,12.531,6,17c0,5.514,4.486,10,10,10s10-4.486,10-10c0-4.469-2.948-8.261-7-9.539V3.332C25.282,4.71,30,10.311,30,17z M16,13c1.104,0,2-0.896,2-2V3c0-1.104-0.896-2-2-2s-2,0.896-2,2v8C14,12.104,14.896,13,16,13z">
 
                              </path> </g></svg>
-                    </div>
-                    АЗ-1
-                </button>
-                <button class="az-btn" >
-                    <div id="az2_btn">
-<svg  version="1.1" xmlns="http://www.w3.org/2000/svg" width="20px"
-                           height="20px" viewBox="0 0 32 32" xml:space="preserve" fill="#000000">
-                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                         <g id="SVGRepo_iconCarrier"> <style type="text/css"> .puchipuchi_een{fill:#111918;} </style>
-                             <path class="puchipuchi_een" d="M30,17c0,7.72-6.28,14-14,14S2,24.72,2,17C2,10.311,6.718,4.71,13,3.332v4.129 C8.948,8.739,6,12.531,6,17c0,5.514,4.486,10,10,10s10-4.486,10-10c0-4.469-2.948-8.261-7-9.539V3.332C25.282,4.71,30,10.311,30,17z M16,13c1.104,0,2-0.896,2-2V3c0-1.104-0.896-2-2-2s-2,0.896-2,2v8C14,12.104,14.896,13,16,13z">
-
-                             </path> </g></svg>
-                    </div>АЗ-2</button>
+                    </div>ПИТ. Муфт</button>
                 <button class="az-btn" onclick="re.az.baz()">
                     <div id="baz_btn">
 <svg  version="1.1" xmlns="http://www.w3.org/2000/svg" width="20px"
@@ -304,6 +294,13 @@
             {% endfor %}
                          </div>
                 <div class="cow">
+                    <div>
+                        <button onclick="re.set_speed_SYZ(1)">1</button>
+                        <button onclick="re.set_speed_SYZ(2)">2</button>
+                        <button onclick="re.set_speed_SYZ(3)">3</button>
+                        <button onclick="re.set_speed_SYZ(4)">4</button>
+                        <button onclick="re.set_speed_SYZ(5)">5</button>
+                    </div>
                     <button class="black-btn" onclick="re.set_unset_up_direction()">Извлек</button>
             <button class="black-btn"  onclick="re.set_unset_down_direction()">Опуск</button>
             <button  class="black-btn"  onclick="re.az.stop_sound()">Съём звука</button>
@@ -337,6 +334,7 @@
                 </div>
                   АЗCР
                 </button>
+    <button style="background:red;" onclick="re.az.stop_az()">Съём АЗ</button>
                      </div>
                  </div>
 
@@ -424,10 +422,11 @@ W
 
                     <div id="1_n_error" class="alert-error">ГНЦ1 неиспр</div>
                 <div id="2_n_error" class="alert-error">ГНЦ2 неиспр</div>
-                <div id="3_n_error" class="alert-error">ГНЦ3 неиспр</div>
+                <div id="3_n_error" class="alert-error">ПЭН1 неиспр</div>
+                <div id="4_n_error" class="alert-error">ПЭН2 неиспр</div>
                     <div id="1_a_error" class="alert-error">АГНЦ1 неиспр</div>
                 <div id="2_a_error" class="alert-error">АГНЦ2 неиспр</div>
-                <div id="3_a_error" class="alert-error">АГНЦ3 неиспр</div>
+                <div id="3_a_error" class="alert-error">АПЭН неиспр</div>
 
                 </div>
                 <div>
