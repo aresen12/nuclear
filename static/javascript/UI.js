@@ -55,6 +55,35 @@ function stop_alert(id_error){
 }
 
 
+function start_UI(reactor){
+    var k = Object.keys(reactor.gcn);
+    for (i = 0; i < k.length; i++){
+        if (!reactor.gcn[k[i]].work){
+            my_alert(`${reactor.gcn[k[i]].id_pump}_turn_down`);
+        } else {
+            stop_alert(`${reactor.gcn[k[i]].id_pump}_turn_down`);
+        }
+
+    }
+    if(!reactor.rdg1.work){
+        reactor.az.temporary_alert.push(new TemporaryAlert(`turn_down_${reactor.rdg1.id_rdg}`, 1, true));
+    }
+    if(!reactor.rdg2.work){
+        reactor.az.temporary_alert.push(new TemporaryAlert(`turn_down_${reactor.rdg2.id_rdg}`, 1, true));
+    }
+}
+
+
+function showdiv1(Div){
+    var x = document.getElementById(Div);
+    if(x.style.display=="none") {
+        x.style.display = "block";
+        return true;
+    }
+    x.style.display = "none";
+    return false;
+}
+
 
 function chosen(i, j, flag){
     if (flag){

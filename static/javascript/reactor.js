@@ -22,62 +22,6 @@ var ALPHA_VOID = 0.00055;
 var ALPHA_FUEL = -0.000011;
 var ALPHA_GRAPHITE = 0.000005;
 
-class Rdg{
-    constructor(id_rdg){
-        this.work = false;
-        this.power_e = 0;
-        this.max_power_e = 20000; // KW
-        this.direction = 0;
-        this.id_rdg = id_rdg;
-        this.speed = 75; // 40 c быстрее чернобыльских на 5 с
-        this.obr = 0;
-    }
-
-    start_ui(){
-        this.work = true;
-        this.power_e = this.max_power_e;
-        this.obr = 3000;
-        ui_power(`${this.id_rdg}_s`, true);
-    }
-
-    update(){
-        if (this.direction != 0){
-            if (0 <= this.obr + this.direction * this.speed  && this.obr + this.direction * this.speed <= 3000){
-                    this.obr += this.direction * this.speed;
-                } else {
-                    this.direction = 0;
-                }
-        }
-            if (this.obr == 3000){
-                this.power_e = this.max_power_e;
-            } else {
-                this.power_e = 0;
-            }
-    }
-
-    turn_on_or_down(){
-        if (this.work ){
-            this.work = false;
-            this.direction = -1;
-            ui_power(`${this.id_rdg}_s`, false);
-            re.az.temporary_alert.push(new TemporaryAlert(`turn_down_${this.id_rdg}`, 1, true))
-        } else {
-            this.work = true
-            this.direction = 1;
-            ui_power(`${this.id_rdg}_s`, true);
-        }
-    }
-
-
-}
-
-
-class DRdg extends Rdg{
-    turn_on_or_down(){
-        socket.emit("method_send", {"room": room_id, "function": "turn_on_or_down_rdg", "id_rdg": this.id_rdg});
-    }
-}
-
 
 class Reactor{
     constructor(){
@@ -100,9 +44,10 @@ class Reactor{
             "2_n": new Pump("2_n", 400),
             "3_n": new Pump("3_n", 100),
             "4_n": new Pump("4_n", 100),
-            "1_a": new Pump("1_a"),
-            "2_a": new Pump("2_a"),
-            "3_a": new Pump("3_a"),
+            "1_a": new Pump("1_a", 400),
+            "2_a": new Pump("2_a", 400),
+            "3_a": new Pump("3_a", 100),
+            "4_a": new Pump("4_a", 100),
         }
         this.rdg1 = new Rdg("rdg1");
         this.rdg2 = new Rdg("rdg2"); // Резервные дизель генераторы
@@ -141,6 +86,7 @@ class Reactor{
             this.precursors.push((DELAYED_GROUPS[i]["beta"] / (LAMBDA_PROMPT * DELAYED_GROUPS[i]["lambda"])) * this.thermal_power);
     }
     show_mnemo(this);
+    start_UI(this);
 
     }
 
@@ -246,7 +192,7 @@ class Reactor{
         for (i = 0; i < k.length; i++){
             this.gcn[k[i]].update();
         }
-         this.temp_in = (this.bs1.T_H2O * this.gcn["1_n"].g + this.bs2.T_H2O * this.gcn["2_n"].g) / ((this.gcn["1_n"].g + this.gcn["2_n"].g));
+         this.temp_in = (this.bs1.T_H2O * (this.gcn["1_n"].g + this.gcn["1_a"].g) + this.bs2.T_H2O * (this.gcn["2_n"].g + this.gcn["2_a"].g)) / ((this.gcn["1_n"].g + this.gcn["2_n"].g + this.gcn["1_a"].g + this.gcn["2_a"].g));
          this.rho_void = ALPHA_VOID * (this.void_fraction - this.BASE_VOID) * 100.0;
          this.rho_fuel = ALPHA_FUEL * (this.fuel_temp - this.BASE_FUEL_TEMP);
         this.rho_graphite = ALPHA_GRAPHITE * (this.graphite_temp - this.BASE_GRAPHITE_TEMP);
@@ -254,7 +200,7 @@ class Reactor{
         if (this.fuel_temp > 2400.0){
             this.rho_fuel *= 0.1;
         }
-        let water_flow = (this.gcn["1_n"].g + this.gcn["2_n"].g) / 3.6;
+        let water_flow = (this.gcn["1_n"].g + this.gcn["2_n"].g + this.gcn["1_a"].g + this.gcn["2_a"].g) / 3.6;
         this.rho_total = this.rho_rods + this.rho_void + this.rho_fuel + this.rho_graphite;
          // 2. НЕЙТРОННАЯ КИНЕТИКА (Интегрирование лавины)
 //        console.log(this.rho_rods, this.rho_void, this.rho_void, this.rho_graphite);
@@ -265,7 +211,6 @@ class Reactor{
                 delayed_sum += DELAYED_GROUPS[i]["lambda"] * this.precursors[i];
             }
             let dP_dt = ((this.rho_total - BETA) / LAMBDA_PROMPT) * this.thermal_power + delayed_sum;
-//            console.log(((this.rho_total - BETA) / LAMBDA_PROMPT))
             this.thermal_power += dP_dt * dt;
             if (this.thermal_power < 1e4){
                 this.thermal_power = 1e4;
@@ -305,8 +250,6 @@ class Reactor{
             }
         // Сглаживание инерции пара
         this.void_fraction += (target_void - this.void_fraction) * 0.4;
-
-
          if (this.direction != 0){
             for (let i = 0; i < this.chosen.length; i++){
                 this.set_s_position(this.chosen[i][0], this.chosen[i][1], this.direction);
@@ -318,8 +261,8 @@ class Reactor{
         if ( this.t2.direction != 0){
              this.t2.set_g_max();
         }
-         this.bs1.update(this.gcn["1_n"].g, this.gcn["3_n"].g, this.void_fraction, this.T_2_H2O, this.outlet_temp, this.t1.g_max);
-          this.bs2.update(this.gcn["2_n"].g, this.gcn["4_n"].g, this.void_fraction, this.T_2_H2O, this.outlet_temp,  this.t1.g_max);
+         this.bs1.update(this.gcn["1_n"].g, this.gcn["3_n"].g, this.void_fraction, this.T_2_H2O, this.outlet_temp, this.t1.g_max, this.gcn["1_a"].g, this.gcn["3_a"].g,);
+          this.bs2.update(this.gcn["2_n"].g, this.gcn["4_n"].g, this.void_fraction, this.T_2_H2O, this.outlet_temp,  this.t1.g_max, this.gcn["2_a"].g, this.gcn["4_a"].g);
          this.t1.update(this.bs1.m_sep, this.p_in_reactor);
          this.t2.update(this.bs2.m_sep, this.p_in_reactor);
          this.w_e = this.t1.w_e * 1000 + this.t2.w_e * 1000 + this.rdg1.power_e + this.rdg2.power_e;
@@ -328,8 +271,7 @@ class Reactor{
          for (i = 0; i < k.length; i++){
             w_e_use += this.gcn[k[i]].w_e;
         }
-//        console.log(w_e_use, this.w_e);
-        let w = ["3_n", "4_n", "2_n", "1_n", "3_a", "2_a", "1_a"];
+        let w = ["3_n", "4_n", "2_n", "1_n", "3_a", "4_a", "2_a", "1_a"];
         let j = 0;
         while (this.w_e < w_e_use){
             console.log(this.gcn[w[j]], w[j]);

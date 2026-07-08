@@ -31,14 +31,18 @@ class Pump{
             this.work = true
             turn(`${this.id_pump}_btn`, true);
             ui_power(`${this.id_pump}_s`, true);
+            my_alert(`${this.id_pump}_turn_down`);
         }
     }
 
     set_unset_up_direction() {
+
         if (this.work){
         if (this.direction == 1){
+
             this.direction = 0;
         } else {
+         console.log("test")
             this.direction = 1;
         }
         }
@@ -56,6 +60,7 @@ class Pump{
 
     update(){
         if (this.direction != 0){
+            console.log("set_g")
             this.set_g();
         }
         if (this.work){

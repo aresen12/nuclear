@@ -8,17 +8,17 @@ class BS{
         this.work = false;
     }
 
-    update(g_gnc1, g_gnc2, pr, T_2_H2O, T_PVS, max_g1){
-        this.v_inBS -= g_gnc1 / 3600; // m3
+    update(g_gnc, g_pen, pr, T_2_H2O, T_PVS, max_g1, a_gcn, a_pen){
+        this.v_inBS -= (g_gnc + a_gcn) / 3600; // m3
         let m_bs = this.v_inBS * 1000; // кг
-        this.m_sep = g_gnc1 * pr; // т / ч
-        let m_k = (g_gnc1  - g_gnc1 * pr) / 3.6; // кг / с
-        let m_gnc2 = g_gnc2 / 3.6; // кг
+        this.m_sep = (g_gnc + a_gcn) * pr; // т / ч
+        let m_k = ((g_gnc + a_gcn)   - (g_gnc + a_gcn)  * pr) / 3.6; // кг / с
+        let m_gnc2 = (g_pen + a_pen) / 3.6; // кг
         if (this.m_sep > max_g1){
             this.m_sep = max_g1;
             m_k += (this.m_sep - max_g1) / 3.6;
         }
-        this.v_inBS += m_k / 1000 + g_gnc2 / 3600;
+        this.v_inBS += m_k / 1000 + (g_pen + a_pen) / 3600;
         this.T_H2O = (m_bs * this.T_H2O + m_k * T_PVS + m_gnc2 * T_2_H2O) / (m_bs + m_k + m_gnc2);
         if (this.v_inBS <= 0){
             this.v_inBS = 0;

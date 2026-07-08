@@ -25,6 +25,33 @@ z-index:100;
     border-radius: 5px;
 }
 
+.global-menu{
+    position:relative;
+    width:40vw;
+    height:90vh;
+    border-radius:30px;
+    border: 1px solid gray;
+    background:white;
+    top:10px;
+    margin-left:auto;
+    margin-right:auto;
+    overflow:hidden;
+    overflow-y:auto;
+    }
+
+.z-d {
+    position: absolute;
+    top:0px;
+    left: 0px
+    display:none;
+    background-color: rgba(0, 0, 0, 0.4);
+    width:100vw;
+    height:100vh;
+    align-items: center;
+  justify-content: center;
+    }
+
+
 .down-panel{
     height: 38vh;
     border: solid 1px red;
