@@ -8,7 +8,7 @@
 
 </head>
 <body>
-<button class="exit-btn btn btn-warning" onclick="showdiv1('global_menu_d')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause" viewBox="0 0 16 16">
+<button type="button" class="exit-btn btn btn-light" onclick="pause()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause" viewBox="0 0 16 16">
   <path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5"/>
 </svg></button>
 <div class="main-content" style="">
@@ -517,10 +517,14 @@ W
 </div>
 <div class="z-d" id="global_menu_d" style="display:none;">
     <div id="global_menu" class="global-menu">
-        <a  href="/">На главное меню</a>
+
+        <a class="btn btn-danger" href="/">На главное меню</a>
+        <button  class="btn btn-success" onclick="save_game()">Сохранить игру</button>
+        <button  class="btn btn-success" onclick="stop_pause()">Продолжить</button>
     </div>
 </div>
 </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 <script src="/static/javascript/app.js"></script>
 <script src="/static/javascript/UI.js"></script>
@@ -534,17 +538,19 @@ W
 <script>const room_id = {{id_reactor}};
 const copy = false;
 re = new Reactor();
-console.log(re.sterg);
+load_game_from_db();
 setup_UI(re);
+
 setInterval(() => {
     re.update();
 }, 1000);
+show_mnemo(re);
 </script>
 {% else %}
 <script>const room_id = {{id_reactor}};
 const copy = true;
 re = new RemoteControl();
-setup_UI(re);
+load_game_from_db();
 setInterval(() => {
     re.update();
 }, 1000); //</script>

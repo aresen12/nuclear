@@ -8,66 +8,7 @@ function send_chosen_delete(i2){
 
 
 function send_update(){
-    var data = {
-    "room": room_id,
-    "sterg": re.sterg,
-    "ozr": re.ozr,
-    "graphite_temp": re.graphite_temp,
-    "ozr_ar": re.az.ozr_ar,
-    "power_ar": re.az.power_ar,
-    "bs1": {"v_inBS":re.bs1.v_inBS,
-            "h_braban_s":re.bs1.h_braban_s,"T_H2O": re.bs1.T_H2O,
-        "m_sep": re.bs1.m_sep
-        },
-        "bs2": {"v_inBS":re.bs2.v_inBS,
-            "h_braban_s":re.bs2.h_braban_s,"T_H2O": re.bs2.T_H2O,
-        "m_sep": re.bs2.m_sep
-        },
-            "fuel_temp":re.fuel_temp,
-            "p_in_reactor":re.p_in_reactor,
-            "thermal_power":re.thermal_power,
-            "rho_total":re.rho_total,
-            "chosen":re.chosen,
-            "direction": re.direction,
-            "outlet_temp":re.outlet_temp,
-            "T_2_H2O": re.T_2_H2O,
-            "t1":{"w_e":re.t1.w_e,
-            "obr":re.t1.obr,
-            "broken":re.t1.broken,
-            "p_start":re.t1.p_start,
-            "g":re.t1.g,
-            "g_max":re.t1.g_max,
-            "direction":re.t1.direction
-            },
-            "t2":{"w_e":re.t2.w_e,
-            "obr":re.t2.obr,
-            "broken":re.t2.broken,
-            "p_start":re.t2.p_start,
-            "g":re.t2.g,
-            "g_max":re.t2.g_max,
-            "direction":re.t2.direction
-            },
-            "gcn":{
-
-            },
-            "rdg1":{
-                "work":re.rdg1.work,
-                "direction":re.rdg1.direction,
-                "power_e":re.rdg1.power_e
-            },
-            "rdg2":{
-                "work":re.rdg2.work,
-                "direction":re.rdg2.direction,
-                "power_e":re.rdg2.power_e
-            },
-    };
-    var k = Object.keys(re.gcn);
-    for (let i = 0; i < k.length; i++){
-        data["gcn"][k[i]] = {};
-        data["gcn"][k[i]]["g"] = re.gcn[k[i]].g;
-        data["gcn"][k[i]]["work"] = re.gcn[k[i]].work;
-        data["gcn"][k[i]]["broken"] = re.gcn[k[i]].broken;
-    }
+    data = gener_json();
     socket.emit("update", data);
 }
 
@@ -142,6 +83,13 @@ socket.on('method_send', (data) => {
         if (data["function"] == "set_unset_down_direction_pump"){
             re.gcn[data["id_pump"]].set_unset_down_direction();
         }
+         if (data["function"] == "turn_on_or_down_ar"){
+            re.az.turn_on_or_down_ar();
+        }
+        if (data["function"] == "turn_on_or_down_power_SYZ"){
+            re.az.turn_on_or_down_power_SYZ();
+        }
+
         if (data["function"] == "set_unset_up_direction_pump"){
             re.gcn[data["id_pump"]].set_unset_up_direction();
         }
@@ -172,56 +120,11 @@ socket.on('chosen_current', (data) => {
     }
 });
 
+
 socket.on('update', (data) => {
     if (copy){
-    re.bs1.v_inBS = data["bs1"]["v_inBS"];
-    re.bs1.h_braban_s = data["bs1"]["h_braban_s"];
-    re.bs1.T_H2O = data["bs1"]["T_H2O"];
-    re.bs2.v_inBS = data["bs2"]["v_inBS"];
-    re.bs2.h_braban_s = data["bs2"]["h_braban_s"];
-    re.bs2.T_H2O = data["bs2"]["T_H2O"];
-    re.p_in_reactor = data["p_in_reactor"];
-    re.thermal_power = data["thermal_power"];
-    re.chosen = data["chosen"];
-    re.rho_total = data["rho_total"];
-    re.direction = data["direction"];
-    re.fuel_temp = data["fuel_temp"];
-    re.outlet_temp = data["outlet_temp"];
-    re.T_2_H2O = data["T_2_H2O"];
-    re.sterg = data["sterg"];
-    re.ozr = data["ozr"];
-    re.graphite_temp = data["graphite_temp"];
-    re.az.ozr_ar = data["ozr_ar"];
-    re.az.power_ar = data["power_ar"];
-    var k = Object.keys(data["gcn"]);
-    for (let i = 0; i < k.length; i++){
-        re.gcn[k[i]].g = data["gcn"][k[i]]["g"];
-        re.gcn[k[i]].work = data["gcn"][k[i]]["work"];
-        turn(`${k[i]}_btn`, data["gcn"][k[i]]["work"]);
-        re.gcn[k[i]].broken = data["gcn"][k[i]]["broken"];
-    }
-    re.t1.w_e = data["t1"]["w_e"];
-    re.t1.obr = data["t1"]["obr"];
-    re.t1.broken = data["t1"]["broken"];
-    re.t1.p_start = data["t1"]["p_start"];
-    re.t1.g = data["t1"]["g"];
-    re.t1.g_max = data["t1"]["g_max"];
-    re.t1.direction = data["t1"]["direction"];
-    re.t2.w_e = data["t2"]["w_e"];
-    re.t2.obr = data["t2"]["obr"];
-    re.t2.broken = data["t2"]["broken"];
-    re.t2.p_start = data["t2"]["p_start"];
-    re.t2.g = data["t2"]["g"];
-    re.t2.g_max = data["t2"]["g_max"];
-    re.t2.direction = data["t2"]["direction"];
-    re.rdg1.work = data["rdg1"]["work"];
-    re.rdg1.direction = data["rdg1"]["direction"];
-    re.rdg1.power_e = data["rdg1"]["power_e"];
-    re.rdg2.work = data["rdg2"]["work"];
-    re.rdg2.direction = data["rdg2"]["direction"];
-    re.rdg2.power_e = data["rdg2"]["power_e"];
-    setup_UI(re);
-    console.log("update control1")
+        load_data(data);
+        setup_UI(re);
     }
 });
 

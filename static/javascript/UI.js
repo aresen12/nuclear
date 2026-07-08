@@ -10,6 +10,10 @@ function show_mnemo(reactor){
 function show_chosen(reactor){
 }
 
+function exit_menu(menu_id){
+    document.getElementById(menu_id).style.display = "none";
+}
+
 function show_mnemo_i_j(value, i, j){
     try{
         var m = document.getElementById(`m${i}_${j}`);

@@ -1,4 +1,6 @@
 import datetime
+import json
+
 from flask import Flask, request, render_template, redirect
 from forms.login_form import LoginForm
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
@@ -117,6 +119,27 @@ def info_syz():
 @application.route("/info/turnover")
 def info_turnover():
     return render_template("turnover_info.html", title="Турбина РБМК")
+
+
+@application.route("/save_game", methods=["POST"])
+def save_to_db():
+    data = request.get_json()
+    db_sess = db_session.create_session()
+    reactor = db_sess.query(Reactor).filter(Reactor.id == data["room"]).first()
+    reactor.data_json = json.dumps(data)
+    db_sess.commit()
+    db_sess.close()
+    return {"log": 200}
+
+
+@application.route("/get_game/<id_room>")
+def get_game(id_room):
+    db_sess = db_session.create_session()
+    reactor = db_sess.query(Reactor).filter(Reactor.id == int(id_room)).first()
+    data = reactor.data_json
+    db_sess.commit()
+    db_sess.close()
+    return json.loads(data)
 
 
 @application.route("/info/freeze")

@@ -8,3 +8,32 @@
     background:black;
     color:white;
 }
+
+
+.exit-btn{
+position:absolute;
+right: 10px;
+top:0px;
+padding:10px;
+text-decoration:none;
+color:black;
+    z-index:100;
+}
+
+.btn {text-decoration:none;
+border:none;
+border-radius: 5px;
+
+}
+
+.btn-success {
+    color: white;
+    background:#198754;
+    padding:10px;
+}
+
+.btn-danger{
+    color: white;
+    background:#DC3545;
+    padding:10px;
+}

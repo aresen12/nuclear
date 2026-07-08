@@ -552,6 +552,14 @@ class DAz extends Az{
         socket.emit("set_w_ar", {"w": w, "room": room_id});
     }
 
+    turn_on_or_down_ar(){
+        socket.emit("method_send", {"room": room_id, "function": "turn_on_or_down_ar"});
+    }
+
+    turn_on_or_down_power_SYZ(){
+        socket.emit("method_send", {"room": room_id, "function": "turn_on_or_down_power_SYZ"});
+    }
+
 }
 
 

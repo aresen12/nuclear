@@ -80,6 +80,7 @@ class Reactor{
         this.w_e = 0;
         this.ozr = 0;
         this.time = 0;
+        this.pause = false;
         this.update_ozr();
         this.rdg1.start_ui();
         for (let i = 0; i < DELAYED_GROUPS.length; i++){
@@ -180,6 +181,9 @@ class Reactor{
     }
 
      update(){
+        if (this.pause) {
+            return;
+        }
         this.time += 1;
          this.update_ozr();
          this.az.update();
@@ -311,6 +315,7 @@ class RemoteControl extends Reactor{
             "1_a": new DPump("1_a"),
             "2_a": new DPump("2_a"),
             "3_a": new DPump("3_a"),
+            "4_a": new DPump("4_a"),
         }
     }
     chosen_delete(i2){
