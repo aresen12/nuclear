@@ -1,7 +1,7 @@
 from flask_login import current_user
 from flask_socketio import emit, SocketIO, join_room, leave_room, rooms
 from data import db_session
-from data.user import User
+from data.reactor import Reactor
 socketio = SocketIO(cors_allowed_origins="*")
 
 
@@ -32,9 +32,21 @@ def chosen_delete(data):
     emit("chosen_delete", data, to=data['room'])
 
 
+@socketio.on("pause_reactor")
+def pause_reactor(data):
+    db_sess = db_session.create_session()
+    reactor = db_sess.query(Reactor).filter(Reactor.id == data["room"]).first()
+    if current_user.is_authenticated and reactor.main_player == current_user.id:
+        reactor.activiti = False
+        db_sess.commit()
+    db_sess.close()
+    emit("pause_reactor", to=data["room"])
+
+
 @socketio.on("set_w_ar")
 def set_w_ar(data):
     emit("set_w_ar", data, to=data['room'])
+
 
 @socketio.on("set_unset_down_direction")
 def set_unset_down_direction(data):

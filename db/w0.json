@@ -1,0 +1,198 @@
+{
+  "T_2_H2O": 190,
+  "bs1": {
+    "T_H2O": 270,
+    "h_braban_s": 67,
+    "m_sep": 0,
+    "v_inBS": 67
+  },
+  "bs2": {
+    "T_H2O": 270,
+    "h_braban_s": 67,
+    "m_sep": 0,
+    "v_inBS": 67
+  },
+  "chosen": [],
+  "direction": 0,
+  "fuel_temp": 281.6622990239745,
+  "gcn": {
+    "1_a": {
+      "broken": false,
+      "g": 0,
+      "work": false
+    },
+    "1_n": {
+      "broken": false,
+      "g": 6000,
+      "work": true
+    },
+    "2_a": {
+      "broken": false,
+      "g": 0,
+      "work": false
+    },
+    "2_n": {
+      "broken": false,
+      "g": 0,
+      "work": false
+    },
+    "3_a": {
+      "broken": false,
+      "g": 0,
+      "work": false
+    },
+    "3_n": {
+      "broken": false,
+      "g": 0,
+      "work": true
+    },
+    "4_a": {
+      "broken": false,
+      "g": 0,
+      "work": false
+    },
+    "4_n": {
+      "broken": false,
+      "g": 0,
+      "work": false
+    }
+  },
+  "graphite_temp": 443.9136888007436,
+  "outlet_temp": 272.85271419975396,
+  "ozr": 72.8395061728395,
+  "ozr_ar": 0,
+  "p_in_reactor": 6.5,
+  "power_ar": 0,
+  "rdg1": {
+    "direction": 0,
+    "power_e": 20000,
+    "work": true
+  },
+  "rdg2": {
+    "direction": 0,
+    "power_e": 20000,
+    "work": true
+  },
+  "rho_total": -0.002967405165289653,
+  "room": 2,
+  "sterg": [
+    [
+      100,
+      100,
+      100,
+      100,
+      100,
+      100,
+      100,
+      100,
+      100
+    ],
+    [
+      100,
+      100,
+      100,
+      0,
+      0,
+      0,
+      100,
+      100,
+      100
+    ],
+    [
+      100,
+      100,
+      0,
+      100,
+      0,
+      100,
+      0,
+      100,
+      100
+    ],
+    [
+      100,
+      0,
+      100,
+      0,
+      100,
+      0,
+      100,
+      100,
+      100
+    ],
+    [
+      100,
+      0,
+      0,
+      100,
+      100,
+      100,
+      0,
+      0,
+      100
+    ],
+    [
+      100,
+      0,
+      100,
+      0,
+      100,
+      0,
+      100,
+      100,
+      100
+    ],
+    [
+      100,
+      100,
+      0,
+      100,
+      0,
+      100,
+      0,
+      100,
+      100
+    ],
+    [
+      100,
+      100,
+      100,
+      0,
+      0,
+      0,
+      100,
+      100,
+      100
+    ],
+    [
+      100,
+      100,
+      100,
+      100,
+      100,
+      100,
+      100,
+      100,
+      100
+    ]
+  ],
+  "t1": {
+    "broken": false,
+    "direction": 0,
+    "g_max": 0,
+    "obr": 0,
+    "p_start": 2,
+    "w_e": 0,
+    "work": false
+  },
+  "t2": {
+    "broken": false,
+    "direction": 0,
+    "g_max": 0,
+    "obr": 0,
+    "p_start": 2,
+    "w_e": 0,
+    "work": false
+  },
+  "thermal_power": 131771.37716229362
+}

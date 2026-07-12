@@ -1,6 +1,5 @@
 function sterg(i, j){
     re.chosen_current(i, j);
-
 }
 
 
@@ -13,6 +12,7 @@ function pause(){
 function stop_pause(){
      re.pause = false;
      exit_menu("global_menu_d");
+
 }
 
 function set_w_ar(){
@@ -22,57 +22,63 @@ function set_w_ar(){
 
 function gener_json(){
     var data = {
-    "room": room_id,
-    "sterg": re.sterg,
-    "ozr": re.ozr,
-    "graphite_temp": re.graphite_temp,
-    "ozr_ar": re.az.ozr_ar,
-    "power_ar": re.az.power_ar,
-    "bs1": {"v_inBS":re.bs1.v_inBS,
-            "h_braban_s":re.bs1.h_braban_s,"T_H2O": re.bs1.T_H2O,
-        "m_sep": re.bs1.m_sep
+        "room": room_id,
+        "sterg": re.sterg,
+        "ozr": re.ozr,
+        "graphite_temp": re.graphite_temp,
+        "ozr_ar": re.az.ozr_ar,
+        "power_ar": re.az.power_ar,
+        "bs1": {
+            "v_inBS":re.bs1.v_inBS,
+            "h_braban_s":re.bs1.h_braban_s,
+            "T_H2O": re.bs1.T_H2O,
+            "m_sep": re.bs1.m_sep
         },
-        "bs2": {"v_inBS":re.bs2.v_inBS,
-            "h_braban_s":re.bs2.h_braban_s,"T_H2O": re.bs2.T_H2O,
-        "m_sep": re.bs2.m_sep
+        "bs2": {
+            "v_inBS":re.bs2.v_inBS,
+            "h_braban_s":re.bs2.h_braban_s,
+            "T_H2O": re.bs2.T_H2O,
+            "m_sep": re.bs2.m_sep
         },
-            "fuel_temp":re.fuel_temp,
-            "p_in_reactor":re.p_in_reactor,
-            "thermal_power":re.thermal_power,
-            "rho_total":re.rho_total,
-            "chosen":re.chosen,
-            "direction": re.direction,
-            "outlet_temp":re.outlet_temp,
-            "T_2_H2O": re.T_2_H2O,
-            "t1":{"w_e":re.t1.w_e,
+        "fuel_temp":re.fuel_temp,
+        "p_in_reactor":re.p_in_reactor,
+        "thermal_power":re.thermal_power,
+        "rho_total":re.rho_total,
+        "chosen":re.chosen,
+        "direction": re.direction,
+        "outlet_temp":re.outlet_temp,
+        "T_2_H2O": re.T_2_H2O,
+        "t1":{
+            "w_e":re.t1.w_e,
             "obr":re.t1.obr,
             "broken":re.t1.broken,
             "p_start":re.t1.p_start,
             "g":re.t1.g,
             "g_max":re.t1.g_max,
-            "direction":re.t1.direction
+            "direction":re.t1.direction,
+            "work": re.t1.work
             },
-            "t2":{"w_e":re.t2.w_e,
-            "obr":re.t2.obr,
-            "broken":re.t2.broken,
-            "p_start":re.t2.p_start,
-            "g":re.t2.g,
-            "g_max":re.t2.g_max,
-            "direction":re.t2.direction
-            },
-            "gcn":{
-
-            },
-            "rdg1":{
-                "work":re.rdg1.work,
-                "direction":re.rdg1.direction,
-                "power_e":re.rdg1.power_e
-            },
-            "rdg2":{
-                "work":re.rdg2.work,
-                "direction":re.rdg2.direction,
-                "power_e":re.rdg2.power_e
-            },
+    "t2":{
+                "w_e":re.t2.w_e,
+                "obr":re.t2.obr,
+                "broken":re.t2.broken,
+                "p_start":re.t2.p_start,
+                "g":re.t2.g,
+                "g_max":re.t2.g_max,
+                "direction":re.t2.direction,
+                "work": re.t2.work
+    },
+    "gcn":{},
+    "rdg1":{
+        "work":re.rdg1.work,
+        "direction":re.rdg1.direction,
+        "power_e":re.rdg1.power_e
+    },
+    "rdg2":{
+        "work":re.rdg2.work,
+        "direction":re.rdg2.direction,
+        "power_e":re.rdg2.power_e
+    },
     };
     var k = Object.keys(re.gcn);
     for (let i = 0; i < k.length; i++){
@@ -175,6 +181,8 @@ function load_data(data){
     re.t1.g = data["t1"]["g"];
     re.t1.g_max = data["t1"]["g_max"];
     re.t1.direction = data["t1"]["direction"];
+    re.t1.work = data["t1"]["work"];
+    turn(`${re.t1.id_turnover}_t_btn`, re.t1.work);
     re.t2.w_e = data["t2"]["w_e"];
     re.t2.obr = data["t2"]["obr"];
     re.t2.broken = data["t2"]["broken"];
@@ -182,6 +190,8 @@ function load_data(data){
     re.t2.g = data["t2"]["g"];
     re.t2.g_max = data["t2"]["g_max"];
     re.t2.direction = data["t2"]["direction"];
+    re.t2.work = data["t2"]["work"];
+    turn(`${re.t2.id_turnover}_t_btn`, re.t2.work);
     re.rdg1.work = data["rdg1"]["work"];
     re.rdg1.direction = data["rdg1"]["direction"];
     re.rdg1.power_e = data["rdg1"]["power_e"];

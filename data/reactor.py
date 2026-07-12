@@ -13,18 +13,19 @@ class Reactor(SqlAlchemyBase, UserMixin, SerializerMixin):
     main_player = sqlalchemy.Column(sqlalchemy.Integer,  nullable=False)
     list_users = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     data_json = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    activiti = sqlalchemy.Column(sqlalchemy.Boolean, nullable=True)
+    private = sqlalchemy.Column(sqlalchemy.Boolean, nullable=True)
+    password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    mode = sqlalchemy.Column(sqlalchemy.Integer,  nullable=False)
 
-    # def set_password(self, password):
-    #     salt = "5gz"
-    #     data_base_password = password + salt
-    #     hashed = hashlib.md5(data_base_password.encode())
-    #     self.password = hashed.hexdigest()
-    #
-    # def check_password(self, password):
-    #     salt = "5gz"
-    #     data_base_password = password + salt
-    #     hashed = hashlib.md5(data_base_password.encode())
-    #     return self.password == hashed.hexdigest()
+    def set_password(self, password):
+        salt = "5gz"
+        data_base_password = password + salt
+        hashed = hashlib.md5(data_base_password.encode())
+        self.password = hashed.hexdigest()
 
-    # def __repr__(self):
-    #     return self.name, self.email
+    def check_password(self, password):
+        salt = "5gz"
+        data_base_password = password + salt
+        hashed = hashlib.md5(data_base_password.encode())
+        return self.password == hashed.hexdigest()

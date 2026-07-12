@@ -1,0 +1,12 @@
+.form-new{
+    width: 40vw;
+    border-radius:10px;
+    background:#c5c5e3;
+    padding:10px;
+}
+
+.container {
+  display: flex;
+  justify-content: center; /* Горизонтальное центрирование */
+  align-items: center; /* Вертикальное центрирование */
+}

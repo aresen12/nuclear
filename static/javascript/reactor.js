@@ -63,7 +63,7 @@ class Reactor{
         this.rho_total = 0;
         this.fuel_temp = this.temp_in + 250.0;
         this.graphite_temp = this.temp_in + 180.0;
-        this.coolant_temp = this.temp_in + 10.0;
+        this.coolant_temp = this.temp_in;
         this.outlet_temp = this.coolant_temp;
         this.void_fraction = 0.15;
         this.BASE_FUEL_TEMP = this.fuel_temp;
@@ -105,7 +105,7 @@ class Reactor{
         this.ozr /= k;
     }
 
-    set_unset_up_direction() {
+    set_unset_up_direction() {            print( request.form["private"])
         if (!this.az.power_SYZ){
             return;
         }
@@ -205,6 +205,7 @@ class Reactor{
             this.rho_fuel *= 0.1;
         }
         let water_flow = (this.gcn["1_n"].g + this.gcn["2_n"].g + this.gcn["1_a"].g + this.gcn["2_a"].g) / 3.6;
+       console.log(water_flow, this.temp_in);
         this.rho_total = this.rho_rods + this.rho_void + this.rho_fuel + this.rho_graphite;
          // 2. НЕЙТРОННАЯ КИНЕТИКА (Интегрирование лавины)
 //        console.log(this.rho_rods, this.rho_void, this.rho_void, this.rho_graphite);

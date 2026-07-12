@@ -36,7 +36,7 @@
 Реакторы<ul>
 
 {% for reactor in reactors %}
-    <li>{{reactor.id}} - {{reactor.name}}  игроки {{reactor.list_users}}
+    <li>{{reactor.id}} - {{reactor.name}}  {% if reactor.activiti %} Активен {% else %} Неактивен {% endif %}
         {% if current_user.is_authenticated and current_user.id == reactor.main_player %}
         <a  type="button" class="btn btn-danger" href="/b/{{reactor.id}}">Организатор</a>
         {% else %}

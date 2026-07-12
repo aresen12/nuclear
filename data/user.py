@@ -12,10 +12,9 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     name = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     admin = sqlalchemy.Column(sqlalchemy.Boolean, default=False)
-    address = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    points = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
     email = sqlalchemy.Column(sqlalchemy.String,
                               index=True, unique=True, nullable=True)
-    list_message = sqlalchemy.Column(sqlalchemy.String, nullable=True, default="")
 
     def set_password(self, password):
         salt = "5gz"

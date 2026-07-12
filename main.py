@@ -95,14 +95,23 @@ def main():
 @application.route("/add_new_reactor", methods=["GET", "POST"])
 def add_new_reactor():
     if request.method == "GET":
-        return render_template("new_reactor.html", title="симулятор ядерного реактора")
+        if current_user.is_authenticated:
+            return render_template("new_reactor.html", title="симулятор ядерного реактора")
+        else:
+            return redirect("/")
     else:
         if current_user.is_authenticated:
             db_sess = db_session.create_session()
             reactor = Reactor()
             reactor.name = request.form["name"]
-            reactor.list_users = request.form["users"]
+            if "private" in request.form:
+                reactor.set_password(request.form["password"])
+                reactor.private = True
             reactor.main_player = current_user.id
+            file = open(f'db/{request.form["condition"]}.json', mode="r")
+            reactor.data_json = file.read()
+            file.close()
+            reactor.mode = request.form["mode"]
             db_sess.add(reactor)
             db_sess.commit()
             db_sess.close()
@@ -136,8 +145,10 @@ def save_to_db():
 def get_game(id_room):
     db_sess = db_session.create_session()
     reactor = db_sess.query(Reactor).filter(Reactor.id == int(id_room)).first()
+    if current_user.is_authenticated and reactor.main_player == current_user.id:
+        reactor.activiti = True
+        db_sess.commit()
     data = reactor.data_json
-    db_sess.commit()
     db_sess.close()
     return json.loads(data)
 

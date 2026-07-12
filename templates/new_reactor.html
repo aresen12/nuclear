@@ -1,11 +1,46 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form method="post">
-    название реактора
-    <textarea name="name"> </textarea>
-    игроки
-    <textarea name="users"></textarea>
+<link href="/static/css/add_new_reactor.css" rel="stylesheet" type="text/css">
+<div class="container">
+<h1>Создание нового реактора</h1>
+</div>
+<div class="container">
+<form method="post" class="form-new ">
+    <h4>название реактора</h4>
+    <textarea class="text-form form-control" id="name" name="name"> </textarea>
+    <input id="private" type="checkbox" onclick="showdiv1('password_div')" name="private">
+    <label for="private">Приватный сервер</label><br>
+    <div id="password_div" style="display:none;">
+    <h4>Пароль</h4>
+    <textarea id="password" class="text-form form-control" name="password"></textarea>
+    </div>
+    <h4>Состояние</h4>
+    <select  class="dropdown" name="condition" id="condition">
+        <option value="w3200">Работа на мощности</option>
+        <option value="w1600">Работа на 50% мощности</option>
+        <option value="w0">Горячий останов</option>
+    </select>
+    <br>
+    <h4 >Вид игры</h4>
+    <select  class="dropdown" name="mode" id="mode">
+        <option value="1">Управление реактором в аварийных ситуациях</option>
+        <option value="2">Учебная игра</option>
+        <option value="3">Свободная игра</option>
+    </select>
+    <br>
     <input  class="btn btn-primary" type="submit">
 </form>
+    <script language="JavaScript">
+        function showdiv1(Div){
+    var x = document.getElementById(Div);
+    if(x.style.display=="none") {
+        x.style.display = "block";
+        return true;
+    }
+    x.style.display = "none";
+    return false;
+}
+    </script>
+</div>
 {% endblock %}

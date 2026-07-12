@@ -85,6 +85,8 @@ socket.on('method_send', (data) => {
         }
          if (data["function"] == "turn_on_or_down_ar"){
             re.az.turn_on_or_down_ar();
+        }if (data["function"] == "stop_az"){
+            re.az.stop_az();
         }
         if (data["function"] == "turn_on_or_down_power_SYZ"){
             re.az.turn_on_or_down_power_SYZ();

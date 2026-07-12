@@ -48,6 +48,7 @@ class Az{
         this.ar_k = [[3, 4], [4, 3], [4, 5], [5, 4]]; // координаты стержней ЛАР
         this.laz_k = [[2,2], [2,4], [2, 6], [4, 2], [4, 6], [6, 2], [6, 4], [6, 6]]; // координаты стрежней ЛАЗ
         this.baz_k = [[1, 4], [3, 3], [3, 5], [4, 1], [4, 7], [5, 3], [5, 5], [7, 4]];
+        this.ysp_k = [[1, 3], [1, 5], [3, 1], [3, 7], [5, 1], [5, 7], [7, 3], [7, 5]];
         this.reactor = reactor;
         this.power_ar = 0
         this.current_errors = [];
@@ -201,9 +202,16 @@ class Az{
     }
 
     set_position_power(){
-            var flag = true;
+        var flag = true;
+        var k = 0;
         for (let i = 0; i < 9; i++) {
             for (let j = 0; j < 9; j++) {
+                if (this.ysp_k[k][0] == i && this.ysp_k[k][1] == j){
+                    if (k + 1 < this.ysp_k.length){
+                        k++;
+                    }
+                    continue;
+                }
                 if(this.reactor.sterg[i][j] < 100){
                     if (this.reactor.sterg[i][j] + 2 <= 100 && this.reactor.sterg[i][j] >= 0){
                         this.reactor.sterg[i][j] += 2;
@@ -268,7 +276,7 @@ class Az{
             red_alert("az_call");
             if (!manual){
                 setTimeout(() => {
-                    this.az_5 = true;
+                 this.az_5 = true;
             }, 2000);
             } else {
                 this.az_5 = true;
@@ -541,6 +549,7 @@ class Az{
 
 class DAz extends Az{
     az5(){
+        red_alert("az_call");
         socket.emit("method_send", {"room": room_id, "function": "az5"});
     }
 
@@ -558,6 +567,10 @@ class DAz extends Az{
 
     turn_on_or_down_power_SYZ(){
         socket.emit("method_send", {"room": room_id, "function": "turn_on_or_down_power_SYZ"});
+    }
+
+    stop_az(){
+        socket.emit("method_send", {"room": room_id, "function": "stop_az"});
     }
 
 }
