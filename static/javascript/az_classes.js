@@ -196,12 +196,8 @@ class Az{
         if (this.ar){
             if (this.reactor.rho_total > 0.0005){
                 this.set_position_ar(-1, calculate_speed_ar_rho(this.reactor.rho_total));
-            } else if (this.period_power > 7) {
-                if (this.period_power < 20){
-                    this.set_position_ar(-1, 1);
-                } else{
-                    this.set_position_ar(-1, 5);
-                }
+            } else if (this.period_power > 7 && this.reactor.rho_total > 0) {
+                this.set_position_ar(-1, calculate_speed_ar_power_speed(this.period_power));
             } else if (this.reactor.thermal_power > this.power_ar && this.period_power > 0){
                 let r = (this.reactor.thermal_power - this.power_ar) / 1e6;
                 console.log(r, calculate_speed_ar_power(r));
@@ -631,6 +627,16 @@ function calculate_speed_ar_rho(rho){
     return 1;
 }
 
+
+function calculate_speed_ar_power_speed(speed){
+    if (speed < 15){
+        return 1;
+    } else if (speed < 40){
+        return 2;
+    } else {
+        return 3;
+    }
+}
 
 function calculate_power_sek(sterg){
         let sek = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
