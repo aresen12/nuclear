@@ -1,3 +1,10 @@
+// Координаты стержней ЛАЗ, БАЗ, УСП
+const AR_K = [[3, 4], [4, 3], [4, 5], [5, 4]]; // координаты стержней ЛАР
+const LAZ_K = [[2,2], [2,4], [2, 6], [4, 2], [4, 6], [6, 2], [6, 4], [6, 6]]; // координаты стрежней ЛАЗ
+const BAZ_K = [[1, 4], [3, 3], [3, 5], [4, 1], [4, 7], [5, 3], [5, 5], [7, 4]];
+const YSP_K = [[1, 3], [1, 5], [3, 1], [3, 7], [5, 1], [5, 7], [7, 3], [7, 5]];
+
+
 class TemporaryAlert{
     constructor(id_, type, does_stop){
         this.id = id_;
@@ -35,6 +42,30 @@ class TemporaryAlert{
     }
 }
 
+
+class SAOR {
+    constructor(){
+        this.q_current = 0;
+        this.v_total = 40.8;
+        this.v_w0 = 36;
+        this.p1 = 90;
+        this.work = false;
+        this.time = 0;
+    }
+
+    update(){
+        if (this.work){
+
+        }
+    }
+
+    p_g(t){
+
+
+    }
+
+}
+
 class Az{
     constructor(reactor){
         this.mode = 0 // 0 - откл 1- азс 2 -азср
@@ -45,10 +76,6 @@ class Az{
         this.az_2 = 0;
         this.az_b = 0;
         this.ar = false;
-        this.ar_k = [[3, 4], [4, 3], [4, 5], [5, 4]]; // координаты стержней ЛАР
-        this.laz_k = [[2,2], [2,4], [2, 6], [4, 2], [4, 6], [6, 2], [6, 4], [6, 6]]; // координаты стрежней ЛАЗ
-        this.baz_k = [[1, 4], [3, 3], [3, 5], [4, 1], [4, 7], [5, 3], [5, 5], [7, 4]];
-        this.ysp_k = [[1, 3], [1, 5], [3, 1], [3, 7], [5, 1], [5, 7], [7, 3], [7, 5]];
         this.reactor = reactor;
         this.power_ar = 0
         this.current_errors = [];
@@ -86,29 +113,29 @@ class Az{
     }
 
 
-    set_position_ar(direction){
-        if (!this.power_SYZ){
+    set_position_ar(direction, speed){
+        if (!this.power_SYZ && direction == 0){
             return;
         }
-        var flag = true;
         this.ozr_ar = 0;
-        for (let i = 0; i < this.ar_k.length; i++) {
-                if(direction < 0 && this.reactor.sterg[this.ar_k[i][0]][this.ar_k[i][1]] + 5 < 100){
-                    if (this.reactor.sterg[this.ar_k[i][0]][this.ar_k[i][1]] + 5 <= 100){
-                        this.reactor.sterg[this.ar_k[i][0]][this.ar_k[i][1]] += 5;
-                        flag = false;
-                    } else{
-                        this.reactor.sterg[this.ar_k[i][0]][this.ar_k[i][1]] = 100;
-                    }
-                } else if (direction > 0 && this.reactor.sterg[this.ar_k[i][0]][this.ar_k[i][1]] > 0) {
-                    flag = false;
-                    this.reactor.sterg[this.ar_k[i][0]][this.ar_k[i][1]] -= 5;
+        for (let i = 0; i < AR_K.length; i++) {
+            if (direction < 0){
+                if (this.reactor.sterg[AR_K[i][0]][AR_K[i][1]] + speed <= 100){
+                    this.reactor.sterg[AR_K[i][0]][AR_K[i][1]] += speed;
+                } else{
+                    this.reactor.sterg[AR_K[i][0]][AR_K[i][1]] = 100;
                 }
-                this.ozr_ar += this.reactor.sterg[this.ar_k[i][0]][this.ar_k[i][1]];
-                show_mnemo_i_j(this.reactor.sterg[this.ar_k[i][0]][this.ar_k[i][1]], this.ar_k[i][0], this.ar_k[i][1]);
+            } else {
+                if (this.reactor.sterg[AR_K[i][0]][AR_K[i][1]] - speed > 0) {
+                    this.reactor.sterg[AR_K[i][0]][AR_K[i][1]] -= speed;
+                } else {
+                    this.reactor.sterg[AR_K[i][0]][AR_K[i][1]] = 0;
+                }
+            }
+            this.ozr_ar += this.reactor.sterg[AR_K[i][0]][AR_K[i][1]];
+            show_mnemo_i_j(this.reactor.sterg[AR_K[i][0]][AR_K[i][1]], AR_K[i][0], AR_K[i][1]);
         }
         this.ozr_ar /= 4;
-        return flag;
     }
 
     set_position_laz(coord, direction, speed){
@@ -116,46 +143,20 @@ class Az{
             return;
         }
         show_mnemo(this.reactor);
-        if (this.reactor.sterg[this.laz_k[coord][0]][this.laz_k[coord][1]] + direction * speed >= 0 & this.reactor.sterg[this.laz_k[coord][0]][this.laz_k[coord][1]] + direction * speed <= 100){
-            this.reactor.sterg[this.laz_k[coord][0]][this.laz_k[coord][1]] += direction * speed;
+        if (this.reactor.sterg[LAZ_K[coord][0]][LAZ_K[coord][1]] + direction * speed >= 0 & this.reactor.sterg[LAZ_K[coord][0]][LAZ_K[coord][1]] + direction * speed <= 100){
+            this.reactor.sterg[LAZ_K[coord][0]][LAZ_K[coord][1]] += direction * speed;
             if (direction > 0){
-                my_alert(`alert_laz_${coord + 1}`);
+                my_alert(`alert_az`);
             }
         }
 
 
-    }
-
-    calculate_power_sek(){
-        let sek = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
-        for (let i = 0; i < this.reactor.sterg.length; i++) {
-            let k = 1;
-            if (i < 3){
-                k = 0;
-            }  else if (i > 5){
-                k = 2;
-            }
-            for (let j = 0; j < this.reactor.sterg[i].length; j++) {
-                if (this.reactor.sterg[i][j] == -1){
-                    continue;
-                }
-                if (j < 3){
-                    sek[k][0] += this.reactor.sterg[i][j];
-                } else if (j > 5){
-                    sek[k][2] += this.reactor.sterg[i][j];
-                } else {
-                    sek[k][1] += this.reactor.sterg[i][j];
-                }
-            }
-        }
-        return sek;
     }
 
     update_laz(){
         let power_sek = this.power_ar / 7.6;
-        let sek = this.calculate_power_sek();
+        let sek = calculate_power_sek(this.reactor.sterg);
         let s = 0;
-        let new_s = [];
         for (let i = 0; i < sek.length; i++) {
             for (let j = 0; j < sek[i].length; j++) {
                 if ((i == 0 | i == 2) & (j == 0 | j == 2)){
@@ -166,35 +167,48 @@ class Az{
             }
         }
         s /= 9;
+        let color_mnemo = [];
         for (let i = 0; i < sek.length; i++) {
             for (let j = 0; j < sek[i].length; j++) {
                 if ((i == 0 | i == 2) & (j == 0 | j == 2)){
-                    if (sek[i][j] > s * (2 / 3)){
+                    if (sek[i][j]  > s * (2 / 3)){
                         this.set_position_laz(get_s_number(i, j), -1, 2);
+                        color_mnemo.push(2);
                     } else if (sek[i][j] < s * (2 / 3)) {
                         this.set_position_laz(get_s_number(i, j), 1, 2);
+                        color_mnemo.push(1);
                     }
                 } else{
                     if (sek[i][j] > s){
                         this.set_position_laz(get_s_number(i, j), -1, 2);
+                        color_mnemo.push(2);
                     } else if (sek[i][j] < s) {
                         this.set_position_laz(get_s_number(i, j), 1, 2);
+                        color_mnemo.push(1);
                     }
                 }
             }
         }
+    ui_thermal_power_mnemo(color_mnemo);
     }
 
     update_ar(){
         if (this.ar){
             if (this.reactor.rho_total > 0.0005){
-                this.set_position_ar(-1);
-            } else if (this.period_power > 5) {
-                this.set_position_ar(-1);
-            } else if (this.reactor.thermal_power - 50 > this.power_ar){
-                this.set_position_ar(-1);
-            } else if (this.reactor.thermal_power + 50 < this.power_ar){
-                this.set_position_ar(1);
+                this.set_position_ar(-1, calculate_speed_ar_rho(this.reactor.rho_total));
+            } else if (this.period_power > 7) {
+                if (this.period_power < 20){
+                    this.set_position_ar(-1, 1);
+                } else{
+                    this.set_position_ar(-1, 5);
+                }
+            } else if (this.reactor.thermal_power > this.power_ar && this.period_power > 0){
+                let r = (this.reactor.thermal_power - this.power_ar) / 1e6;
+                console.log(r, calculate_speed_ar_power(r));
+                this.set_position_ar(-1, calculate_speed_ar_power(r));
+            } else if (this.reactor.thermal_power < this.power_ar && this.period_power < 0){
+                let r =(this.power_ar - this.reactor.thermal_power) / 1e6;
+                this.set_position_ar(1  , calculate_speed_ar_power(r));
             }
             this.update_laz();
         }
@@ -206,8 +220,8 @@ class Az{
         var k = 0;
         for (let i = 0; i < 9; i++) {
             for (let j = 0; j < 9; j++) {
-                if (this.ysp_k[k][0] == i && this.ysp_k[k][1] == j){
-                    if (k + 1 < this.ysp_k.length){
+                if (YSP_K[k][0] == i && YSP_K[k][1] == j){
+                    if (k + 1 < YSP_K.length){
                         k++;
                     }
                     continue;
@@ -233,6 +247,9 @@ class Az{
         }
         for (let i = 0; i < 9; i++) {
             for (let j = 0; j < 9; j++) {
+                if (this.reactor.sterg[i][j] == -1){
+                    continue;
+                }
                 if(this.reactor.sterg[i][j] < 100){
                     if (this.reactor.sterg[i][j] + 10 <= 100 && this.reactor.sterg[i][j] >= 0){
                         this.reactor.sterg[i][j] += 10;
@@ -253,16 +270,16 @@ class Az{
 
     set_position_baz(){
         var flag = true;
-        for (let i = 0; i < this.baz_k.length; i++) {
-                if(this.reactor.sterg[this.baz_k[i][0]][this.baz_k[i][1]] < 100){
-                    if (this.reactor.sterg[this.baz_k[i][0]][this.baz_k[i][1]] + 25 <= 100){
-                        this.reactor.sterg[this.baz_k[i][0]][this.baz_k[i][1]] += 25;
+        for (let i = 0; i < BAZ_K.length; i++) {
+                if(this.reactor.sterg[BAZ_K[i][0]][BAZ_K[i][1]] < 100){
+                    if (this.reactor.sterg[BAZ_K[i][0]][BAZ_K[i][1]] + 25 <= 100){
+                        this.reactor.sterg[BAZ_K[i][0]][BAZ_K[i][1]] += 25;
                         flag = false;
                     } else{
-                        this.reactor.sterg[this.baz_k[i][0]][this.baz_k[i][1]] = 100;
+                        this.reactor.sterg[BAZ_K[i][0]][BAZ_K[i][1]] = 100;
                     }
                 }
-                show_mnemo_i_j(this.reactor.sterg[this.baz_k[i][0]][this.baz_k[i][1]], this.baz_k[i][0], this.baz_k[i][1]);
+                show_mnemo_i_j(this.reactor.sterg[BAZ_K[i][0]][BAZ_K[i][1]], BAZ_K[i][0], BAZ_K[i][1]);
         }
         this.az_b = !flag;
         if (flag){
@@ -326,10 +343,8 @@ class Az{
     }
 
     check_azs(){
-        if (this.reactor.time % 2 == 0){
-            this.period_power = (this.reactor.thermal_power - this.last_power) / 1e6;
-            this.last_power = this.reactor.thermal_power;
-        }
+        this.period_power = (this.reactor.thermal_power - this.last_power) / 1e6;
+        this.last_power = this.reactor.thermal_power;
 
         if (this.period_power > 10 && this.mode == 1){
             my_alert("high_speed_power");
@@ -359,6 +374,7 @@ class Az{
             }
             if(this.reactor.thermal_power / 1e6 > 3300){
                 alert("Вы взорвали реактор!");
+                this.reactor.pause = true;
             }
             my_alert("alert_power_q");
             flag = true;
@@ -548,9 +564,9 @@ class Az{
 
 
 class DAz extends Az{
-    az5(){
+    az5(manual){
         red_alert("az_call");
-        socket.emit("method_send", {"room": room_id, "function": "az5"});
+        socket.emit("method_send", {"room": room_id, "function": "az5", "manual": manual});
     }
 
     baz(){
@@ -572,36 +588,78 @@ class DAz extends Az{
     stop_az(){
         socket.emit("method_send", {"room": room_id, "function": "stop_az"});
     }
-
 }
 
 
-function get_s_number(j, i){
-    if (j == 0){
-        if (i == 0){
-            return 0;
-        } else if (i == 1){
-            return 1;
-        } else {
-            return 2;
-        }
-    } else if (j == 1){
-        if (i == 0){
-            return 3;
-        } else if (i == 1){
-//            return 4;
+function get_s_number(i, j){
+    let res = get_sektor_number(i, j);
+    if (res >= 4){
+        if (res == 4){
             return -1;
-        } else {
-            return 4;
         }
-    } else {
-        if (i == 0){
-            return 5;
-        } else if (i == 1){
-            return 6;
-        } else {
-            return 7;
+        return res - 1
+    }
+    return res;
+}
+
+
+function calculate_speed_ar_power(r){
+    if (r < 3){
+        return 0;
+    }
+    if (r > 50){
+        return 5;
+    } else if (r > 30){
+        return 4;
+    } else if (r > 25) {
+        return 3;
+    }
+    return 2;
+}
+
+
+function calculate_speed_ar_rho(rho){
+    if (rho > 0.001){
+        return 5;
+    } else if (rho > 0.0008){
+        return 4;
+    } else if (rho > 0.0007) {
+        return 3;
+    } else if (rho > 0.00055){
+        return 2;
+    }
+    return 1;
+}
+
+
+function calculate_power_sek(sterg){
+        let sek = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+        for (let i = 0; i < sterg.length; i++) {
+            let k = 1;
+            if (i < 3){
+                k = 0;
+            }  else if (i > 5){
+                k = 2;
+            }
+            for (let j = 0; j < sterg[i].length; j++) {
+                if (sterg[i][j] == -1){
+                    continue;
+                }
+                if (j < 3){
+                    sek[k][0] += sterg[i][j];
+                } else if (j > 5){
+                    sek[k][2] += sterg[i][j];
+                } else {
+                    sek[k][1] += sterg[i][j];
+                }
+            }
         }
+        return sek;
     }
 
+function get_sektor_number(i, j){
+    let x = Math.floor(i / 3);
+    let y = Math.floor(j / 3);
+    return x * 3 + y;
 }
+

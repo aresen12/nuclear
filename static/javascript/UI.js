@@ -18,16 +18,13 @@ function show_mnemo_i_j(value, i, j){
     try{
         var m = document.getElementById(`m${i}_${j}`);
         if (value == 100){
-            m.style.background = "green";
-            m.textContent = "";
-        } else if (value >= 50){
-            m.style.background = "#faf74d";
-            m.textContent = value;
+//            m.style.background = "green";
+        } else if (value == 0){
+            m.style.background = "#ffb961";
         } else {
-            m.style.background = "red";
-            m.textContent = value;
+            m.style.background = "";
         }
-
+    m.textContent = value;
     }catch(error){
     }
 }
@@ -40,6 +37,10 @@ function my_alert(id_error){
     } else {
         div.style.background = "";
     }
+}
+
+function set_background(number){
+    document.getElementById("main").style.background = "#a3a3a3";
 }
 
 
@@ -74,6 +75,36 @@ function start_UI(reactor){
     }
     if(!reactor.rdg2.work){
         reactor.az.temporary_alert.push(new TemporaryAlert(`turn_down_${reactor.rdg2.id_rdg}`, 1, true));
+    }
+    for (let i = 0; i < reactor.chosen.length; i++){
+        chosen(reactor.chosen[i][0], reactor.chosen[i][1], true);
+    }
+    ui_power("lar_s", reactor.az.power_ar);
+}
+
+
+function ui_thermal_power_mnemo(sek){
+
+    for (let i = 0; i < 9; i++) {
+            for (let j = 0; j < re.sterg[i].length; j++) {
+                if (re.sterg[i][j] == -1){
+                    continue;
+                }
+                ui_thermal_power_laz(i, j, sek[get_sektor_number(i, j)])
+            }
+    }
+
+}
+
+// type  1 - danger 2 - 3 - green
+function ui_thermal_power_laz(i, j, type){
+    var div = document.getElementById(`m2${i}_${j}`);
+    if (type == 1){
+        div.style.background = "red";
+    } else if (type == 2) {
+        div.style.background = "#fcf172";
+    } else {
+        div.style.background = "green";
     }
 }
 

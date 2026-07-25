@@ -5,7 +5,9 @@ var COOLANT_MASS = 150000;  // кг воды в контуре
 var FUEL_HEAT_CAPACITY = 2.4e8;  // Дж/K
 var GRAPHITE_HEAT_CAPACITY = 8.5e8; // # Дж/K
 var GRAPHITE_DIRECT_HEATING = 0.055;  //# 5.5% энергии идет в графит
-
+var BASE_VOID = 0.15;
+var BASE_FUEL_TEMP = 270 + 250.0;
+var BASE_GRAPHITE_TEMP = 270 + 180.0;
 // НЕЙТРОНЫ ТАМ ЧТО ТО КИНЕТИКА
 BETA = 0.0065;
 LAMBDA_PROMPT = 0.0001;
@@ -56,9 +58,8 @@ class Reactor{
         this.bs1 = new BS(1);
         this.bs2 = new BS(2); //
         this.T_2_H2O = 190; // температура во втором контуре
-        this.az = new Az(this); // класс аварийной защиты
         this.t_boil = this.get_boiling_point(this.p_in_reactor)
-        this.temp_in = (this.bs1.T_H2O + this.bs2.T_H2O) / 2; // прописать для случая с одним БС
+        this.temp_in = 270; // прописать для случая с одним БС
         this.thermal_power = 0e6;
         this.rho_total = 0;
         this.fuel_temp = this.temp_in + 250.0;
@@ -66,9 +67,6 @@ class Reactor{
         this.coolant_temp = this.temp_in;
         this.outlet_temp = this.coolant_temp;
         this.void_fraction = 0.15;
-        this.BASE_FUEL_TEMP = this.fuel_temp;
-        this.BASE_GRAPHITE_TEMP = this.graphite_temp;
-        this.BASE_VOID = this.void_fraction;
         this.precursors = [];
         this.gcn["1_n"].turn_on_or_down();
         this.gcn["2_n"].turn_on_or_down();
@@ -80,14 +78,15 @@ class Reactor{
         this.w_e = 0;
         this.ozr = 0;
         this.time = 0;
+        this.az = new Az(this); // класс аварийной защиты
         this.pause = false;
         this.update_ozr();
         this.rdg1.start_ui();
         for (let i = 0; i < DELAYED_GROUPS.length; i++){
             this.precursors.push((DELAYED_GROUPS[i]["beta"] / (LAMBDA_PROMPT * DELAYED_GROUPS[i]["lambda"])) * this.thermal_power);
-    }
-    show_mnemo(this);
-    start_UI(this);
+        }
+        show_mnemo(this);
+        start_UI(this);
 
     }
 
@@ -105,7 +104,7 @@ class Reactor{
         this.ozr /= k;
     }
 
-    set_unset_up_direction() {            print( request.form["private"])
+    set_unset_up_direction() {
         if (!this.az.power_SYZ){
             return;
         }
@@ -197,18 +196,16 @@ class Reactor{
             this.gcn[k[i]].update();
         }
          this.temp_in = (this.bs1.T_H2O * (this.gcn["1_n"].g + this.gcn["1_a"].g) + this.bs2.T_H2O * (this.gcn["2_n"].g + this.gcn["2_a"].g)) / ((this.gcn["1_n"].g + this.gcn["2_n"].g + this.gcn["1_a"].g + this.gcn["2_a"].g));
-         this.rho_void = ALPHA_VOID * (this.void_fraction - this.BASE_VOID) * 100.0;
-         this.rho_fuel = ALPHA_FUEL * (this.fuel_temp - this.BASE_FUEL_TEMP);
-        this.rho_graphite = ALPHA_GRAPHITE * (this.graphite_temp - this.BASE_GRAPHITE_TEMP);
+         this.rho_void = ALPHA_VOID * (this.void_fraction - BASE_VOID) * 100.0;
+         this.rho_fuel = ALPHA_FUEL * (this.fuel_temp - BASE_FUEL_TEMP);
+        this.rho_graphite = ALPHA_GRAPHITE * (this.graphite_temp - BASE_GRAPHITE_TEMP);
         this.rho_rods = this.calculate_rods_reactivity();
         if (this.fuel_temp > 2400.0){
             this.rho_fuel *= 0.1;
         }
         let water_flow = (this.gcn["1_n"].g + this.gcn["2_n"].g + this.gcn["1_a"].g + this.gcn["2_a"].g) / 3.6;
-       console.log(water_flow, this.temp_in);
         this.rho_total = this.rho_rods + this.rho_void + this.rho_fuel + this.rho_graphite;
          // 2. НЕЙТРОННАЯ КИНЕТИКА (Интегрирование лавины)
-//        console.log(this.rho_rods, this.rho_void, this.rho_void, this.rho_graphite);
         let dt = 0.001;
         for (let _ = 0; _ < 1000; _++){
             let delayed_sum = 0;
@@ -279,7 +276,6 @@ class Reactor{
         let w = ["3_n", "4_n", "2_n", "1_n", "3_a", "4_a", "2_a", "1_a"];
         let j = 0;
         while (this.w_e < w_e_use){
-            console.log(this.gcn[w[j]], w[j]);
             if (this.gcn[w[j]].work){
                 this.gcn[w[j]].turn_on_or_down();
             }
@@ -333,8 +329,6 @@ class RemoteControl extends Reactor{
 
     chosen_current(i, j){
         socket.emit("chosen_current", {"i": i, "j": j, "room": room_id});
-//        chosen(i, j);
-        console.log("choosen_sss")
     }
 
     update(){

@@ -23,6 +23,7 @@ function set_w_ar(){
 function gener_json(){
     var data = {
         "room": room_id,
+        "period_power": re.az.period_power,
         "sterg": re.sterg,
         "ozr": re.ozr,
         "graphite_temp": re.graphite_temp,
@@ -91,14 +92,24 @@ function gener_json(){
 }
 
 
-function save_game(){
+function gener_json_DB(){
+    data = gener_json();
+    data["precursors"] = re.precursors;
+    data["void_fraction"] = re.void_fraction;
+    data["coolant_temp"] = re.coolant_temp;
+    data["t_boil"] = re.t_boil;
+    data["ar"] = re.az.ar;
+    return data;
+}
 
+
+function save_game(){
     $.ajax({
     url: '/save_game',
     type: 'POST',
     dataType: 'json',
     contentType:'application/json',
-    data: JSON.stringify(gener_json()),
+    data: JSON.stringify(gener_json_DB()),
     success: function(json){
 
         },
@@ -106,6 +117,16 @@ function save_game(){
         console.error(err);
     }
 });
+}
+
+function load_data_DB(json){
+    load_data(json);
+    re.precursors = json["precursors"];
+    re.void_fraction = json["void_fraction"];
+    re.coolant_temp = json["coolant_temp"];
+    re.t_boil = json["t_boil"];
+    re.az.ar = json["ar"];
+    start_UI(re);
 }
 
 
@@ -118,7 +139,7 @@ function load_game_from_db(){
     success: function(json){
         console.log(json);
         if (json){
-            load_data(json);
+            load_data_DB(json);
             setup_UI(re);
             show_mnemo(re);
         } else {
@@ -167,6 +188,7 @@ function load_data(data){
     re.graphite_temp = data["graphite_temp"];
     re.az.ozr_ar = data["ozr_ar"];
     re.az.power_ar = data["power_ar"];
+    re.az.period_power = data["period_power"];
     var k = Object.keys(data["gcn"]);
     for (let i = 0; i < k.length; i++){
         re.gcn[k[i]].g = data["gcn"][k[i]]["g"];

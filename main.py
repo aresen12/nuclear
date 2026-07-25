@@ -130,6 +130,14 @@ def info_turnover():
     return render_template("turnover_info.html", title="Турбина РБМК")
 
 
+@application.route("/skala/<id_bsm>")
+def skala(id_bsm):
+    file = open("db/errors.json")
+    errors = file.read()
+    file.close()
+    return render_template("skala.html", errors=errors, title="Скала", id_reactor=id_bsm)
+
+
 @application.route("/save_game", methods=["POST"])
 def save_to_db():
     data = request.get_json()

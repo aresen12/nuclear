@@ -35,7 +35,7 @@ socket.on('method_send', (data) => {
     if (!copy){
 
         if(data["function"] == "az5"){
-            re.az.az5();
+            re.az.az5(data["manual"]);
         } else if(data["function"] == "baz"){
             re.az.baz();
         } else if(data["function"] == "set_unset_up_direction"){

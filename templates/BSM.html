@@ -5,16 +5,16 @@
     <title>{{title}}</title>
     <link href="/static/css/bsm.css" rel="stylesheet" type="text/css">
     <link href="/static/css/buttons.css" rel="stylesheet" type="text/css">
-
+    <link rel="icon" href="/static/img/main.ico">
 </head>
 <body>
 <button type="button" class="exit-btn btn btn-light" onclick="pause()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause" viewBox="0 0 16 16">
   <path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5"/>
 </svg></button>
-<div class="main-content" style="">
-    <div style="display:flex;height:95vh;align-items: flex-start;">
+<div class="main-content main-cont" >
+    <div style="display:flex;height:95vh;align-items: flex-start;" >
 <!--        ТУрбина-->
-        <div  class="column-bsm ">
+        <div  class="column-bsm">
             <div class="up-panel">давление
             <input id="p_in_reactor" class="input-big">
             <div>
@@ -46,7 +46,7 @@
            <div style="display:flex;">
             Турбина 2 <div>
                         АПП
-                        <div id="APP_t2_s" class="signal"></div>
+                        <div id="APP_t2_s" class="signal" ></div>
                     </div>
                 </div>
             <div style="display:flex;">
@@ -160,12 +160,33 @@
                         Опускать
                         <div id="down_direction" class="signal"></div>
                         </div>
-                    <div>
+<div>
+            {% for i in range(0, 9)%}
+            <div class="row-mnemo">
+                {% for j in range(0, 9)%}
+                {% if s[i][j] == 1 %}
+                        <div id="m{{i}}_{{j}}" class="mnemo-ball mnemo-ball-rr"></div>
+                {% elif s[i][j] == 2 %}
+                     <div id="m{{i}}_{{j}}" class="mnemo-ball mnemo-ball-ysp"></div>
+                {% elif s[i][j] == 3 %}
+                     <div id="m{{i}}_{{j}}" class="mnemo-ball mnemo-ball-baz"></div>
+                {% elif s[i][j] == 4 %}
+                     <div id="m{{i}}_{{j}}" class="mnemo-ball mnemo-ball-lar"></div>
+                {% elif s[i][j] == 5 %}
+                     <div id="m{{i}}_{{j}}" class="mnemo-ball mnemo-ball-laz"></div>
+                {% else %}
+                <div class="mnemo-ball2"></div>
+                {% endif%}
+                {% endfor %}
+                </div>
+            {% endfor %}
+                        </div>
+                    <div class="mnemo-contr">
             {% for i in range(0, 9)%}
             <div class="row-mnemo">
                 {% for j in range(0, 9)%}
                 {% if (i < 3 and (2 - i <= j <= 8 - (2 - i))) or (5 >= i >= 3) or (i > 5 and (i - 6 <= j <= 8 - (i - 6)))%}
-                <div id="m{{i}}_{{j}}" class="mnemo-s "></div>
+                <div id="m2{{i}}_{{j}}" class="mnemo-s "></div>
                 {% else %}
                 <div class="mnemo-sell"></div>
                 {% endif%}
@@ -173,6 +194,7 @@
                 </div>
             {% endfor %}
                         </div>
+
                     <div>
                         АЗС АЗСР
                         <br> Т графита<input class="input-big" id="grafit_temp">
@@ -181,33 +203,27 @@
                         <br> ОЗР<input class="input-big" id="ozr">
                     </div>
                     </div>
-            <div style="display:flex;">
+<div style="display:flex;">
                 <div>
                 <div id="high_rho_total" class="alert-error">Большая реактивность</div>
                 <div id="alert_power_q" class="alert-error">Высокая мощность</div>
                 <div id="alert_baz" class="alert-error">БАЗ</div>
-                <div id="alert_az_1" class="alert-error">АЗ-1</div>
-                <div id="alert_az_2" class="alert-error">АЗ-2</div>
-                <div id="alert_az_5" class="alert-error">АЗ-5</div>
+
 
                     </div>
                 <div>
-                    <div id="alert_laz_1" class="alert-error">ЛАЗ-1</div>
-                <div id="alert_laz_2" class="alert-error">ЛАЗ-2</div>
-                <div id="alert_laz_3" class="alert-error">ЛАЗ-3</div>
-                <div id="alert_laz_4" class="alert-error">ЛАЗ-4</div>
-                <div id="alert_laz_5" class="alert-error">ЛАЗ-5</div>
-                <div id="alert_laz_6" class="alert-error">ЛАЗ-6</div>
+                    <div id="alert_az" class="alert-error">ПК-АЗ</div>
+<div id="alert_az_1" class="alert-error">АЗ-1</div>
+                <div id="alert_az_2" class="alert-error">АЗ-2</div>
+                <div id="alert_az_5" class="alert-error">АЗ-5</div>
                     </div>
-                <div><div id="alert_laz_7" class="alert-error">ЛАЗ-7</div>
-                <div id="alert_laz_8" class="alert-error">ЛАЗ-8</div>
-                <div id="alert_laz_9" class="alert-error">ЛАЗ-9</div>
+                <div>
                     <div class="alert-error">АР неиспр</div>
                     <div id="ar_turn_down" class="alert-error">АР откл</div>
                     <div id="azsr_turn_down" class="alert-error">АЗСР откл</div>
+                    <div id="azs_turn_down" class="alert-error">АЗС откл</div>
                 </div>
                 <div>
-                    <div id="azs_turn_down" class="alert-error">АЗС откл</div>
                     <div id="high_speed_power" class="alert-error">Превыш Скор</div>
                     <div id="m_ozr_ar" class="alert-error">М ОЗР АР</div>
                     <div id="m_ozr" class="alert-error">М ОЗР</div>
@@ -521,6 +537,7 @@ W
         <a class="btn btn-danger" href="/">На главное меню</a>
         <button  class="btn btn-success" onclick="save_game()">Сохранить игру</button>
         <button  class="btn btn-success" onclick="stop_pause()">Продолжить</button>
+        <button  class="btn btn-success" onclick="set_background(1)">Сменить цвет</button>
     </div>
 </div>
 </body>
