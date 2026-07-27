@@ -13,17 +13,21 @@ function send_update(){
 }
 
 socket.on('chosen_delete', (data) => {
-    if (!copy){
-    re.chosen_delete(data["i2"])
+    if (!rc.copy){
+        re.chosen_delete(data["i2"])
     }
+});
+socket.on('connect_other_room', (data) => {
+    rc.connect(data["id_device"]);
 });
 
 socket.on('set_w_ar', (data) => {
-    if (!copy){
+    if (!rc.copy){
         re.az.set_w_ar(data["w"]);
-
     }
 });
+
+
 socket.on('set_unset_down_direction', (data) => {
     if (!copy){
         re.set_unset_down_direction();
@@ -32,8 +36,7 @@ socket.on('set_unset_down_direction', (data) => {
 
 
 socket.on('method_send', (data) => {
-    if (!copy){
-
+    if (!rc.copy){
         if(data["function"] == "az5"){
             re.az.az5(data["manual"]);
         } else if(data["function"] == "baz"){
@@ -117,14 +120,14 @@ chosen(data["i"], data["j"], false);
 
 
 socket.on('chosen_current', (data) => {
-    if (!copy){
+    if (!rc.copy){
     re.chosen_current(data["i"], data["j"]);
     }
 });
 
 
 socket.on('update', (data) => {
-    if (copy){
+    if (rc.copy){
         load_data(data);
         setup_UI(re);
     }

@@ -149,8 +149,6 @@ class Az{
                 my_alert(`alert_az`);
             }
         }
-
-
     }
 
     update_laz(){
@@ -171,7 +169,7 @@ class Az{
         for (let i = 0; i < sek.length; i++) {
             for (let j = 0; j < sek[i].length; j++) {
                 if ((i == 0 | i == 2) & (j == 0 | j == 2)){
-                    if (sek[i][j]  > s * (2 / 3)){
+                    if (sek[i][j] * 0.9 > s * (2 / 3)){
                         this.set_position_laz(get_s_number(i, j), -1, 2);
                         color_mnemo.push(2);
                     } else if (sek[i][j] < s * (2 / 3)) {
@@ -179,7 +177,7 @@ class Az{
                         color_mnemo.push(1);
                     }
                 } else{
-                    if (sek[i][j] > s){
+                    if (sek[i][j] * 0.9 > s){
                         this.set_position_laz(get_s_number(i, j), -1, 2);
                         color_mnemo.push(2);
                     } else if (sek[i][j] < s) {
@@ -320,10 +318,14 @@ class Az{
         if (this.mode == 1){
             this.mode = 0;
             turn("azs_start", 0);
+            stop_alert("azs_on");
             this.temporary_alert.push(new TemporaryAlert('azs_turn_down', 2))
         } else {
             this.mode = 1;
             turn("azs_start", 1);
+            turn("azsr_start", 0);
+            green_alert("azs_on")
+            stop_alert("azsr_on");
         }
     }
 
@@ -331,10 +333,14 @@ class Az{
         if (this.mode == 2){
             this.mode = 0;
             turn("azsr_start", 0);
+            stop_alert("azsr_on");
             this.temporary_alert.push(new TemporaryAlert('azsr_turn_down', 2))
         } else {
             this.mode = 2;
             turn("azsr_start", 1);
+            turn("azs_start", 0);
+            stop_alert("azs_on");
+            green_alert("azsr_on");
         }
     }
 

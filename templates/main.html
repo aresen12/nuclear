@@ -6,7 +6,7 @@
           integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <title>{{title}}</title>
     <meta name="description" content="{{description}}">
-
+    <link rel="icon" href="/static/img/main.ico">
 </head>
 <body>
 <header>
@@ -33,19 +33,42 @@
     <li>{{user.id}} - {{user.name}}</li>
 {% endfor %}
 </ul>
-Реакторы<ul>
-
+<h1>Реакторы</h1>
+<table>
+    <tr>
+        <th>№</th>
+        <th>Назваеие</th>
+        <th>Активнсть</th>
+        <th>Количество пользователей</th>
+    </tr>
 {% for reactor in reactors %}
-    <li>{{reactor.id}} - {{reactor.name}}  {% if reactor.activiti %} Активен {% else %} Неактивен {% endif %}
+
+    <tr>
+        <td>{{reactor.id}}</td>
+        <td>{{reactor.name}}</td>
+        <td>
+        {% if reactor.activiti %} Активен {% else %} Неактивен {% endif %}
+        </td>
+        <td>
+            {{reactor.cnt_player}}
+        </td>
+        <td>
         {% if current_user.is_authenticated and current_user.id == reactor.main_player %}
-        <a  type="button" class="btn btn-danger" href="/b/{{reactor.id}}">Организатор</a>
+        <a  type="button" class="btn btn-success" href="/b/{{reactor.id}}">Организатор</a>
+        <a  type="button" class="btn btn-danger" href="/delete/{{reactor.id}}">Удалить</a>
         {% else %}
         <a href="/b/user/{{reactor.id}}" type="button" class="btn btn-secondary">Игроки</a>
         {% endif %}
-    </li>
+        </td>
+    </tr>
 {% endfor %}
-</ul>
+</table>
 
 <a type="button" class="btn btn-success" href="/add_new_reactor">Добавить новый реактор</a>
+<h1>Что такаое реактор РБМК-1000</h1>
+<p>
+Реактор большой мощности канальный (РБМК) — серия энергетических ядерных реакторов, разработанных в Советском Союзе.
+    Взорвавшийся на ЧАЭС реактор был такого же типа. С помощью нашего симулятора вы можете управлять им в расщиренном режиме.
+</p>
 </body>
 </html>

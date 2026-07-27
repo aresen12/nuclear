@@ -8,158 +8,30 @@
     <link rel="icon" href="/static/img/main.ico">
 </head>
 <body>
-<button type="button" class="exit-btn btn btn-light" onclick="pause()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause" viewBox="0 0 16 16">
+<button id="pause_btn" type="button" class="exit-btn btn btn-light" onclick="pause()">
+       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause"
+            viewBox="0 0 16 16">
   <path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5"/>
-</svg></button>
+</svg>
+    </button>
 <div class="main-content main-cont" >
     <div style="display:flex;height:95vh;align-items: flex-start;" >
-<!--        ТУрбина-->
-        <div  class="column-bsm">
-            <div class="up-panel">давление
-            <input id="p_in_reactor" class="input-big">
-            <div>
-                <div style="display:flex;">
-            Турбина 1 <div>
-                        АПП
-                        <div id="APP_t1_s" class="signal"></div>
-                    </div>
-                </div>
-            <div style="display:flex;">
-                ОБР
-        <input id="obr_t1" class="input-big">
-            <div>
-                W эл
-            <input id="w_e1" class="input-big">
-                </div>
-            <div>
-
-                дав пусковое
-                <input id="p_start1" class="input-big">
-                </div>
-                <div>
-                G max
-                <input id="g_max_t1" class="input-big">
-                    <input id="m_sep1" class="input-big">
-                </div>
-
-            </div>
-           <div style="display:flex;">
-            Турбина 2 <div>
-                        АПП
-                        <div id="APP_t2_s" class="signal" ></div>
-                    </div>
-                </div>
-            <div style="display:flex;">
-                ОБР
-        <input id="obr_t2" class="input-big">
-            <div>
-                W эл
-            <input id="w_e2" class="input-big">
-                </div>
-            <div>
-                дав пусковое
-                <input id="p_start2" class="input-big">
-                </div>
-                <div>
-                G max
-                <input id="g_max_t2" class="input-big">
-                <input id="m_sep2" class="input-big">
-                </div>
-            </div>
-                <div style="display:flex;">
-                    <div >
-                    РДГ1
-                    <div>
-                    Включен<div id="rdg1_s" class="signal"></div>
-                        </div>
-                    W, КВТ
-                    <input id="rdg1_p" class="input-big">
-                        </div>
-                    <div>
-                    РДГ2
-                    <div>
-                    Включен<div id="rdg2_s" class="signal"></div>
-                        </div>
-                    W, КВТ
-                    <input id="rdg2_p" class="input-big">
-                        </div>
-                </div>
-            <div style="display:flex;">
-                <div>
-                <div id="alert_high_e_power_t1" class="alert-error">Высокая мощность ТГ1</div>
-                <div id="alert_high_turnovers1" class="alert-error">Высокие обороты ТГ1</div>
-                <div id="alert_high_turnovers2" class="alert-error">Высокие обороты ТГ2</div>
-                <div id="alert_high_e_power_t2" class="alert-error">Высокая мощность ТГ2</div>
-                   <div id="error_t1" class="alert-error">ТГ1 неиспр</div>
-                <div id="error_t2" class="alert-error">ТГ2 неиспр</div>
-            </div>
-                <div>
-
-                <div id="turn_down_rdg2" class="alert-error">РДГ2 откл</div>
-                <div id="turn_down_rdg1" class="alert-error">РДГ1 откл</div>
-                <div id="turn_down_t2" class="alert-error">ТГ2 откл</div>
-                <div id="turn_down_t1" class="alert-error">ТГ1 откл</div>
-                <div id="m_down_t1" class="alert-error">ТГ1 потеря момента</div>
-                <div id="m_down_t2" class="alert-error">ТГ2 потеря момента</div>
-                    </div>
-            </div>
-            </div>
-                </div>
-            <div class="down-panel" style="display:flex;">
-                {% for i in range(1, 3)%}
-                <div >
-                    Турбина {{i}}<br>
-                    <div><button class="az-btn" onclick="re.t{{i}}.turn_on_or_down()">ВКЛ
-                 <div id="t{{i}}_t_btn">
-                     <svg  version="1.1" xmlns="http://www.w3.org/2000/svg" width="20px"
-                           height="20px" viewBox="0 0 32 32" xml:space="preserve" fill="#000000">
-                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                         <g id="SVGRepo_iconCarrier"> <style type="text/css"> .puchipuchi_een{fill:#111918;} </style>
-                             <path class="puchipuchi_een" d="M30,17c0,7.72-6.28,14-14,14S2,24.72,2,17C2,10.311,6.718,4.71,13,3.332v4.129 C8.948,8.739,6,12.531,6,17c0,5.514,4.486,10,10,10s10-4.486,10-10c0-4.469-2.948-8.261-7-9.539V3.332C25.282,4.71,30,10.311,30,17z M16,13c1.104,0,2-0.896,2-2V3c0-1.104-0.896-2-2-2s-2,0.896-2,2v8C14,12.104,14.896,13,16,13z">
-
-                             </path> </g></svg>
-                </div></button></div>
-<!--                <button onclick="re.t{{i}}.turn_on_or_down()">ВКЛ</button>-->
-                    пар <button class="black-btn" onclick="re.t{{i}}.set_unset_up_direction()">Б</button>
-                    <button class="black-btn" onclick="re.t{{i}}.set_unset_down_direction()">М</button>
-                    <button onclick="re.t{{i}}.start()">ПУСК</button><br>
-                    <div style="display:flex;">
-                    пар <button id="t{{i}}_direction_steam" onclick="re.t{{i}}.set_steam_direction()">\ </button><div>
-                    <div>Пусковой отсек</div>
-                    <div>Турбина</div>
-                </div></div>
-                    </div>
-                {% endfor %}
-
-                <div style="display:flex;">
-                    <div >
-                    РДГ1
-                        <button class="black-btn" onclick="re.rdg1.turn_on_or_down()">ВКЛ</button>
-                        </div>
-                    <div>
-                    РДГ2
-                        <button class="black-btn" onclick="re.rdg2.turn_on_or_down()">ВКЛ</button>
-                        </div>
-                </div>
-            </div>
-        </div>
-<!--            СУЗ-->
+    <!--            СУЗ-->
         <div style="" class="column-bsm ">
             <div class="up-panel">
                 СФКРЭ
-        <input id="W_Q" class="input-big">
+        <input id="W_Q" class="input-big" readonly>
             Реактивность
-        <input id="reactivnost" class="input-big">
+        <input id="reactivnost" class="input-big" readonly>
                 <div style="display:flex;">
                     <div>АР<br>
                     Включен<div id="lar_s" class="signal"></div>
-                        <input class="input-big" id="power_lar_show">
-                        Извлекать
-                        <div id="up_direction" class="signal"></div>
-                        Опускать
-                        <div id="down_direction" class="signal"></div>
-                        </div>
+                        <input class="input-big" id="power_lar_show" readonly>
+                        <br> Скор
+                        <input class="input-big" id="speed_power" readonly>
+                        <br> ОЗР АР %
+                        <input class="input-big" id="ozr_ar" readonly>
+                         </div>
 <div>
             {% for i in range(0, 9)%}
             <div class="row-mnemo">
@@ -194,46 +66,42 @@
                 </div>
             {% endfor %}
                         </div>
-
                     <div>
-                        АЗС АЗСР
-                        <br> Т графита<input class="input-big" id="grafit_temp">
-                        <br> Скор<input class="input-big" id="speed_power">
-                        <br> ОЗР АР<input class="input-big" id="ozr_ar">
-                        <br> ОЗР<input class="input-big" id="ozr">
+                        <br> Т графита<input class="input-big" id="grafit_temp" readonly>
+                        <br> ОЗР<input class="input-big" id="ozr" readonly>
                     </div>
                     </div>
 <div style="display:flex;">
                 <div>
                 <div id="high_rho_total" class="alert-error">Большая реактивность</div>
-                <div id="alert_power_q" class="alert-error">Высокая мощность</div>
+                <div id="alert_power_q" class="alert-error">АЗС-Р</div>
                 <div id="alert_baz" class="alert-error">БАЗ</div>
-
-
+<div id="alert_az" class="alert-error">ПК-АЗ</div>
                     </div>
                 <div>
-                    <div id="alert_az" class="alert-error">ПК-АЗ</div>
-<div id="alert_az_1" class="alert-error">АЗ-1</div>
+                <div class="alert-error">АР неиспр</div>
+                <div id="alert_az_1" class="alert-error">АЗ-1</div>
                 <div id="alert_az_2" class="alert-error">АЗ-2</div>
                 <div id="alert_az_5" class="alert-error">АЗ-5</div>
                     </div>
                 <div>
-                    <div class="alert-error">АР неиспр</div>
                     <div id="ar_turn_down" class="alert-error">АР откл</div>
                     <div id="azsr_turn_down" class="alert-error">АЗСР откл</div>
                     <div id="azs_turn_down" class="alert-error">АЗС откл</div>
+                    <div id="azsr_on" class="alert-error">АЗСР-ВКЛ</div>
                 </div>
                 <div>
+                    <div id="azs_on" class="alert-error">АЗС-ВКЛ</div>
                     <div id="high_speed_power" class="alert-error">Превыш Скор</div>
                     <div id="m_ozr_ar" class="alert-error">М ОЗР АР</div>
                     <div id="m_ozr" class="alert-error">М ОЗР</div>
-                    <div id="az_call" class="alert-error">аз набран</div>
-
                 </div>
-
-<!--                <div>Критически низкая мощность</div>-->
-
-
+                <div>
+                    <div id="az_call" class="alert-error">аз набран</div>
+                    <div id="up_direction" class="alert-error">Извлек</div>
+                    <div id="down_direction" class="alert-error">Опуск</div>
+                    <div id="azs" class="alert-error">АЗС</div>
+                </div>
             </div>
                 </div>
              <div class="down-panel">
@@ -313,11 +181,11 @@
                          </div>
                 <div class="cow">
                     <div>
-                        <button onclick="re.set_speed_SYZ(1)">1</button>
-                        <button onclick="re.set_speed_SYZ(2)">2</button>
-                        <button onclick="re.set_speed_SYZ(3)">3</button>
-                        <button onclick="re.set_speed_SYZ(4)">4</button>
-                        <button onclick="re.set_speed_SYZ(5)">5</button>
+                        <button id="s1" onclick="re.set_speed_SYZ(1)">1</button>
+                        <button id="s2" onclick="re.set_speed_SYZ(2)">2</button>
+                        <button id="s3" onclick="re.set_speed_SYZ(3)">3</button>
+                        <button id="s4" onclick="re.set_speed_SYZ(4)">4</button>
+                        <button id="s5" onclick="re.set_speed_SYZ(5)">5</button>
                     </div>
                     <button class="black-btn" onclick="re.set_unset_up_direction()">Извлек</button>
             <button class="black-btn"  onclick="re.set_unset_down_direction()">Опуск</button>
@@ -360,39 +228,39 @@
         </div>
              </div>
         </div>
-        <div style="" class="column-bsm ">
+               <div style="" class="column-bsm ">
             <div class="up-panel">
             <div style="display:flex;">
                 <div>
                     <div>
                     <div>
                 Т воды в БС<br>
-            <input id="T_H2O1" class="input-big">
+            <input id="T_H2O1" class="input-big" readonly>
                 </div>
                     <div> уровень воды<br>
-                    <input id="h_braban_s1" class="input-big">
+                    <input id="h_braban_s1" class="input-big" readonly>
                 </div>
                     </div>
 
                 </div><div>
                     <div>
                 Т воды в БС<br>
-            <input id="T_H2O2" class="input-big">
+            <input id="T_H2O2" class="input-big" readonly>
                 </div>
                     <div> уровень воды<br>
-                    <input id="h_braban_s2" class="input-big">
+                    <input id="h_braban_s2" class="input-big" readonly>
                 </div>
                     </div>
             <div>
             Т ПВС    Т_твэл<br>
-            <input id="T_reactor" class="input-big">
+            <input id="T_reactor" class="input-big" readonly>
 
-            <input id="fuel_temp" class="input-big">
+            <input id="fuel_temp" class="input-big" readonly>
                 </div>
 
                 <div>
                 Т воды в 2 контуре<br>
-            <input id="T_2_H2O" class="input-big">
+            <input id="T_2_H2O" class="input-big" readonly>
                 </div>
             </div>
             <div>
@@ -405,7 +273,7 @@
                     {% else %}
                     ПЭН{{j - 2 }}
                     {% endif %}
-            <input id="{{j}}_n" class="input-big">
+            <input id="{{j}}_n" class="input-big" readonly>
                     <div>
                     питаниe<div id="{{j}}_n_s" class="signal"></div>
                         </div>
@@ -420,9 +288,10 @@
                     {% else %}
                     ПЭН{{j - 2 }}
                     {% endif %}<br>
-            <input id="{{j}}_a" class="input-big"><br>
-W
-                <input class="input-big"><div>
+            <input id="{{j}}_a" class="input-big" readonly><br>
+<!--W-->
+<!--                <input class="input-big">-->
+<div>
                     питаниe<div id="{{j}}_a_s" class="signal"></div>
                         </div>
                     </div>
@@ -471,8 +340,7 @@ W
             </div>
                 </div>
             <div class="down-panel" style="display:flex;">
-                <p>
-                    <div class="panel-item">
+                <p><div class="panel-item">
                 {% for j in range(1, 5)%}
                 <div style="height:50px;display:flex;" >
                 {% if j < 3 %}
@@ -528,6 +396,190 @@ W
             </div>
                                 </div>
         </div>
+
+<!--        ТУрбина-->
+        <div  class="column-bsm">
+            <div class="up-panel">давление
+            <input id="p_in_reactor" class="input-big">
+            <div>
+                <div style="display:flex;">
+            Турбина 1 <div>
+                        АПП
+                        <div id="APP_t1_s" class="signal"></div>
+                    </div>
+                </div>
+            <div style="display:flex;">
+                ОБР
+        <input id="obr_t1" class="input-big">
+            <div>
+                W эл
+            <input id="w_e1" class="input-big">
+                </div>
+            <div>
+                дав пусковое
+                <input id="p_start1" class="input-big">
+                </div>
+                <div>
+                G max
+                <input id="g_max_t1" class="input-big">
+                    <input id="m_sep1" class="input-big">
+                </div>
+
+            </div>
+           <div style="display:flex;">
+            Турбина 2 <div>
+                        АПП
+                        <div id="APP_t2_s" class="signal" ></div>
+                    </div>
+                </div>
+            <div style="display:flex;">
+                ОБР
+        <input id="obr_t2" class="input-big">
+            <div>
+                W эл
+            <input id="w_e2" class="input-big">
+                </div>
+            <div>
+                дав пусковое
+                <input id="p_start2" class="input-big">
+                </div>
+                <div>
+                G max
+                <input id="g_max_t2" class="input-big">
+                <input id="m_sep2" class="input-big">
+                </div>
+            </div>
+                <div style="display:flex;">
+                    <div >
+                    РДГ1
+                    <div>
+                    Включен<div id="rdg1_s" class="signal"></div>
+                        </div>
+                    W, КВТ
+                    <input id="rdg1_p" class="input-big" readonly>
+                        </div>
+                    <div>
+                    РДГ2
+                    <div>
+                    Включен<div id="rdg2_s" class="signal"></div>
+                        </div>
+                    W, КВТ
+                    <input id="rdg2_p" class="input-big" readonly>
+                        </div>
+
+                        <div>
+                        ЛЭП1<br>
+                        <input id="power_lep1" class="input-big" readonly> кВт
+                        </div>
+
+                    <div>
+                        ЛЭП2<br>
+                        <input id="power_lep2" class="input-big" readonly> кВт
+                        </div>
+                </div>
+            <div style="display:flex;">
+                <div>
+                <div id="alert_high_e_power_t1" class="alert-error">Высокая мощность ТГ1</div>
+                <div id="alert_high_turnovers1" class="alert-error">Высокие обороты ТГ1</div>
+                <div id="alert_high_turnovers2" class="alert-error">Высокие обороты ТГ2</div>
+                <div id="alert_high_e_power_t2" class="alert-error">Высокая мощность ТГ2</div>
+                   <div id="error_t1" class="alert-error">ТГ1 неиспр</div>
+                <div id="error_t2" class="alert-error">ТГ2 неиспр</div>
+            </div>
+                <div>
+
+                <div id="turn_down_rdg2" class="alert-error">РДГ2 откл</div>
+                <div id="turn_down_rdg1" class="alert-error">РДГ1 откл</div>
+                <div id="turn_down_t2" class="alert-error">ТГ2 откл</div>
+                <div id="turn_down_t1" class="alert-error">ТГ1 откл</div>
+                <div id="m_down_t1" class="alert-error">ТГ1 потеря момента</div>
+                <div id="m_down_t2" class="alert-error">ТГ2 потеря момента</div>
+                    </div>
+                <div>
+                    <div id="rdg1_broken" class="alert-error">РДГ1 неиспр</div>
+                    <div id="rdg2_broken" class="alert-error">РДГ2 неиспр</div>
+                    <div id="lep1_broken" class="alert-error">ЛЭП1 неиспр</div>
+                    <div id="lep2_broken" class="alert-error">ЛЭП2 неиспр</div>
+                </div>
+            </div>
+            </div>
+                </div>
+            <div class="down-panel" style="display:flex;">
+                {% for i in range(1, 3)%}
+                <div >
+                    Турбина {{i}}<br>
+                    <div><button class="az-btn" onclick="re.t{{i}}.turn_on_or_down()">ВКЛ
+                 <div id="t{{i}}_t_btn">
+                     <svg  version="1.1" xmlns="http://www.w3.org/2000/svg" width="20px"
+                           height="20px" viewBox="0 0 32 32" xml:space="preserve" fill="#000000">
+                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                         <g id="SVGRepo_iconCarrier"> <style type="text/css"> .puchipuchi_een{fill:#111918;} </style>
+                             <path class="puchipuchi_een" d="M30,17c0,7.72-6.28,14-14,14S2,24.72,2,17C2,10.311,6.718,4.71,13,3.332v4.129 C8.948,8.739,6,12.531,6,17c0,5.514,4.486,10,10,10s10-4.486,10-10c0-4.469-2.948-8.261-7-9.539V3.332C25.282,4.71,30,10.311,30,17z M16,13c1.104,0,2-0.896,2-2V3c0-1.104-0.896-2-2-2s-2,0.896-2,2v8C14,12.104,14.896,13,16,13z">
+
+                             </path> </g></svg>
+                </div></button></div>
+                    пар <button class="black-btn" onclick="re.t{{i}}.set_unset_up_direction()">Б</button>
+                    <button class="black-btn" onclick="re.t{{i}}.set_unset_down_direction()">М</button>
+                    <button onclick="re.t{{i}}.start()">ПУСК</button><br>
+                    <div style="display:flex;">
+                    пар <button id="t{{i}}_direction_steam" onclick="re.t{{i}}.set_steam_direction()">\ </button><div>
+                    <div>Пусковой отсек</div>
+                    <div>Турбина</div>
+                </div></div>
+                    </div>
+                {% endfor %}
+
+                <div style="">
+                    <div >
+                    РДГ1
+                        <button class="black-btn" onclick="re.rdg1.turn_on_or_down()">ВКЛ</button>
+                        </div>
+                    <div>
+                    РДГ2
+                        <button class="black-btn" onclick="re.rdg2.turn_on_or_down()">ВКЛ</button>
+                        </div>
+                </div>
+                <div >
+                {% for j in range(1, 5)%}
+                <div style="height:50px;" >
+                {% if j < 3 %}
+                     ГЦН{{j}}
+                    {% else %}
+                    ПЭН{{j - 2 }}
+                    {% endif %}<br>
+                    <div>
+                    <button id="3_source_{{j}}_n" onclick="re.gcn['{{j}}_n'].set_power_source(3)">ЛЭП1</button>
+                    <button id="4_source_{{j}}_n" onclick="re.gcn['{{j}}_n'].set_power_source(4)">ЛЭП2</button>
+                    <button id="1_source_{{j}}_n" onclick="re.gcn['{{j}}_n'].set_power_source(1)">РДГ1</button>
+                    <button id="2_source_{{j}}_n" onclick="re.gcn['{{j}}_n'].set_power_source(2)">РДГ2</button>
+                   </div>
+                    </div>
+                {% endfor %}
+
+                </div>
+                <div class="">
+                {% for j in range(1, 5)%}
+                <div style="height:50px;" >
+                {% if j < 3 %}
+                     АГЦН{{j}}
+                    {% else %}
+                    АПН{{j - 2 }}
+                    {% endif %}<br>
+                    <div>
+                <button id="3_source_{{j}}_a"  onclick="re.gcn['{{j}}_a'].set_power_source(3)">ЛЭП1</button>
+                    <button id="4_source_{{j}}_a"  onclick="re.gcn['{{j}}_a'].set_power_source(4)">ЛЭП2</button>
+                    <button id="1_source_{{j}}_a"  onclick="re.gcn['{{j}}_a'].set_power_source(1)">РДГ1</button>
+                    <button id="2_source_{{j}}_a" onclick="re.gcn['{{j}}_a'].set_power_source(2)">РДГ2</button>
+                   </div>
+                    </div>
+                {% endfor %}
+
+                </div>
+            </div>
+        </div>
+
+
     </div>
     <audio id="play" src="/static/rbmk-scram-sound.mp3" style="display:none;"></audio>
 </div>
@@ -537,7 +589,7 @@ W
         <a class="btn btn-danger" href="/">На главное меню</a>
         <button  class="btn btn-success" onclick="save_game()">Сохранить игру</button>
         <button  class="btn btn-success" onclick="stop_pause()">Продолжить</button>
-        <button  class="btn btn-success" onclick="set_background(1)">Сменить цвет</button>
+        <a  class="btn btn-success" target="_blank" href="/skala/{{id_reactor}}">Скала</a>
     </div>
 </div>
 </body>
@@ -551,9 +603,11 @@ W
 <script src="/static/javascript/pump_classes.js"></script>
 <script src="/static/javascript/BS_classes.js"></script>
 <script src="/static/javascript/reactor.js"></script>
+<script src="/static/javascript/remote_control.js"></script>
 {% if not copy %}
 <script>const room_id = {{id_reactor}};
-const copy = false;
+<!--const copy = false;-->
+rc = new RC(false)
 re = new Reactor();
 load_game_from_db();
 setup_UI(re);
@@ -563,14 +617,17 @@ setInterval(() => {
 }, 1000);
 show_mnemo(re);
 </script>
+<script src="/static/javascript/socketio.js"></script>
 {% else %}
 <script>const room_id = {{id_reactor}};
-const copy = true;
+</script>
+<script src="/static/javascript/socketio.js"></script>
+<script>
+    rc = new RC(true);
 re = new RemoteControl();
 load_game_from_db();
 setInterval(() => {
     re.update();
 }, 1000); //</script>
 {% endif %}
-<script src="/static/javascript/socketio.js"></script>
 </html>

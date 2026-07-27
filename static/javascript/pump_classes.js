@@ -9,6 +9,7 @@ class Pump{
         this.id_pump = id_pump;
         this.broken = false; // сломан или нет
         this.w_e = 0;
+        this.source_power = 1; // 1 - rdg1 2 - rdg2 3 - lep1 4 - lep2
     }
 
     set_g(){
@@ -72,6 +73,11 @@ class Pump{
             ui_power(`${this.id_pump}_s`, false);
             turn(`${this.id_pump}_btn`, false);
         }
+    }
+
+    set_power_source(number_source){
+        this.source_power = number_source;
+        ui_power_source(number_source, this.id_pump);
     }
 }
 

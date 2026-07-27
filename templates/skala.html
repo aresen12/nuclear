@@ -29,6 +29,7 @@
 <script src="/static/javascript/pump_classes.js"></script>
 <script src="/static/javascript/BS_classes.js"></script>
 <script src="/static/javascript/reactor.js"></script>
+<script src="/static/javascript/remote_control.js"></script>
 
 <script src="/static/javascript/skala/skala.js"></script>
 <script>
@@ -58,10 +59,16 @@
   "h_lower_water_level_BS2": "Уровень БС2 ниже нормы",
   "high_rho_total": "Высокая реактивность"
 };
-    sk = new Skala();
+
+</script>
+<script src="/static/javascript/skala/skala_app.js"></script>
+<script>
+   sk = new Skala();
+    rc = new RC(true);
     setInterval(() => {
     sk.update();
 }, 1000);
-</script><script src="/static/javascript/skala/skala_app.js"></script>
+</script>
+
 </body>
 </html>

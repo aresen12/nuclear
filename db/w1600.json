@@ -103,10 +103,9 @@
   "rdg2": {
     "direction": 0,
     "power_e": 0,
-    "work": true
+    "work": false
   },
   "rho_total": 1.960717693129117e-05,
-  "room": 7,
   "sterg": [
     [
       -1,

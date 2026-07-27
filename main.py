@@ -130,6 +130,17 @@ def info_turnover():
     return render_template("turnover_info.html", title="Турбина РБМК")
 
 
+@application.route("/delete/<room>", methods=["DELETE", "POST", "GET"])
+def delete_room(room):
+    db_sess = db_session.create_session()
+    r = db_sess.query(Reactor).filter(Reactor.id == int(room)).first()
+    if current_user.is_authenticated and r.main_player == current_user.id:
+        db_sess.delete(r)
+        db_sess.commit()
+    db_sess.close()
+    return redirect("/")
+
+
 @application.route("/skala/<id_bsm>")
 def skala(id_bsm):
     file = open("db/errors.json")

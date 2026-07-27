@@ -32,16 +32,16 @@ class Rdg{
     }
 
     turn_on_or_down(){
-        if (this.work ){
+        if (this.work){
             this.work = false;
             this.direction = -1;
             ui_power(`${this.id_rdg}_s`, false);
             re.az.temporary_alert.push(new TemporaryAlert(`turn_down_${this.id_rdg}`, 1, true))
         } else {
-            this.work = true
+            this.work = true;
             this.direction = 1;
             ui_power(`${this.id_rdg}_s`, true);
-            my_alert(`turn_down_${this.id_rdg}`);
+            stop_alert(`turn_down_${this.id_rdg}`);
         }
     }
 

@@ -82,15 +82,14 @@
   "rdg1": {
     "direction": 0,
     "power_e": 20000,
-    "work": false
+    "work": true
   },
   "rdg2": {
     "direction": 0,
     "power_e": 0,
-    "work": true
+    "work": false
   },
   "rho_total": -7.5319157717829155e-06,
-  "room": 7,
   "sterg": [
     [
       -1,

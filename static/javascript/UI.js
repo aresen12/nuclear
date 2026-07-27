@@ -7,9 +7,6 @@ function show_mnemo(reactor){
 }
 
 
-function show_chosen(reactor){
-}
-
 function exit_menu(menu_id){
     document.getElementById(menu_id).style.display = "none";
 }
@@ -18,7 +15,7 @@ function show_mnemo_i_j(value, i, j){
     try{
         var m = document.getElementById(`m${i}_${j}`);
         if (value == 100){
-//            m.style.background = "green";
+            m.style.background = "#b3c79f";
         } else if (value == 0){
             m.style.background = "#ffb961";
         } else {
@@ -39,10 +36,11 @@ function my_alert(id_error){
     }
 }
 
-function set_background(number){
-    document.getElementById("main").style.background = "#a3a3a3";
-}
 
+function start_alert(id_error){
+    var div = document.getElementById(id_error);
+     div.style.background = "#fcf172";
+}
 
 function red_alert(id_error){
     var div = document.getElementById(id_error);
@@ -63,28 +61,34 @@ function stop_alert(id_error){
 function start_UI(reactor){
     var k = Object.keys(reactor.gcn);
     for (i = 0; i < k.length; i++){
+        ui_power_source(reactor.gcn[k[i]].source_power, k[i]);
         if (!reactor.gcn[k[i]].work){
-            my_alert(`${reactor.gcn[k[i]].id_pump}_turn_down`);
+            start_alert(`${reactor.gcn[k[i]].id_pump}_turn_down`);
         } else {
             stop_alert(`${reactor.gcn[k[i]].id_pump}_turn_down`);
         }
-
     }
     if(!reactor.rdg1.work){
-        reactor.az.temporary_alert.push(new TemporaryAlert(`turn_down_${reactor.rdg1.id_rdg}`, 1, true));
+        start_alert(`turn_down_${reactor.rdg1.id_rdg}`);
+    } else {
+        stop_alert(`turn_down_${reactor.rdg1.id_rdg}`);
     }
+    ui_power(`${reactor.rdg1.id_rdg}_s`, reactor.rdg1.work);
+    ui_power(`${reactor.rdg2.id_rdg}_s`, reactor.rdg2.work);
     if(!reactor.rdg2.work){
-        reactor.az.temporary_alert.push(new TemporaryAlert(`turn_down_${reactor.rdg2.id_rdg}`, 1, true));
+        start_alert(`turn_down_${reactor.rdg2.id_rdg}`);
+    } else {
+        stop_alert(`turn_down_${reactor.rdg2.id_rdg}`);
     }
     for (let i = 0; i < reactor.chosen.length; i++){
         chosen(reactor.chosen[i][0], reactor.chosen[i][1], true);
     }
     ui_power("lar_s", reactor.az.power_ar);
+    ui_speed_SYZ(reactor.speed_SYZ);
 }
 
 
 function ui_thermal_power_mnemo(sek){
-
     for (let i = 0; i < 9; i++) {
             for (let j = 0; j < re.sterg[i].length; j++) {
                 if (re.sterg[i][j] == -1){
@@ -117,6 +121,17 @@ function showdiv1(Div){
     }
     x.style.display = "none";
     return false;
+}
+
+
+function ui_speed_SYZ(speed){
+    for (let i = 1; i < 6; i++){
+        if (speed == i){
+            start_alert(`s${i}`);
+        } else {
+            stop_alert(`s${i}`);
+        }
+    }
 }
 
 
@@ -163,11 +178,18 @@ var k = Object.keys(reactor.gcn);
     document.getElementById("m_sep2").value = reactor.bs2.m_sep;
     document.getElementById("m_sep1").value = reactor.bs1.m_sep;
     document.getElementById("T_H2O2").value = reactor.bs2.T_H2O;
+    document.getElementById("power_lep1").value = reactor.power_lep1;
+    document.getElementById("power_lep2").value = reactor.power_lep2;
     document.getElementById("power_lar_show").value = reactor.az.power_ar  / 1e6 ;
-    if (copy){
+    if (rc.copy){
         show_mnemo(reactor);
-        show_chosen(reactor)
     }
+}
+
+
+function green_alert(id_error){
+    var div = document.getElementById(id_error);
+     div.style.background = "#7ba05b";
 }
 
 
@@ -199,7 +221,10 @@ function set_direction_ui(flag, id_div){
 
 function turn(id_div, flag){
     if (flag){
-        document.getElementById(id_div).innerHTML = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 32 32" xml:space="preserve" fill="#000000" transform="rotate(270)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .puchipuchi_een{fill:#111918;} </style> <path class="puchipuchi_een" d="M30,17c0,7.72-6.28,14-14,14S2,24.72,2,17C2,10.311,6.718,4.71,13,3.332v4.129 C8.948,8.739,6,12.531,6,17c0,5.514,4.486,10,10,10s10-4.486,10-10c0-4.469-2.948-8.261-7-9.539V3.332C25.282,4.71,30,10.311,30,17z M16,13c1.104,0,2-0.896,2-2V3c0-1.104-0.896-2-2-2s-2,0.896-2,2v8C14,12.104,14.896,13,16,13z"></path> </g></svg>`;
+        document.getElementById(id_div).innerHTML = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 32 32" xml:space="preserve" fill="#000000" transform="rotate(270)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+        <g id="SVGRepo_iconCarrier"> <style type="text/css"> .puchipuchi_een{fill:#111918;} </style>
+         <path class="puchipuchi_een" d="M30,17c0,7.72-6.28,14-14,14S2,24.72,2,17C2,10.311,6.718,4.71,13,3.332v4.129 C8.948,8.739,6,12.531,6,17c0,5.514,4.486,10,10,10s10-4.486,10-10c0-4.469-2.948-8.261-7-9.539V3.332C25.282,4.71,30,10.311,30,17z M16,13c1.104,0,2-0.896,2-2V3c0-1.104-0.896-2-2-2s-2,0.896-2,2v8C14,12.104,14.896,13,16,13z"></path> </g></svg>`;
     } else {
         document.getElementById(id_div).innerHTML = `<svg  version="1.1" xmlns="http://www.w3.org/2000/svg" width="20px"
                            height="20px" viewBox="0 0 32 32" xml:space="preserve" fill="#000000">
@@ -207,7 +232,6 @@ function turn(id_div, flag){
                          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                          <g id="SVGRepo_iconCarrier"> <style type="text/css"> .puchipuchi_een{fill:#111918;} </style>
                              <path class="puchipuchi_een" d="M30,17c0,7.72-6.28,14-14,14S2,24.72,2,17C2,10.311,6.718,4.71,13,3.332v4.129 C8.948,8.739,6,12.531,6,17c0,5.514,4.486,10,10,10s10-4.486,10-10c0-4.469-2.948-8.261-7-9.539V3.332C25.282,4.71,30,10.311,30,17z M16,13c1.104,0,2-0.896,2-2V3c0-1.104-0.896-2-2-2s-2,0.896-2,2v8C14,12.104,14.896,13,16,13z">
-
                              </path> </g></svg>`;
     }
 }
@@ -223,5 +247,16 @@ function ui_direction(direction){
     } else {
         ui_power("up_direction", false);
         ui_power("down_direction", false);
+    }
+}
+
+
+function ui_power_source(number, id_pump){
+    for (let i = 1; i < 5; i++){
+        if (number == i){
+            start_alert(`${number}_source_${id_pump}`);
+        }  else {
+            stop_alert(`${i}_source_${id_pump}`);
+        }
     }
 }

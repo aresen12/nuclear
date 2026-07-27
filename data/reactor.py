@@ -11,7 +11,7 @@ class Reactor(SqlAlchemyBase, UserMixin, SerializerMixin):
                            primary_key=True, autoincrement=True)
     name = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     main_player = sqlalchemy.Column(sqlalchemy.Integer,  nullable=False)
-    list_users = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    cnt_player = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
     data_json = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     activiti = sqlalchemy.Column(sqlalchemy.Boolean, nullable=True)
     private = sqlalchemy.Column(sqlalchemy.Boolean, nullable=True)

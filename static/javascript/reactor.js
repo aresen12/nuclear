@@ -81,6 +81,8 @@ class Reactor{
         this.az = new Az(this); // класс аварийной защиты
         this.pause = false;
         this.update_ozr();
+        this.power_lep1 = 20000;
+        this.power_lep2 = 20000; // КВТ
         this.rdg1.start_ui();
         for (let i = 0; i < DELAYED_GROUPS.length; i++){
             this.precursors.push((DELAYED_GROUPS[i]["beta"] / (LAMBDA_PROMPT * DELAYED_GROUPS[i]["lambda"])) * this.thermal_power);
@@ -110,19 +112,23 @@ class Reactor{
         }
         if (this.direction == 1){
             this.direction = 0;
+            stop_alert("up_direction")
         } else {
             this.direction = 1;
+            my_alert("up_direction")
         }
-        ui_direction(this.direction);
+//        ui_direction(this.direction);
     }
 
     set_unset_down_direction() {
         if (this.direction == -1){
             this.direction = 0;
+            stop_alert("down_direction");
         } else {
             this.direction = -1;
+            my_alert("down_direction");
         }
-        ui_direction(this.direction);
+//        ui_direction(this.direction);
     }
 
 
@@ -142,6 +148,7 @@ class Reactor{
 
     set_speed_SYZ(speed){
         this.speed_SYZ = speed;
+        ui_speed_SYZ(speed);
     }
 
     chosen_current(i, j){
@@ -158,8 +165,9 @@ class Reactor{
 
     chosen_add(i, j){
         chosen(i, j, true);
-        socket.emit("method_send", {"room": room_id, "function": "chosen_add_show", "i": i, "j": j});
         this.chosen.push([i, j]);
+        socket.emit("method_send", {"room": room_id, "function": "chosen_add_show", "i": i, "j": j});
+
     }
 
     chosen_delete(i2){
@@ -177,6 +185,38 @@ class Reactor{
         let rad = Math.PI * (this.ozr / 100.0);
         let eff = 0.5 * (1.0 - Math.cos(rad));
         return 0.018 * (0.52 - eff);
+    }
+
+    calculate_power_use(){
+        let w_use = {
+            1: {"w": this.rdg1.power_e, "consumer":[]},
+            2: {"w": this.rdg2.power_e, "consumer":[]},
+            3: {"w": this.power_lep1, "consumer":[]},
+            4: {"w": this.power_lep1, "consumer":[]}
+         }
+         var k = Object.keys(this.gcn);
+         for (i = 0; i < k.length; i++){
+            w_use[this.gcn[k[i]].source_power]["w"] -= this.gcn[k[i]].w_e;
+            w_use[this.gcn[k[i]].source_power]["consumer"].push(k[i]);
+        }
+        return w_use;
+    }
+
+    update_electrical(){
+        let w_use = this.calculate_power_use();
+        for (i = 1; i <=  Object.keys(w_use).length; i++){
+            if (w_use[i]["w"] < 0){
+                for (let j = w_use[i]["consumer"].length - 1; j >= 0; j--){
+                    if (this.gcn[w_use[i]["consumer"][j]].work){
+                        w_use[i]["w"] += this.gcn[w_use[i]["consumer"][j]].w_e;
+                        this.gcn[w_use[i]["consumer"][j]].turn_on_or_down();
+                    }
+                    if (w_use[i]["w"] >= 0){
+                        break;
+                    }
+                }
+            }
+        }
     }
 
      update(){
@@ -267,38 +307,16 @@ class Reactor{
           this.bs2.update(this.gcn["2_n"].g, this.gcn["4_n"].g, this.void_fraction, this.T_2_H2O, this.outlet_temp,  this.t1.g_max, this.gcn["2_a"].g, this.gcn["4_a"].g);
          this.t1.update(this.bs1.m_sep, this.p_in_reactor);
          this.t2.update(this.bs2.m_sep, this.p_in_reactor);
-         this.w_e = this.t1.w_e * 1000 + this.t2.w_e * 1000 + this.rdg1.power_e + this.rdg2.power_e;
-         let w_e_use = 0;
-         var k = Object.keys(this.gcn);
-         for (i = 0; i < k.length; i++){
-            w_e_use += this.gcn[k[i]].w_e;
-        }
-        let w = ["3_n", "4_n", "2_n", "1_n", "3_a", "4_a", "2_a", "1_a"];
-        let j = 0;
-        while (this.w_e < w_e_use){
-            if (this.gcn[w[j]].work){
-                this.gcn[w[j]].turn_on_or_down();
-            }
-            w_e_use = 0;
-            for (i = 0; i < k.length; i++){
-                w_e_use += this.gcn[k[i]].w_e;
-            }
-            j++;
-            if (j >= k.length){
-                break;
-            }
-        }
+         this.update_electrical();
          setup_UI(this);
-         send_update();
+         rc.update();
     }
 }
 
 
 class RemoteControl extends Reactor{
-
     constructor(){
-    super();
-//        super.constructor();
+        super();
         this.az = new DAz(this);
         this.t1 = new DTurnover("t1");
         this.t2 = new DTurnover("t2");

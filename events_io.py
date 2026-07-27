@@ -15,6 +15,11 @@ def handle_connect():
 def on_join(data):
     room = data['room']
     join_room(room)
+    db_sess = db_session.create_session()
+    r = db_sess.query(Reactor).filter(Reactor.id == room).first()
+    r.cnt_player += 1
+    db_sess.commit()
+    db_sess.close()
     if current_user.is_authenticated:
         emit('join_event', {"name": current_user.name}, to=room)
 
@@ -23,6 +28,17 @@ def on_join(data):
 def on_leave(data):
     room = data['room']
     leave_room(room)
+    db_sess = db_session.create_session()
+    r = db_sess.query(Reactor).filter(Reactor.id == room).first()
+    print("leave", r.cnt_player)
+    if r.cnt_player - 1 > 0:
+        r.cnt_player -= 1
+    else:
+        r.cnt_player = 0
+        r.activiti = False
+    print("leave2", r.cnt_player)
+    db_sess.commit()
+    db_sess.close()
     if current_user.is_authenticated:
         emit('leave_event', {"name": current_user.name}, to=room)
 
@@ -67,6 +83,10 @@ def update(data):
 def set_unset_up_direction(data):
     emit("set_unset_up_direction", data, to=data['room'])
 
+
+@socketio.on("connect_other_room")
+def connect_other_room(data):
+    emit("connect_other_room", data, to=data['room'])
 
 @socketio.on("method_send")
 def method_send(data):
