@@ -18,6 +18,22 @@
         <h3>Скорость СФКРЭ</h3>
 <canvas id="period_power" width="300px" height="200px"></canvas>
   </div>
+    <div style="display:flex;">
+        <div class="sektor" id="s00"></div>
+        <div class="sektor" id="s01"></div>
+        <div class="sektor" id="s02"></div>
+    </div>
+    <div  style="display:flex;">
+        <div class="sektor" id="s10"></div>
+        <div class="sektor" id="s11"></div>
+        <div class="sektor" id="s12"></div>
+    </div>
+    <div style="display:flex;">
+        <div class="sektor" id="s20"></div>
+        <div class="sektor" id="s21"></div>
+        <div class="sektor" id="s22"></div>
+    </div>
+
 </main>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
@@ -30,7 +46,7 @@
 <script src="/static/javascript/BS_classes.js"></script>
 <script src="/static/javascript/reactor.js"></script>
 <script src="/static/javascript/remote_control.js"></script>
-
+<script src="/static/javascript/grafiti.js"></script>
 <script src="/static/javascript/skala/skala.js"></script>
 <script>
     const room_id = {{id_reactor}};

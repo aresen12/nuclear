@@ -11,6 +11,7 @@ function exit_menu(menu_id){
     document.getElementById(menu_id).style.display = "none";
 }
 
+
 function show_mnemo_i_j(value, i, j){
     try{
         var m = document.getElementById(`m${i}_${j}`);
@@ -85,6 +86,23 @@ function start_UI(reactor){
     }
     ui_power("lar_s", reactor.az.power_ar);
     ui_speed_SYZ(reactor.speed_SYZ);
+    if (reactor.az.mode == 2){
+       turn("azsr_start", 1);
+       turn("azs_start", 0);
+       stop_alert("azs_on");
+       stop_alert('azsr_turn_down');
+    } else if (reactor.az.mode == 1){
+        turn("azs_start", 1);
+        turn("azsr_start", 0);
+        green_alert("azs_on")
+        stop_alert("azsr_on");
+        stop_alert('azs_turn_down');
+    } else {
+        stop_alert("azsr_on");
+        stop_alert("azs_on");
+        start_alert('azs_turn_down');
+        start_alert('azsr_turn_down');
+    }
 }
 
 
@@ -145,7 +163,7 @@ function chosen(i, j, flag){
 
 function setup_UI(reactor){
 //СУЗ
-    document.getElementById("W_Q").value = `${(reactor.thermal_power / 1e6 ).toFixed(0)}`;
+    document.getElementById("W_Q").value = `${(reactor.thermal_power / 1e6 ).toFixed(0)}%`;
     document.getElementById("reactivnost").value = reactor.rho_total;
     document.getElementById("speed_power").value = reactor.az.period_power;
     document.getElementById("ozr_ar").value = reactor.az.ozr_ar;
@@ -183,6 +201,9 @@ var k = Object.keys(reactor.gcn);
     document.getElementById("power_lar_show").value = reactor.az.power_ar  / 1e6 ;
     if (rc.copy){
         show_mnemo(reactor);
+        for (i = 0; i < k.length; i++){
+            ui_power_source(reactor.gcn[k[i]].source_power, k[i]);
+        }
     }
 }
 

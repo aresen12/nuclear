@@ -94,4 +94,8 @@ class DPump extends Pump {
     turn_on_or_down(){
         socket.emit("method_send", {"room": room_id, "function": "turn_on_or_down_pump", "id_pump": this.id_pump});
     }
+
+    set_power_source(source){
+        socket.emit("method_send", {"room": room_id, "function": "set_power_source", "id_pump": this.id_pump, "source": source});
+    }
 }

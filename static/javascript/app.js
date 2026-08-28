@@ -97,6 +97,7 @@ function gener_json(){
         data["gcn"][k[i]]["g"] = re.gcn[k[i]].g;
         data["gcn"][k[i]]["work"] = re.gcn[k[i]].work;
         data["gcn"][k[i]]["broken"] = re.gcn[k[i]].broken;
+        data["gcn"][k[i]]["source_power"] = re.gcn[k[i]].source_power;
     }
     return data;
 }
@@ -141,6 +142,9 @@ function load_data_DB(json){
 
 
 function load_game_from_db(){
+    if (room_id == "not_auth"){
+        return;
+    }
     $.ajax({
     url: `/get_game/${room_id}`,
     type: 'GET',
@@ -163,9 +167,9 @@ function load_game_from_db(){
 });
 }
 
-async function playAudio() {
+async function playAudio(id_) {
   window.my_mute = false;
-  var audio = document.getElementById("play");
+  var audio = document.getElementById("play" + id_);
   await audio.play();
   audio.loop = true;
   try {
@@ -205,6 +209,7 @@ function load_data(data){
         re.gcn[k[i]].work = data["gcn"][k[i]]["work"];
         turn(`${k[i]}_btn`, data["gcn"][k[i]]["work"]);
         re.gcn[k[i]].broken = data["gcn"][k[i]]["broken"];
+        re.gcn[k[i]].source_power = data["gcn"][k[i]]["source_power"];
     }
     re.t1.w_e = data["t1"]["w_e"];
     re.t1.obr = data["t1"]["obr"];

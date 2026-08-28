@@ -19,7 +19,6 @@ class TemporaryAlert{
     }
 
     delete_show(){
-        console.log(this.max_time % 2 == 0, this.does_stop);
         if (this.does_stop){
              if (this.max_time % 2 != 0){
                 my_alert(this.id);
@@ -69,7 +68,9 @@ class SAOR {
 class Az{
     constructor(reactor){
         this.mode = 0 // 0 - откл 1- азс 2 -азср
-        this.sound = false;
+        this.sound1 = false;
+        this.sound2 = false;
+        this.sound3 = false;
         this.az_run = false; // работает ли АЗ
         this.az_5 = 0; // идентефикация работы конкретной аварийной защиты
         this.az_1 = 0;
@@ -78,13 +79,14 @@ class Az{
         this.ar = false;
         this.reactor = reactor;
         this.power_ar = 0
-        this.current_errors = [];
+        this.current_errors = [[], [], []];
         this.temporary_alert = [];
         this.period_power = 0;
         this.last_power = this.reactor.thermal_power;
         this.ozr_ar = 0;
         this.time_stop_az = 0;
         this.power_SYZ = true;
+        this.time_danger = 0;
     }
 
     turn_on_or_down_ar(){
@@ -198,7 +200,6 @@ class Az{
                 this.set_position_ar(-1, calculate_speed_ar_power_speed(this.period_power));
             } else if (this.reactor.thermal_power > this.power_ar && this.period_power > 0){
                 let r = (this.reactor.thermal_power - this.power_ar) / 1e6;
-                console.log(r, calculate_speed_ar_power(r));
                 this.set_position_ar(-1, calculate_speed_ar_power(r));
             } else if (this.reactor.thermal_power < this.power_ar && this.period_power < 0){
                 let r =(this.power_ar - this.reactor.thermal_power) / 1e6;
@@ -319,13 +320,14 @@ class Az{
             this.mode = 0;
             turn("azs_start", 0);
             stop_alert("azs_on");
-            this.temporary_alert.push(new TemporaryAlert('azs_turn_down', 2))
+            this.temporary_alert.push(new TemporaryAlert('azs_turn_down', 2, true))
         } else {
             this.mode = 1;
             turn("azs_start", 1);
             turn("azsr_start", 0);
             green_alert("azs_on")
             stop_alert("azsr_on");
+            stop_alert('azs_turn_down');
         }
     }
 
@@ -334,20 +336,20 @@ class Az{
             this.mode = 0;
             turn("azsr_start", 0);
             stop_alert("azsr_on");
-            this.temporary_alert.push(new TemporaryAlert('azsr_turn_down', 2))
+            this.temporary_alert.push(new TemporaryAlert('azsr_turn_down', 2, true))
         } else {
             this.mode = 2;
             turn("azsr_start", 1);
             turn("azs_start", 0);
             stop_alert("azs_on");
             green_alert("azsr_on");
+            stop_alert('azsr_turn_down');
         }
     }
 
     check_azs(){
         this.period_power = (this.reactor.thermal_power - this.last_power) / 1e6;
         this.last_power = this.reactor.thermal_power;
-
         if (this.period_power > 10 && this.mode == 1){
             my_alert("high_speed_power");
             this.current_errors.push("high_speed_power");
@@ -368,162 +370,149 @@ class Az{
 
     check_error_alerts(){
         let flag = false;
-        let c_e = [];
-        if (this.reactor.thermal_power / 1e6 > 3200){
-            c_e.push("alert_power_q");
+        let viyb = [];
+        let viyr = [];
+        let viyt = [];
+        if (this.reactor.thermal_power / 1e6 > 3205){
+            viyr.push("alert_power_q");
             if (this.reactor.thermal_power / 1e6 >= 3250){
                 this.az5();
             }
             if(this.reactor.thermal_power / 1e6 > 3300){
-                alert("Вы взорвали реактор!");
-                this.reactor.pause = true;
+                if (this.time_danger == 0){
+                    alert("Вы расплавляете реактор! Нужно понижать мощность!!");
+                }
+                this.time_danger++;
+//                this.reactor.pause = true;
             }
-            my_alert("alert_power_q");
-            flag = true;
         }
         if (this.ozr_ar > 50 & this.period_power > 0){
-             my_alert("m_ozr_ar");
-             flag = true;
-             c_e.push("m_ozr_ar");
+             viyr.push("m_ozr_ar");
         }
         if (this.reactor.ozr < 5.78){
-             my_alert("m_ozr");
-             flag = true;
-             c_e.push("m_ozr");
+             viyr.push("m_ozr");
         }
         if (this.reactor.t1.obr > 3000){
-             my_alert("alert_high_turnovers1");
-             flag = true;
-             c_e.push("alert_high_turnovers1");
+             viyt.push("alert_high_turnovers1");
         }
         if ( this.reactor.t2.obr > 3000){
-            my_alert("alert_high_turnovers2");
-            flag = true;
-            c_e.push("alert_high_turnovers2");
+            viyt.push("alert_high_turnovers2");
         }
         if (this.reactor.t1.w_e > 500){
-            my_alert("alert_high_e_power_t1");
-            c_e.push("alert_high_e_power_t1");
-            flag = true;
+            viyt.push("alert_high_e_power_t1");
         }
         if (this.reactor.t2.w_e > 500){
-            my_alert("alert_high_e_power_t2");
-            flag = true;
-            c_e.push("alert_high_e_power_t2");
+            viyt.push("alert_high_e_power_t2");
         }
         if (this.reactor.t1.broken){
-            my_alert("error_t1");
-            flag = true;
-            c_e.push("error_t1");
+            viyt.push("error_t1");
         }
         if (this.reactor.t2.broken){
-            my_alert("error_t2");
-            flag = true;
-            c_e.push("error_t2");
+            viyt.push("error_t2");
         }
         if (this.reactor.T_2_H2O >= 260){
-            my_alert("alert_high_temperature2");
-            flag = true;
-            c_e.push("alert_high_temperature2");
+            viyb.push("alert_high_temperature2");
         }
         if (this.reactor.bs1.T_H2O > 271){
-            my_alert("alert_high_temperatureBS1");
-            flag = true;
-            c_e.push("alert_high_temperatureBS1");
+            viyb.push("alert_high_temperatureBS1");
         }
         if (this.reactor.bs2.T_H2O > 271){
-            my_alert("alert_high_temperatureBS2");
-            flag = true;
-            c_e.push("alert_high_temperatureBS2");
+            viyb.push("alert_high_temperatureBS2");
         }
         if (this.reactor.bs1.v_inBS >= 70){
             if (this.reactor.bs1.v_inBS >= 74){
-                c_e.push("level_down1");
-                my_alert("level_down1");
+                viyb.push("level_down1");
                 this.reactor.bs1.level_down();
             }
-            my_alert("h_high_water_level_BS1");
-            flag = true;
-            c_e.push("h_high_water_level_BS1");
+            viyb.push("h_high_water_level_BS1");
         }
         if (this.reactor.bs2.v_inBS >= 70){
             if (this.reactor.bs2.v_inBS >= 74){
-                c_e.push("level_down2");
-                my_alert("level_down2");
+                viyb.push("level_down2");
                 this.reactor.bs2.level_down();
             }
-            my_alert("h_high_water_level_BS2");
-            flag = true;
-            c_e.push("h_high_water_level_BS2");
+            viyb.push("h_high_water_level_BS2");
         }
         if(this.az_5){
             my_alert("alert_az_5");
             flag = true;
-            c_e.push("alert_az_5");
+            viyr.push("alert_az_5");
         }
          if(this.az_b){
-            my_alert("alert_baz");
-            flag = true;
-            c_e.push("alert_baz");
+            viyr.push("alert_baz");
         }
         if(this.az_1){
-            my_alert("alert_az_1");
-            flag = true;
-            c_e.push("alert_az_1");
+            viyr.push("alert_az_1");
         }
         if(this.az_2){
-            my_alert("alert_az_2");
-            flag = true;
-            c_e.push("alert_az_2");
-        }
-        if (this.temporary_alert.length > 0 && this.temporary_alert[this.temporary_alert.length - 1].time == 0 && !this.sound){
-            this.sound = true;
-            playAudio();
+            viyr.push("alert_az_2");
         }
         var k = Object.keys(this.reactor.gcn);
         for (i = 0; i < k.length; i++){
             if  (this.reactor.gcn[k[i]].broken){
-                my_alert(`${k[i]}_error`);
-                flag = true;
-                c_e.push(`${k[i]}_error`);
+                viyb.push(`${k[i]}_error`);
             };
         }
         if (this.reactor.bs1.v_inBS < 66){
-            my_alert("h_lower_water_level_BS1");
-            flag = true;
-            c_e.push("h_lower_water_level_BS1");
+            viyb.push("h_lower_water_level_BS1");
         }
         if (this.reactor.bs2.v_inBS < 66){
-            my_alert("h_lower_water_level_BS2");
-            flag = true;
-            c_e.push("h_lower_water_level_BS2");
+            viyb.push("h_lower_water_level_BS2");
         }
         if (this.reactor.rho_total > 0.00055){
-            my_alert("high_rho_total");
-            flag = true;
-            c_e.push("high_rho_total");
+            viyr.push("high_rho_total");
         }
-
-
-        if (flag && !this.sound && this.current_errors.length < c_e.length){
-                this.sound = true;
-                playAudio();
+        let c_e = [...viyr, ...viyb, ...viyt];
+        if (viyr.length != 0 && !this.sound1 && viyr.length > this.current_errors[0].length){
+            this.sound1 = true;
+            playAudio(1);
         }
-        else if (!flag && this.sound && this.temporary_alert.length == 0){
-            this.sound = false;
-            document.getElementById("play").pause();
+        if (viyb.length != 0 && !this.sound2 && viyb.length > this.current_errors[1].length){
+            this.sound2 = true;
+            playAudio(2);
         }
-        for (let i = 0; i < this.current_errors.length; i++){
-            if (!c_e.includes(this.current_errors[i])){
-                stop_alert(this.current_errors[i]);
+        if (viyt.length != 0 && !this.sound3 && viyt.length > this.current_errors[2].length){
+            this.sound3 = true;
+            playAudio(3);
+        }
+        if (this.sound1 && viyr.length == 0){
+            this.sound1 = false;
+            document.getElementById("play1").pause();
+        }
+        if (this.sound2 && viyb.length == 0){
+            this.sound2 = false;
+            document.getElementById("play2").pause();
+        }
+        if (this.sound3 && viyt.length == 0){
+            this.sound3 = false;
+            document.getElementById("play3").pause();
+        }
+        for (let i = 0; i < c_e.length; i++){
+            if (this.reactor.time % 2 == 0 ){
+                start_alert(c_e[i]);
+            } else {
+                stop_alert(c_e[i]);
             }
         }
-        this.current_errors = c_e;
+        for (let i = 0; i < this.current_errors.length; i++){
+            for (let j = 0; j < this.current_errors[i].length; j++){
+                if (!c_e.includes(this.current_errors[i][j])){
+                    stop_alert(this.current_errors[i][j]);
+                }
+            }
+        }
+        this.current_errors = [viyr, viyb, viyt];
     }
 
-    stop_sound(){
-        this.sound = false;
-            document.getElementById("play").pause();
+    stop_sound(id_){
+        if (id_ == 1){
+            this.sound1 = false;
+        } else if (id_ == 2){
+            this.sound2 = false;
+        } else {
+            this.sound3 = false;
+        }
+        document.getElementById("play" + id_).pause();
     }
 
     stop_az(){
@@ -674,4 +663,3 @@ function get_sektor_number(i, j){
     let y = Math.floor(j / 3);
     return x * 3 + y;
 }
-

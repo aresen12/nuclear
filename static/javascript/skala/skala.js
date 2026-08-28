@@ -109,42 +109,4 @@ class Skala{
 
 
 
-class Grafi{
-    constructor(id_canvas, scale_x, scale_y, y=1){
-        this.canvas = document.getElementById(id_canvas);
-        this.canvas.style.backgroundColor = "white";
-        this.context = this.canvas.getContext("2d");
-        this.context.translate(0, this.canvas.height * y);
-        this.context.scale(1, -1);
-        this.context.stroke();
-        this.scale_x = scale_x;
-        this.scale_y = scale_y;
-    }
-
-    draw(new_data, last_data, time, last_time){
-        this.context.beginPath();
-        this.context.moveTo(last_time, new_data * this.scale_y);
-        this.context.lineTo(time, last_data * this.scale_y);
-        this.context.lineWidth = 3;
-        this.context.strokeStyle = "#b4241b";
-
-        if (time * this.scale_y >= this.canvas.width){
-            this.context.translate(this.canvas.width * 0.25, 0);
-
-        }
-         this.context.stroke();
-    }
-
-    draw_line(y){
-        this.context.beginPath();
-        this.context.moveTo(this.canvas.width, y);
-        this.context.lineTo(0, y);
-        this.context.lineWidth = 1;
-        this.context.strokeStyle = "#0000ff";
-        this.context.stroke();
-    }
-
-
-}
-
 

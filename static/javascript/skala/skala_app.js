@@ -126,6 +126,7 @@ socket.on('update', (data) => {
     sk.thermal_power_g.draw(sk.last_data["thermal_power"], data["thermal_power"], sk.time, sk.time - 1);
     sk.speed_power_g.draw(sk.last_data["period_power"], data["period_power"], sk.time, sk.time - 1)
     sk.load_data(data);
+    ui_sek_power(calculate_power_sek(data["sterg"]));
 //    sk.update(data);
 //    if (copy){
 //        load_data(data);
@@ -139,6 +140,25 @@ socket.on('connect', () => {
 });
 
 
+socket.on('join_main_player', () => {
+    if (rc.copy){
+        rc.connect_other_room();
+//        alert("Организатор присоединился")
+    }
+});
+
+
 function save_error(text){
     document.getElementById("journal").value += `${sk.time} - ${text}\n`
+}
+
+
+function ui_sek_power(sek){
+//    console.log(sek)
+    for (let i = 0; i < sek.length; i++){
+        for (let j = 0; j < sek[i].length; j++){
+//            console.log(document.getElementById(`s${i}${j}`));
+            document.getElementById(`s${i}${j}`).textContent = `${(10 - sek[i][j] / 100).toFixed(1)}`;
+        }
+    }
 }

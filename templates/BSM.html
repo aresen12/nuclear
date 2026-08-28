@@ -189,7 +189,7 @@
                     </div>
                     <button class="black-btn" onclick="re.set_unset_up_direction()">Извлек</button>
             <button class="black-btn"  onclick="re.set_unset_down_direction()">Опуск</button>
-            <button  class="black-btn"  onclick="re.az.stop_sound()">Съём звука</button>
+            <button  class="black-btn"  onclick="re.az.stop_sound(1)">Съём звука</button>
             <button>Мигание</button>
                 </div>
 <div>
@@ -230,41 +230,44 @@
         </div>
                <div style="" class="column-bsm ">
             <div class="up-panel">
+                <div style="display:flex;">
+                    <canvas class="bs-graf" id="bs1" width="190px" height="100px"></canvas>
+                <canvas class="bs-graf" id="bs2" width="200px" height="100px"></canvas>
+                </div>
             <div style="display:flex;">
-                <div>
-                    <div>
-                    <div>
+                <div class="bs-zone">
                 Т воды в БС<br>
             <input id="T_H2O1" class="input-big" readonly>
-                </div>
-                    <div> уровень воды<br>
-                    <input id="h_braban_s1" class="input-big" readonly>
-                </div>
-                    </div>
 
-                </div><div>
-                    <div>
+                </div>
+                <div class="bs-zone"> УВ БС1<br>
+                    <input id="h_braban_s1" class="input-big" readonly>
+                        </div>
+                <div class="bs-zone">
                 Т воды в БС<br>
             <input id="T_H2O2" class="input-big" readonly>
-                </div>
-                    <div> уровень воды<br>
-                    <input id="h_braban_s2" class="input-big" readonly>
-                </div>
                     </div>
-            <div>
-            Т ПВС    Т_твэл<br>
-            <input id="T_reactor" class="input-big" readonly>
-
+                <div class="bs-zone"> УВ БС2<br>
+                    <input id="h_braban_s2" class="input-big" readonly>
+                       </div>
+                <div class="bs-zone">
+                    Т ПВС<br>
+                    <input id="T_reactor" class="input-big" readonly>
+                </div>
+                <div class="bs-zone">
+                    P БС1 МПА<br>
+                    <input id="p_bs1" class="input-big" readonly>
+                </div>
+                <div class="bs-zone">
+                Т_твэл<br>
             <input id="fuel_temp" class="input-big" readonly>
                 </div>
-
-                <div>
+                <div class="bs-zone">
                 Т воды в 2 контуре<br>
             <input id="T_2_H2O" class="input-big" readonly>
                 </div>
             </div>
             <div>
-
                 <div style="display:flex;">
         {% for j in range(1, 5) %}
                 <div style="">
@@ -289,53 +292,57 @@
                     ПЭН{{j - 2 }}
                     {% endif %}<br>
             <input id="{{j}}_a" class="input-big" readonly><br>
-<!--W-->
-<!--                <input class="input-big">-->
-<div>
+                <div>
                     питаниe<div id="{{j}}_a_s" class="signal"></div>
                         </div>
                     </div>
             {% endfor %}
+
                 </div>
+
                     </div>
-
-
             <div class="errors-table" style="display:flex;">
                 <div>
-                <div id="h_lower_water_level_BS1" class="alert-error">УВ БС1 опасно низкий</div>
-                <div id="h_lower_water_level_BS2" class="alert-error">УВ БС2 опасно низкий</div>
-                <div id="h_high_water_level_BS1" class="alert-error">УВ БС1 выше нормы</div>
-                <div id="h_high_water_level_BS2" class="alert-error">УВ БС2 выше нормы</div>
-                    <div id="level_down1" class="alert-error">Cброс БС1</div>
-                <div id="level_down2" class="alert-error">Cброс БС2</div>
+                    <div id="h_lower_water_level_BS1" class="alert-error">УВ БС1 опасно низкий</div>
+                    <div id="h_lower_water_level_BS2" class="alert-error">УВ БС2 опасно низкий</div>
+                    <div id="h_high_water_level_BS1" class="alert-error">УВ БС1 выше нормы</div>
+                    <div id="h_high_water_level_BS2" class="alert-error">УВ БС2 выше нормы</div>
                 </div>
                 <div>
-
+                    <div id="level_down1" class="alert-error">Cброс БС1</div>
+                    <div id="level_down2" class="alert-error">Cброс БС2</div>
                     <div id="1_n_error" class="alert-error">ГНЦ1 неиспр</div>
-                <div id="2_n_error" class="alert-error">ГНЦ2 неиспр</div>
-                <div id="3_n_error" class="alert-error">ПЭН1 неиспр</div>
-                <div id="4_n_error" class="alert-error">ПЭН2 неиспр</div>
+                    <div id="2_n_error" class="alert-error">ГНЦ2 неиспр</div>
+                </div>
+                <div>
+                    <div id="3_n_error" class="alert-error">ПЭН1 неиспр</div>
+                    <div id="4_n_error" class="alert-error">ПЭН2 неиспр</div>
                     <div id="1_a_error" class="alert-error">АГНЦ1 неиспр</div>
-                <div id="2_a_error" class="alert-error">АГНЦ2 неиспр</div>
-
+                    <div id="2_a_error" class="alert-error">АГНЦ2 неиспр</div>
                 </div>
                 <div>
                     <div id="3_a_error" class="alert-error">АПЭН1 неиспр</div>
                     <div id="4_a_error" class="alert-error">АПЭН2 неиспр</div>
-                <div id="alert_high_temperature2" class="alert-error">ВТ ББ</div>
-<div id="alert_high_temperatureBS1" class="alert-error">ВТ БС1</div>
+                    <div id="alert_high_temperature2" class="alert-error">ВТ ББ</div>
+                    <div id="alert_high_temperatureBS1" class="alert-error">ВТ БС1</div>
+
+                </div>
+                <div>
                     <div id="alert_high_temperatureBS2" class="alert-error">ВТ БС2</div>
                     <div id="1_n_turn_down" class="alert-error">ГНЦ1 ОТКЛ</div>
-            </div>
+                    <div id="2_n_turn_down" class="alert-error">ГНЦ2 ОТКЛ</div>
+                    <div id="3_n_turn_down" class="alert-error">ПЭН1 ОТКЛ</div>
+                </div>
                 <div>
-
-                <div id="2_n_turn_down" class="alert-error">ГНЦ2 ОТКЛ</div>
-                <div id="3_n_turn_down" class="alert-error">ПЭН1 ОТКЛ</div>
-                <div id="4_n_turn_down" class="alert-error">ПЭН2 ОТКЛ</div>
+                    <div id="4_n_turn_down" class="alert-error">ПЭН2 ОТКЛ</div>
                     <div id="1_a_turn_down" class="alert-error">АГНЦ1 ОТКЛ</div>
-                <div id="2_a_turn_down" class="alert-error">АГНЦ2 ОТКЛ</div>
-                <div id="3_a_turn_down" class="alert-error">АПЭН1 ОТКЛ</div>
-                <div id="4_a_turn_down" class="alert-error">АПЭН2 ОТКЛ</div>
+                    <div id="2_a_turn_down" class="alert-error">АГНЦ2 ОТКЛ</div>
+                    <div id="3_a_turn_down" class="alert-error">АПЭН1 ОТКЛ</div>
+                </div>
+                <div>
+                    <div id="4_a_turn_down" class="alert-error">АПЭН2 ОТКЛ</div>
+                    <div  class="alert-error"> Разрыв ТК ГЦН1</div>
+                    <div  class="alert-error"> Разрыв ТК ГЦН2</div>
                 </div>
             </div>
                 </div>
@@ -394,6 +401,10 @@
                         </div>
             {% endfor %}
             </div>
+                <div>
+                 <button  class="black-btn"  onclick="re.az.stop_sound(2)">Съём звука</button>
+            <button>Мигание</button>
+                </div>
                                 </div>
         </div>
 
@@ -539,6 +550,8 @@
                     РДГ2
                         <button class="black-btn" onclick="re.rdg2.turn_on_or_down()">ВКЛ</button>
                         </div>
+                    <button  class="black-btn"  onclick="re.az.stop_sound(3)">Съём звука</button>
+            <button>Мигание</button>
                 </div>
                 <div >
                 {% for j in range(1, 5)%}
@@ -581,7 +594,12 @@
 
 
     </div>
-    <audio id="play" src="/static/rbmk-scram-sound.mp3" style="display:none;"></audio>
+    <div style="display:none;">
+        <audio id="play1" src="/static/rbmk-scram-sound.mp3"></audio>
+        <audio id="play2" src="/static/VIYB.mp3"></audio>
+        <audio id="play3" src="/static/viyt.mp3"></audio>
+    </div>
+
 </div>
 <div class="z-d" id="global_menu_d" style="display:none;">
     <div id="global_menu" class="global-menu">
@@ -601,33 +619,35 @@
 <script src="/static/javascript/az_classes.js"></script>
 <script src="/static/javascript/turnover_classes.js"></script>
 <script src="/static/javascript/pump_classes.js"></script>
+<script src="/static/javascript/grafiti.js"></script>
+<script src="/static/javascript/bs_grafiti.js"></script>
 <script src="/static/javascript/BS_classes.js"></script>
 <script src="/static/javascript/reactor.js"></script>
 <script src="/static/javascript/remote_control.js"></script>
+{% if id_reactor == "not_auth" %}
+<script>const room_id = "{{id_reactor}}";</script>
+{% else %}
+<script>const room_id = {{id_reactor}};</script>
+{% endif%}
 {% if not copy %}
-<script>const room_id = {{id_reactor}};
-<!--const copy = false;-->
+<script>
 rc = new RC(false)
 re = new Reactor();
 load_game_from_db();
-setup_UI(re);
-
-setInterval(() => {
-    re.update();
-}, 1000);
 show_mnemo(re);
 </script>
 <script src="/static/javascript/socketio.js"></script>
 {% else %}
-<script>const room_id = {{id_reactor}};
-</script>
 <script src="/static/javascript/socketio.js"></script>
 <script>
     rc = new RC(true);
-re = new RemoteControl();
-load_game_from_db();
+    re = new RemoteControl();
+ //</script>
+{% endif %}
+<script>
+    load_game_from_db();
 setInterval(() => {
     re.update();
-}, 1000); //</script>
-{% endif %}
+}, 1000);
+</script>
 </html>

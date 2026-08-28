@@ -22,7 +22,11 @@ s = [
 
 @rs.route("/<id_re>")
 def bsm(id_re):
-    return render_template("BSM.html", s=s, id_reactor=int(id_re), copy=False,
+    try:
+        r = int(id_re)
+    except ValueError:
+        r = id_re
+    return render_template("BSM.html", s=s, id_reactor=r, copy=False,
                            title="Блочный щит управления", description="Блочный щит управления РБМК-1000")
 
 

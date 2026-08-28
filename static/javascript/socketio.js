@@ -12,14 +12,18 @@ function send_update(){
     socket.emit("update", data);
 }
 
+
 socket.on('chosen_delete', (data) => {
     if (!rc.copy){
         re.chosen_delete(data["i2"])
     }
 });
+
+
 socket.on('connect_other_room', (data) => {
     rc.connect(data["id_device"]);
 });
+
 
 socket.on('set_w_ar', (data) => {
     if (!rc.copy){
@@ -29,8 +33,16 @@ socket.on('set_w_ar', (data) => {
 
 
 socket.on('set_unset_down_direction', (data) => {
-    if (!copy){
+    if (!rc.copy){
         re.set_unset_down_direction();
+    }
+});
+
+
+socket.on('join_main_player', () => {
+    if (rc.copy){
+        rc.connect_other_room();
+//        alert("Организатор присоединился")
     }
 });
 
@@ -88,18 +100,24 @@ socket.on('method_send', (data) => {
         }
          if (data["function"] == "turn_on_or_down_ar"){
             re.az.turn_on_or_down_ar();
-        }if (data["function"] == "stop_az"){
+        }
+        if (data["function"] == "stop_az"){
             re.az.stop_az();
         }
         if (data["function"] == "turn_on_or_down_power_SYZ"){
             re.az.turn_on_or_down_power_SYZ();
         }
-
         if (data["function"] == "set_unset_up_direction_pump"){
             re.gcn[data["id_pump"]].set_unset_up_direction();
         }
         if (data["function"] == "turn_on_or_down_pump"){
             re.gcn[data["id_pump"]].turn_on_or_down();
+        }
+        if (data["function"] == "set_speed_SYZ"){
+            re.set_speed_SYZ(data["speed"]);
+        }
+        if (data["function"] == "set_power_source"){
+            re.gcn[data["id_pump"]].set_power_source(data["source"]);
         }
     } else {
          if (data["function"] == "ui_power"){

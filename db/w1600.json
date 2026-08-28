@@ -42,42 +42,50 @@
     "1_a": {
       "broken": false,
       "g": 0,
-      "work": false
+      "work": false,
+      "source_power": 3
     },
     "1_n": {
       "broken": false,
       "g": 10800,
-      "work": true
+      "work": true,
+      "source_power": 3
     },
     "2_a": {
       "broken": false,
       "g": 0,
-      "work": false
+      "work": false,
+      "source_power": 3
     },
     "2_n": {
       "broken": false,
       "g": 0,
-      "work": true
+      "work": true,
+      "source_power": 3
     },
     "3_a": {
       "broken": false,
       "g": 0,
-      "work": false
+      "work": false,
+      "source_power": 3
     },
     "3_n": {
       "broken": false,
       "g": 2800,
-      "work": true
+      "work": true,
+      "source_power": 3
     },
     "4_a": {
       "broken": false,
       "g": 0,
-      "work": false
+      "work": false,
+      "source_power": 3
     },
     "4_n": {
       "broken": false,
       "g": 0,
-      "work": false
+      "work": false,
+      "source_power": 3
     }
   },
   "graphite_temp": 595.5904757738915,

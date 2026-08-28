@@ -91,6 +91,16 @@ position:relative;
     min-width:60vw;
 }
 
+.bs-zone{
+    padding:5px;
+
+}
+
+.bs-graf{
+    background:black;
+    border: 1px solid green;
+}
+
 .mnemo-sell{
     width: 20px;
     height:20px;
