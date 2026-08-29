@@ -459,6 +459,24 @@ class Az{
         if (this.reactor.bs2.v_inBS < 66){
             viyb.push("h_lower_water_level_BS2");
         }
+        var k = Object.keys(this.reactor.bs2.condition);
+        let tk_broke_f = true;
+        for (i = 0; i < k.length; i++){
+            if (this.reactor.bs2.condition[k[i]]){
+                viyb.push("tk_broke");
+                tk_broke_f = false;
+                break;
+            }
+        }
+        if (tk_broke_f){
+            var k = Object.keys(this.reactor.bs1.condition);
+            for (i = 0; i < k.length; i++){
+                if (this.reactor.bs1.condition[k[i]]){
+                    viyb.push("tk_broke");
+                    break;
+                }
+            }
+        }
         if (this.reactor.rho_total > 0.00055){
             viyr.push("high_rho_total");
         }

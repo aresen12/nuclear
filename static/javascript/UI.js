@@ -163,7 +163,7 @@ function chosen(i, j, flag){
 
 function setup_UI(reactor){
 //СУЗ
-    document.getElementById("W_Q").value = `${(reactor.thermal_power / 1e6 ).toFixed(0)}%`;
+    document.getElementById("W_Q").value = `${(reactor.thermal_power / 1e6 ).toFixed(0)}`;
     document.getElementById("reactivnost").value = reactor.rho_total;
     document.getElementById("speed_power").value = reactor.az.period_power;
     document.getElementById("ozr_ar").value = reactor.az.ozr_ar;
@@ -195,6 +195,7 @@ var k = Object.keys(reactor.gcn);
     document.getElementById("h_braban_s2").value = reactor.bs2.h_braban_s;
     document.getElementById("m_sep2").value = reactor.bs2.m_sep;
     document.getElementById("m_sep1").value = reactor.bs1.m_sep;
+    document.getElementById("p_bs1").value = reactor.bs1.p;
     document.getElementById("T_H2O2").value = reactor.bs2.T_H2O;
     document.getElementById("power_lep1").value = reactor.power_lep1;
     document.getElementById("power_lep2").value = reactor.power_lep2;

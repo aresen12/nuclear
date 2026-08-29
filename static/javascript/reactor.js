@@ -208,7 +208,7 @@ class Reactor {
         this.friction_factor = 0; // Коэффициент трения Darcy.
         this.pressure_loss = 0; // Потери давления в гидравлическом тракте, МПа.
         // Среднее давление БС, МПа.
-        this.separator_pressure = 0;
+        this.separator_pressure = 6.5;
         // Целевое давление реактора, МПа.
         this.target_pressure = this.p_in_reactor;
         // Предыдущее давление, МПа.
@@ -427,24 +427,8 @@ class Reactor {
         scaled_system_loss = Math.max(0.0, scaled_system_loss);
         this.pressure_loss = scaled_system_loss + physical_loss / 1e6;
     }
-    // Обновляет давление на основе состояния обоих БС
-    // и гидравлики реакторного контура.
+
     update_pressure() {
-        // Обновляем заполнение БС.
-        this.separator_fill_1 =
-            clamp(
-                this.bs1.v_inBS /
-                BS_INITIAL_VOLUME,
-                0.0,
-                1.0
-            );
-        this.separator_fill_2 =
-            clamp(
-                this.bs2.v_inBS /
-                BS_INITIAL_VOLUME,
-                0.0,
-                1.0
-            );
         // Расход через первый БС.
         let flow_bs1 = this.gcn["1_n"].g + this.gcn["1_a"].g;
         // Расход через второй БС.
@@ -478,15 +462,10 @@ class Reactor {
         // Обновляем гидравлику перед определением
         // нового давления.
         this.update_hydraulics();
-        // Целевое давление в реакторном контуре.
         this.target_pressure = this.separator_pressure + this.pressure_loss;
-        // Давление не может быть меньше давления в БС.
         this.target_pressure = Math.max(this.target_pressure, this.separator_pressure);
-        // Сохраняем предыдущее давление.
         this.previous_pressure = this.p_in_reactor;
-        // Производная давления.
         let pressure_derivative = (this.target_pressure - this.p_in_reactor) / pressure_time_constant;
-        // Обновляем давление за один шаг.
         this.p_in_reactor += pressure_derivative;
         // Ограничиваем расчётный диапазон.
         this.p_in_reactor = clamp(this.p_in_reactor, MIN_PRESSURE, MAX_PRESSURE);
@@ -524,7 +503,7 @@ class Reactor {
         this.rho_fuel = ALPHA_FUEL * (this.fuel_temp - BASE_FUEL_TEMP);
         this.rho_graphite = ALPHA_GRAPHITE * (this.graphite_temp - BASE_GRAPHITE_TEMP);
 
-        this.rho_rods = calculate_rods_reactivity(); // Реактивность СУЗ.
+        this.rho_rods = calculate_rods_reactivity(this.ozr); // Реактивность СУЗ.
         // При экстремальном перегреве ослабляем теплосъём
         if (this.fuel_temp > 2400.0) {
             this.rho_fuel *= 0.1;
@@ -616,7 +595,8 @@ class Reactor {
             this.t2.g_max, this.gcn["2_a"].g, this.gcn["4_a"].g, this.time);
         this.separator_fill_1 = clamp(this.bs1.v_inBS / BS_INITIAL_VOLUME, 0.0, 1.0);
         this.separator_fill_2 = clamp(this.bs2.v_inBS / BS_INITIAL_VOLUME, 0.0, 1.0);
-        this.update_pressure();
+        this.update_hydraulics();
+//        this.update_pressure();
         this.t1.update(this.bs1.m_sep, this.p_in_reactor);
         this.t2.update(this.bs2.m_sep, this.p_in_reactor);
         this.update_electrical(); // Обновляем электроснабжение.

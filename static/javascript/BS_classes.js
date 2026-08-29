@@ -7,8 +7,8 @@ class BS{
         this.m_sep = 0;
         this.work = false;
         this.grafiti = new BSGrafiti(`bs${this.number}`, this.number);
-        this.condition = {"1": false, "2":true, "3": false, "4": true};
-        this.p = 0;
+        this.condition = {"1": false, "2": false, "3": false, "4": false};
+        this.p = 6.5;
     }
 
     update(g_gnc, g_pen, pr, T_2_H2O, T_PVS, max_g1, a_gcn, a_pen, time){
