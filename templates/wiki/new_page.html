@@ -1,0 +1,15 @@
+{% extends "/wiki/base_wiki.html" %}
+{% block content %}
+<form  enctype="multipart/form-data" method="post">
+    <label for="name">имя страницы</label>
+    <input class="text-form form-control" name="name" id="name">
+    <label for="english">имя страницы латиницей</label>
+    <input class="text-form form-control" name="english" id="english">
+    <label  for="description">Описание</label>
+    <textarea class="text-form form-control" name="description" id="description"></textarea>
+    <label for="file">Файл html</label>
+    <input class="text-form form-control" accept=".html" type="file" id="file" name="file">
+    <button type="submit">Отправить</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,19 @@
+.table-reactor {
+    height: 30vh;
+    overflow-y: scroll;
+    width: 97vw;
+    display:flex;
+    margin:auto;
+}
+.main{
+    min-height: 100vh;
+}
+
+.white-alert{
+    background:white;
+    border-radius: 30px;
+    margin: 4px;
+    padding-left: 18px;
+    padding-top: 3px;
+    padding-right: 18px;
+}

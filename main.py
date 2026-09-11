@@ -9,6 +9,7 @@ from data.user import User
 from data.reactor import Reactor
 from forms.register_form import RegisterForm
 from reactor import rs
+from wiki import wiki
 from events_io import socketio
 
 application = Flask(__name__)
@@ -34,6 +35,7 @@ def logout():
 
 db_session.global_init('db/master.db')
 application.register_blueprint(rs)
+application.register_blueprint(wiki)
 socketio.init_app(application)
 
 
@@ -89,7 +91,11 @@ def main():
     users = db_sess.query(User).all()
     reactors = db_sess.query(Reactor).all()
     db_sess.close()
-    return render_template("main.html", title='симулятор ядерного реактора', users=users, reactors=reactors)
+    my = []
+    for i in range(len(reactors)):
+        if reactors[i].main_player == current_user.id:
+            my.append(reactors[i])
+    return render_template("main.html", title='симулятор ядерного реактора', my_reactor=my, users=users, reactors=reactors)
 
 
 @application.route("/add_new_reactor", methods=["GET", "POST"])
