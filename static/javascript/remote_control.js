@@ -4,6 +4,7 @@ class RC{
         this.connect_device = [];
         if (this.copy){
             this.connect_other_room(room_id);
+            console.log("conect")
         }
     }
 

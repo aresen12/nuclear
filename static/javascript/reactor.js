@@ -647,10 +647,12 @@ class RemoteControl extends Reactor{
     }
 
     update(){
+        console.log("update")
         this.time++;
         this.bs1.grafiti.init_UI(this.bs1.condition, this.time);
         this.bs2.grafiti.init_UI(this.bs2.condition, this.time);
         this.az.update();
+        setup_UI(this);
          if (this.az.az_run){
             this.direction = 0;
          }

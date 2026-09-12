@@ -21,7 +21,10 @@ socket.on('chosen_delete', (data) => {
 
 
 socket.on('connect_other_room', (data) => {
-    rc.connect(data["id_device"]);
+    if (!rc.copy){
+        rc.connect(data["id_device"]);
+        console.log("id_device");
+    }
 });
 
 
@@ -145,6 +148,7 @@ socket.on('chosen_current', (data) => {
 
 
 socket.on('update', (data) => {
+    console.log(rc);
     if (rc.copy){
         load_data(data);
         setup_UI(re);
