@@ -5,13 +5,15 @@
     "T_H2O": 254.9218777379995,
     "h_braban_s": 63.19141252584888,
     "m_sep": 2600,
-    "v_inBS": 63.19141252584888
+    "v_inBS": 63.19141252584888,
+    "p": 6.5
   },
   "bs2": {
     "T_H2O": 270,
     "h_braban_s": 67,
     "m_sep": 0,
-    "v_inBS": 67
+    "v_inBS": 67,
+    "p": 6.5
   },
   "chosen": [
     [
@@ -36,7 +38,7 @@
     ]
   ],
   "coolant_temp": 363.75354650451914,
-  "direction": -1,
+  "direction": 0,
   "fuel_temp": 836.9199992027998,
   "gcn": {
     "1_a": {
@@ -105,8 +107,8 @@
   ],
   "rdg1": {
     "direction": 0,
-    "power_e": 20000,
-    "work": true
+    "power_e": 0,
+    "work": false
   },
   "rdg2": {
     "direction": 0,

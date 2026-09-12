@@ -8,12 +8,18 @@
     <link rel="icon" href="/static/img/main.ico">
 </head>
 <body>
-<button id="pause_btn" type="button" class="exit-btn btn btn-light" onclick="pause()">
+<div class="exit-btn div-time">
+<button id="pause_btn" type="button" class=" btn btn-light" onclick="pause()">
        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause"
             viewBox="0 0 16 16">
   <path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5"/>
 </svg>
     </button>
+    <div id="game_process" style="display:none;">
+    оставшееся время<div id="last_time" class="watch"></div>
+    Время удержания <div id="game-time" class="watch"></div>
+        </div>
+</div>
 <div class="main-content main-cont" >
     <div style="display:flex;height:95vh;align-items: flex-start;" >
     <!--            СУЗ-->
@@ -609,6 +615,21 @@
         <a  class="btn btn-success" target="_blank" href="/skala/{{id_reactor}}">Скала</a>
     </div>
 </div>
+<div class="z-d" style="display:none;" id="game_select_d">
+    <div class="global-menu">
+        <div id="select">
+        <p>Добро пожаловать в симулятор управления реактором РБМК 1000. Выберите свой стиль игры:</p>
+        <button class="btn btn-warning btn-game " onclick="game.set_type(3, 0)">Свободная игра</button>
+        <button onclick="game.set_type(2, 0)" class="btn btn-game btn-danger">Управление реактором в аварийных ситуациях</button>
+        <button onclick="game.set_type(1, 0)" class="btn  btn-game btn-success">Учебная игра</button>
+        <button onclick="gener_select_task_menu(game.tasks)" class="btn  btn-game btn-primary">Выполнение заданий</button>
+            </div>
+        <div id="select_task" class="card-cont">
+
+        </div>
+    </div>
+
+</div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
@@ -622,6 +643,7 @@
 <script src="/static/javascript/bs_grafiti.js"></script>
 <script src="/static/javascript/BS_classes.js"></script>
 <script src="/static/javascript/reactor.js"></script>
+<script src="/static/javascript/game/game_class.js"></script>
 <script src="/static/javascript/remote_control.js"></script>
 {% if id_reactor == "not_auth" %}
 <script>const room_id = "{{id_reactor}}";</script>
@@ -632,6 +654,7 @@
 <script>
 rc = new RC(false)
 re = new Reactor();
+game = new Game( {}, {}, {{type_game}});
 load_game_from_db();
 show_mnemo(re);
 </script>
@@ -641,12 +664,14 @@ show_mnemo(re);
 <script>
     rc = new RC(true);
     re = new RemoteControl();
+<!--    game = new Game();-->
  //</script>
 {% endif %}
 <script>
     load_game_from_db();
 setInterval(() => {
     re.update();
+    game.update(re);
 }, 1000);
 </script>
 </html>

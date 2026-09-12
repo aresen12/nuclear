@@ -17,8 +17,10 @@
 .global-menu{
     padding:10px;
     position:relative;
-    width:40vw;
-    height:30vh;
+    min-width:40vw;
+    max-width: 70vw;
+    min-height:30vh;
+    max-height: 80vh;
     border-radius:30px;
     border: 1px solid gray;
     background:white;
@@ -208,4 +210,63 @@ width: 28px;
     max-height:32px;
     max-width: 160px;
     background:white;
+}
+
+
+.div-time{
+    background:#d4d0d6;
+    border-radius: 20px;
+    display:flex;
+}
+
+
+.watch{
+    min-width: 5px;
+    padding:2px;
+}
+
+
+.card{
+    border: 1px solid gray;
+    border-radius: 20px;
+    min-height:10vh;
+    min-width: 20vw;
+    margin: 3px;
+}
+
+.card-cont{
+    display:flex;
+    overflow-y:scroll;
+}
+
+.card-text{
+    margin-right: 5px;
+}
+
+.text-body-secondary {
+    color: gray;
+}
+
+.card-title {
+    font-size: 15px;
+}
+
+.btn-game{
+    padding: 10px;
+}
+
+.btn-warning{
+    background:#ffc107;
+}
+.btn-danger {
+    background:#dc3545;
+}
+
+.btn-success{
+    background: #198754;
+}
+
+.btn-primary{
+    background:#0d6efd;
+    color:white;
 }

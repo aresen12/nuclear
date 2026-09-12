@@ -120,13 +120,17 @@ function ui_thermal_power_mnemo(sek){
 
 // type  1 - danger 2 - 3 - green
 function ui_thermal_power_laz(i, j, type){
-    var div = document.getElementById(`m2${i}_${j}`);
-    if (type == 1){
-        div.style.background = "red";
-    } else if (type == 2) {
-        div.style.background = "#fcf172";
-    } else {
-        div.style.background = "green";
+    try{
+        var div = document.getElementById(`m2${i}_${j}`);
+        if (type == 1){
+            div.style.background = "red";
+        } else if (type == 2) {
+            div.style.background = "#fcf172";
+        } else {
+            div.style.background = "green";
+        }
+    } catch(e){
+     console.log(`m2${i}_${j}`)
     }
 }
 
@@ -140,6 +144,18 @@ function showdiv1(Div){
     x.style.display = "none";
     return false;
 }
+
+
+function showdivFlex(Div){
+    var x = document.getElementById(Div);
+    if(x.style.display=="none") {
+        x.style.display = "flex";
+        return true;
+    }
+    x.style.display = "none";
+    return false;
+}
+
 
 
 function ui_speed_SYZ(speed){
@@ -183,7 +199,7 @@ function setup_UI(reactor){
     document.getElementById("g_max_t1").value = reactor.t1.g_max;
     document.getElementById("g_max_t2").value = reactor.t2.g_max;
 //    Насосы
-var k = Object.keys(reactor.gcn);
+    var k = Object.keys(reactor.gcn);
     for (i = 0; i < k.length; i++){
         document.getElementById(k[i]).value = reactor.gcn[k[i]].g;
     }
@@ -199,6 +215,8 @@ var k = Object.keys(reactor.gcn);
     document.getElementById("T_H2O2").value = reactor.bs2.T_H2O;
     document.getElementById("power_lep1").value = reactor.power_lep1;
     document.getElementById("power_lep2").value = reactor.power_lep2;
+    document.getElementById("game-time").textContent = game.time_work;
+    document.getElementById("last_time").textContent = game.tasks[game.id_task]["time"] - game.global_time;
     document.getElementById("power_lar_show").value = reactor.az.power_ar  / 1e6 ;
     if (rc.copy){
         show_mnemo(reactor);
@@ -206,6 +224,7 @@ var k = Object.keys(reactor.gcn);
             ui_power_source(reactor.gcn[k[i]].source_power, k[i]);
         }
     }
+
 }
 
 
@@ -281,4 +300,33 @@ function ui_power_source(number, id_pump){
             stop_alert(`${i}_source_${id_pump}`);
         }
     }
+}
+
+
+function select_game_menu(){
+    showdiv1("game_select_d");
+}
+
+
+function gener_select_task_menu(tasks){
+    let cont = document.getElementById("select_task");
+    var k = Object.keys(tasks);
+    k.sort();
+    for (i = 0; i < k.length; i++){
+        cont.innerHTML += `<div onclick="game.set_task(${k[i]})" class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">Задания</h5>
+    <h6 class="card-subtitle mb-2 text-body-secondary">За выполнение ${tasks[k[i]]["points"]} очков</h6>
+    <p class="card-text">${tasks[k[i]]["text"]}</p>
+    <p class="card-text">Время на выполнение ${tasks[k[i]]["time"]}с.</p>
+
+  </div>
+</div>`;
+    }
+}
+
+
+function clear_and_write_text_task(text){
+    let cont = document.getElementById("select_task");
+    cont.textContent = text;
 }

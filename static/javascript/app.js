@@ -110,6 +110,8 @@ function gener_json_DB(){
     data["coolant_temp"] = re.coolant_temp;
     data["t_boil"] = re.t_boil;
     data["ar"] = re.az.ar;
+    data["bs1"]["p"] = re.bs1.p;
+    data["bs2"]["p"] = re.bs2.p;
     return data;
 }
 
@@ -138,6 +140,7 @@ function load_data_DB(json){
     re.t_boil = json["t_boil"];
     re.az.ar = json["ar"];
     start_UI(re);
+    show_mnemo(re);
 }
 
 

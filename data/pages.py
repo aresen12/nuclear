@@ -14,4 +14,5 @@ class Page(SqlAlchemyBase, UserMixin, SerializerMixin):
     file_name = sqlalchemy.Column(sqlalchemy.String, nullable=True, )
     cnt_read = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
     id_writer = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
+    type_page = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
 

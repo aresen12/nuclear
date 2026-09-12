@@ -9,7 +9,13 @@
     <textarea class="text-form form-control" name="description" id="description"></textarea>
     <label for="file">Файл html</label>
     <input class="text-form form-control" accept=".html" type="file" id="file" name="file">
-    <button type="submit">Отправить</button>
+    <label>Раздел</label>
+    <select  class="dropdown form-select" name="type_page" id="type_page">
+        <option value="0">Общая информация</option>
+        <option value="1">Аварии на РБМК</option>
+        <option value="2">Устройство РБМК</option>
+    </select>
+    <button class="btn btn-primary" type="submit">Отправить</button>
 </form>
 
 {% endblock %}

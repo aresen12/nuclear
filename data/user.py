@@ -12,7 +12,7 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     name = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     admin = sqlalchemy.Column(sqlalchemy.Boolean, default=False)
-    points = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
+    points = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
     email = sqlalchemy.Column(sqlalchemy.String,
                               index=True, unique=True, nullable=True)
 
