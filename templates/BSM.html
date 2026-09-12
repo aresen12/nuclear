@@ -654,7 +654,7 @@
 <script>
 rc = new RC(false)
 re = new Reactor();
-game = new Game( {}, {}, {{type_game}});
+game = new Game({{type_game}});
 load_game_from_db();
 show_mnemo(re);
 </script>
@@ -664,7 +664,7 @@ show_mnemo(re);
 <script>
     rc = new RC(true);
     re = new RemoteControl();
-<!--    game = new Game();-->
+    game = new Game(3);
  //</script>
 {% endif %}
 <script>

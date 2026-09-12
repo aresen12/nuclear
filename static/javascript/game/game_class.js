@@ -1,7 +1,7 @@
 
 
 class Game{
-    constructor(check_parament_end, check_parament_win, type=0, inaccuracy=0.01){
+    constructor(type=0, inaccuracy=0.01){
             this.tasks = {
   "1": {
     "text": "Вывести реактор на проектную мощность 3200 мвт тепловых.",

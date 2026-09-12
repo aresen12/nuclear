@@ -215,9 +215,13 @@ function setup_UI(reactor){
     document.getElementById("T_H2O2").value = reactor.bs2.T_H2O;
     document.getElementById("power_lep1").value = reactor.power_lep1;
     document.getElementById("power_lep2").value = reactor.power_lep2;
-    document.getElementById("game-time").textContent = game.time_work;
-    document.getElementById("last_time").textContent = game.tasks[game.id_task]["time"] - game.global_time;
-    document.getElementById("power_lar_show").value = reactor.az.power_ar  / 1e6 ;
+    console.log(game.type)
+    if (game.type != 3 && game.type != 0){
+        document.getElementById("game-time").textContent = game.time_work;
+        document.getElementById("last_time").textContent = game.tasks[game.id_task]["time"] - game.global_time;
+    }
+        document.getElementById("power_lar_show").value = reactor.az.power_ar  / 1e6 ;
+
     if (rc.copy){
         show_mnemo(reactor);
         for (i = 0; i < k.length; i++){
