@@ -91,6 +91,7 @@ def main():
     users = db_sess.query(User).all()
     reactors = db_sess.query(Reactor).all()
     db_sess.close()
+    users.sort(key=lambda user: user.points, reverse=True)
     my = []
     for i in range(len(reactors)):
         if reactors[i].main_player == current_user.id:
