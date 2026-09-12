@@ -93,9 +93,10 @@ def main():
     db_sess.close()
     users.sort(key=lambda user: user.points, reverse=True)
     my = []
-    for i in range(len(reactors)):
-        if reactors[i].main_player == current_user.id:
-            my.append(reactors[i])
+    if current_user.is_authenticated:
+        for i in range(len(reactors)):
+            if reactors[i].main_player == current_user.id:
+                my.append(reactors[i])
     return render_template("main.html", title='симулятор ядерного реактора', my_reactor=my, users=users, reactors=reactors)
 
 
