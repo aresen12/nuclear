@@ -31,7 +31,7 @@ def add_new_page():
             page.name = request.form["name"]
             page.description = request.form["description"]
             page.id_writer = current_user.id
-            page.type_page["type_page"]
+            page.type_page = request.form["type_page"]
             page.name_english = request.form["english"]
             f = request.files["file"]
             page.file_name = f'{request.form["english"]}.html'
