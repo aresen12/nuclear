@@ -1,3 +1,4 @@
+User-agent: *
 Disallow: /wiki/add_new_page
 Disallow: /b/
 Disallow: /wiki/bad_info

@@ -30,13 +30,17 @@
         {% if current_user.is_authenticated and current_user.id == reactor.main_player %}
         <a  type="button" class="btn btn-success" href="/b/{{reactor.id}}">Организатор</a>
         <a  type="button" class="btn btn-danger" href="/delete/{{reactor.id}}">Удалить</a>
-        {% else %}
-        <a href="/b/user/{{reactor.id}}" type="button" class="btn btn-secondary">Игроки</a>
         {% endif %}
         </td>
     </tr>
 {% endfor %}
-
+{% if my_reactor|length == 0  %}
+        <tr>
+        <td></td>
+        <td>У вас пока что нет собственного реактора</td>
+        <td></td>
+            </tr>
+        {% endif %}
 </table>
 <table >
     <tr>
@@ -61,7 +65,7 @@
         <a  type="button" class="btn btn-success" href="/b/{{reactor.id}}">Организатор</a>
         <a  type="button" class="btn btn-danger" href="/delete/{{reactor.id}}">Удалить</a>
         {% else %}
-        <a href="/b/user/{{reactor.id}}" type="button" class="btn btn-secondary">Игроки</a>
+                <a href="/b/user/{{reactor.id}}" type="button" class="btn btn-secondary">Подключиться</a>
         {% endif %}
         </td>
     </tr>

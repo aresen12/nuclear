@@ -136,16 +136,17 @@ def info_syz():
 @application.route("/win_game", methods=["POST"])
 def win():
     data = request.get_json()
-    file = open("data/task.json", mode="r")
+    file = open("db/task.json", mode="r")
     k = file.read()
     file.close()
     x = json.loads(k)
     db_sess = db_session.create_session()
     user = db_sess.query(User).filter(User.id == current_user.id).first()
     if not (user is None):
-        user.points += x[data["id_task"]]["points"]
+        user.points += x[str(data["id_task"])]["points"]
     db_sess.commit()
     db_sess.close()
+    return {"log": 200}
 
 
 @application.route("/info/turnover")

@@ -1,3 +1,4 @@
+from flask import request
 from flask_login import current_user
 from flask_socketio import emit, SocketIO, join_room, leave_room, rooms
 from data import db_session
@@ -9,6 +10,10 @@ socketio = SocketIO(cors_allowed_origins="*")
 def handle_connect():
     if current_user.is_authenticated:
         join_room(f'u{current_user.id}')
+    client_sid = request.sid  # Получаем SID клиента
+    print(client_sid, "sid")
+    # Можно отправить SID обратно клиенту
+    emit('server_sid_response', {'sid': client_sid})
 
 
 @socketio.on('join')
@@ -93,8 +98,10 @@ def set_unset_up_direction(data):
 
 @socketio.on("connect_other_room")
 def connect_other_room(data):
+    data["id_device"] = request.sid
     emit("connect_other_room", data, to=data['room'])
 
-@socketio.on("method_send")
+@socketio.on("method_"
+             "send")
 def method_send(data):
     emit("method_send", data, to=data['room'])

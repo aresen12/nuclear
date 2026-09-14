@@ -2,6 +2,7 @@
 
 class Game{
     constructor(type=0, inaccuracy=0.01){
+    this.win = false;
             this.tasks = {
   "1": {
     "text": "Вывести реактор на проектную мощность 3200 мвт тепловых.",
@@ -66,7 +67,7 @@ class Game{
             }
             if (this.check_win(reactor)){
                 this.time_work++;
-                if (this.time_work >= this.tasks[this.id_task]["time_work"]){
+                if (this.time_work >= this.tasks[this.id_task]["time_work"] && !this.win){
                     send_win();
                 reactor.pause = true;
                 alert("Вы выйграли");
@@ -110,6 +111,7 @@ class Game{
 
     set_task(id_task){
         get_data_start_task(this.tasks[id_task]['condition']);
+        this.win = false;
         this.id_task = id_task;
         this.time_work = 0;
         this.global_time = 0;

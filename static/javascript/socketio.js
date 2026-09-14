@@ -45,7 +45,7 @@ socket.on('set_unset_down_direction', (data) => {
 socket.on('join_main_player', () => {
     if (rc.copy){
         rc.connect_other_room();
-//        alert("Организатор присоединился")
+        alert("Организатор присоединился")
     }
 });
 
@@ -148,7 +148,6 @@ socket.on('chosen_current', (data) => {
 
 
 socket.on('update', (data) => {
-    console.log(rc);
     if (rc.copy){
         load_data(data);
         setup_UI(re);
@@ -158,7 +157,23 @@ socket.on('update', (data) => {
 
 socket.on('connect', () => {
     socket.emit('join', {room: room_id});
+
 });
+
+socket.on('server_sid_response', (data) => {
+    rc.set_sid(data["sid"]);
+});
+
+
+
+
+socket.on('connect_rc', (data) => {
+    if (rc.copy){
+        alert("Вы успешно подключились");
+    }
+});
+
+
 
 socket.on('join_event', (data) => {
 //   alert(`Пользователь ${data["name"]} вошёл`);

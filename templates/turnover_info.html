@@ -1,6 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/info">Справка</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Турбина</li>
+  </ol>
+</nav>
 <h1>Справка по управлению турбиной</h1>
+<div class="alert alert-danger" role="alert">
+ Эта информация предназначена, для игры в симуляторе ядерного реактора РБМК-1000. Информация о настоящем реакторе находиться
+    <a href="/wiki">Здесь</a>
+</div>
 <h3>Обязанности оператора турбины</h3>
 <p>
     Оператор турбины

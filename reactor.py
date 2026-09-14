@@ -52,3 +52,5 @@ def get_data_task(condition):
         return json.loads(data_json)
     except FileNotFoundError:
         return {"log": "error"}
+
+

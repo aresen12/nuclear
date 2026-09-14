@@ -1,15 +1,9 @@
 {% extends "/wiki/base_wiki.html" %}
 {% block content %}
-
-<p>Аварии на реакторах РБМК</p>
-<h4>Статьи</h4>
-{% if current_user.is_authenticated and current_user.admin %}
-<a class="btn btn-success" href="/wiki/add_new_page">Добавить новую страницу</a>
-{% endif %}
+<h4>Результаты поиск</h4>
 <div>
     {% for page in pages %}
-    {% if page.type_page == 1 %}
-        <div class="card main-card">
+    <div class="card main-card">
       <div class="card-body">
         <h5 class="card-title">{{page.name}}</h5>
     <!--    <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>-->
@@ -17,7 +11,9 @@
         <a href="/wiki/{{page.name_english}}" class="card-link">Читать</a>
       </div>
     </div>
+    {% endfor %}
+    {% if pages|length == 0 %}
+    <h5>Ничего не нашлось!</h5>
     {% endif %}
-{% endfor %}
 </div>
 {% endblock %}

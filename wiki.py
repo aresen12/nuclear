@@ -91,6 +91,19 @@ def bad_info_post():
     return redirect("/wiki")
 
 
+@wiki.route("/search", methods=["POST"])
+def search_def():
+    db_sess = db_session.create_session()
+    pages = db_sess.query(Page).all()
+    db_sess.close()
+    p = []
+    for page in pages:
+        if request.form["search_text"] in page.name or request.form["search_text"] in page.description:
+            p.append(page)
+    print(p, )
+    return render_template("/wiki/searche.html", pages=p)
+
+
 @wiki.route("/send_img", methods=["POST"])
 def send_img():
     if current_user.is_authenticated and current_user.admin:
