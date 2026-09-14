@@ -4,11 +4,6 @@
 {% block content %}
  <div style="background-color:#ebead5;">
 <h1>Добро пожаловать в симулятор управления реактором</h1>
-Игроки<ul>
-{% for user in users %}
-    <li>{{user.id}} - {{user.name}} очки {{user.points}}</li>
-{% endfor %}
-</ul>
 <h1>Реакторы</h1>
 <a  type="button" class="btn btn-primary" href="/b/not_auth">Играть без авторизации(1 игрок)</a>
 <div class="table-reactor">
@@ -73,6 +68,7 @@
 {% endfor %}
 
 </table>
+
 </div>
 <a type="button" class="btn btn-success" href="/add_new_reactor">Добавить новый реактор</a>
 <h1>Что такаое реактор РБМК-1000</h1>
@@ -81,5 +77,13 @@
 Реактор большой мощности канальный (РБМК) — серия энергетических ядерных реакторов, разработанных в Советском Союзе.
     Взорвавшийся на ЧАЭС реактор был такого же типа. С помощью нашего симулятора вы можете управлять им в расщиренном режиме.
 </p>
-</div>
+     <h4>Топ игроков</h4>
+  <div  class="table-reactor">
+<ul class="">
+{% for user in users %}
+    <li>{{user.id}} - {{user.name}} очки {{user.points}}</li>
+{% endfor %}
+</ul>
+     </div>
+ </div>
 {% endblock %}

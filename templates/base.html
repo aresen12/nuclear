@@ -20,7 +20,7 @@
         <a class="navbar-brand" href="/wiki">РБМК-wiki</a>
          <a class="navbar-brand" href="/info">Справка</a>
         {% if current_user.is_authenticated %}
-        <a class="navbar-brand">{{ current_user.name }}</a>
+        <a href="/logout" class="navbar-brand">{{ current_user.name }}</a>
         {% else %}
         <p>
             <a class="btn btn-primary login-p" href="/register">Зарегистрироваться</a>

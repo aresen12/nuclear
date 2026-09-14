@@ -1,0 +1,7 @@
+Disallow: /wiki/add_new_page
+Disallow: /b/
+Disallow: /wiki/bad_info
+Disallow: /delete/
+Allow: /b/not_auth
+Allow: /wiki
+

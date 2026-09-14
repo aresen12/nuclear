@@ -17,5 +17,18 @@
     </select>
     <button class="btn btn-primary" type="submit">Отправить</button>
 </form>
-
+<form  enctype="multipart/form-data" method="post" action="/wiki/send_img">
+    <label>Загрузить фото для статьи(Адрес /static/img/wiki)</label>
+    <input class="text-form form-control" accept="" type="file" id="img" name="img">
+    <button class="btn btn-primary" type="submit">Отправить</button>
+</form>
+<h4>Сообщения об ошибках</h4>
+<div>
+    {% for info in bad_info %}
+        <p>
+            <h6>{{info.url_page}}</h6>
+    {{info.about}}
+        </p>
+    {% endfor %}
+</div>
 {% endblock %}

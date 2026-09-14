@@ -23,7 +23,10 @@ def main_wiki():
 @wiki.route("/add_new_page", methods=["POST", "GET"])
 def add_new_page():
     if request.method == "GET":
-        return render_template("/wiki/new_page.html")
+        db_sess = db_session.create_session()
+        bad_info = db_sess.query(BadInfo).all()
+        db_sess.close()
+        return render_template("/wiki/new_page.html", bad_info=bad_info)
     else:
         if current_user.is_authenticated and current_user.admin:
             db_sess = db_session.create_session()
@@ -50,7 +53,6 @@ def page_wiki(name_page):
     db_sess = db_session.create_session()
     page = db_sess.query(Page).filter(Page.name_english == name_page).first()
     db_sess.close()
-    print(page.file_name)
     if page is None:
         return abort(404)
     return render_template(f"/wiki/data/{page.file_name}", title=page.name,
@@ -87,3 +89,14 @@ def bad_info_post():
     db_sess.commit()
     db_sess.close()
     return redirect("/wiki")
+
+
+@wiki.route("/send_img", methods=["POST"])
+def send_img():
+    if current_user.is_authenticated and current_user.admin:
+        f = request.files["img"]
+        file = open(f"static/img/wiki/{f.filename}", mode="wb")
+        file.write(f.read())
+        file.close()
+        return redirect("/wiki")
+    return redirect("/login")

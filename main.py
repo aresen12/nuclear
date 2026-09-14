@@ -205,6 +205,14 @@ def info():
     return render_template("info.html",  title="симулятор упралением ядерного реактора")
 
 
+@application.route("/robots.txt")
+def robots():
+    file = open("db/robots.txt", mode="r")
+    text = file.read()
+    file.close()
+    return text
+
+
 if __name__ == "__main__":
     socketio.run(application, host='0.0.0.0', debug=True, allow_unsafe_werkzeug=True, port=8000)
 
