@@ -9,13 +9,16 @@
 {% endif %}
 <div>
     {% for page in pages %}
-
     <div class="card main-card">
   <div class="card-body">
     <h5 class="card-title">{{page.name}}</h5>
 <!--    <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>-->
     <p class="card-text">{{page.description}}</p>
     <a href="/wiki/{{page.name_english}}" class="card-link">Читать</a>
+      {% if current_user.is_authenticated and current_user.admin %}
+      <p>Просмотры {{page.cnt_read}}</p>
+<a class="btn btn-danger" href="/wiki/edit/{{page.name_english}}">Редактировать страницу</a>
+{% endif %}
   </div>
 </div>
 {% endfor %}

@@ -23,10 +23,12 @@ def main_wiki():
 @wiki.route("/add_new_page", methods=["POST", "GET"])
 def add_new_page():
     if request.method == "GET":
-        db_sess = db_session.create_session()
-        bad_info = db_sess.query(BadInfo).all()
-        db_sess.close()
-        return render_template("/wiki/new_page.html", bad_info=bad_info)
+        if current_user.is_authenticated and current_user.admin:
+            db_sess = db_session.create_session()
+            bad_info = db_sess.query(BadInfo).all()
+            db_sess.close()
+            return render_template("/wiki/new_page.html", bad_info=bad_info)
+        return redirect("/login")
     else:
         if current_user.is_authenticated and current_user.admin:
             db_sess = db_session.create_session()
@@ -52,11 +54,45 @@ def add_new_page():
 def page_wiki(name_page):
     db_sess = db_session.create_session()
     page = db_sess.query(Page).filter(Page.name_english == name_page).first()
-    db_sess.close()
     if page is None:
         return abort(404)
-    return render_template(f"/wiki/data/{page.file_name}", title=page.name,
-                           description=page.description)
+    page.cnt_read += 1
+    name = page.name
+    description = page.description
+    db_sess.commit()
+    db_sess.close()
+    return render_template(f"/wiki/data/{name_page}.html", title=name,
+                           description=description)
+
+
+@wiki.route("/edit/<name_page>", methods=["POST"])
+def edit_post_page_wiki(name_page):
+    db_sess = db_session.create_session()
+    page = db_sess.query(Page).filter(Page.name_english == name_page).first()
+    if page is None or not (current_user.is_authenticated and current_user.admin):
+        db_sess.close()
+        return abort(404)
+    page.name = request.form["name"]
+    page.description = request.form['description']
+    db_sess.commit()
+    db_sess.close()
+    return redirect("/wiki")
+
+
+@wiki.route("/edit_html/<name_page>")
+def edit_html_post_page_wiki(name_page):
+    db_sess = db_session.create_session()
+    page = db_sess.query(Page).filter(Page.name_english == name_page).first()
+    if page is None or not (current_user.is_authenticated and current_user.admin):
+        db_sess.close()
+        return abort(404)
+    file = open(f"templates/wiki/data/{page.file_name}", mode="w")
+    file.write(request.form["new_html"])
+    file.close()
+    page.name_english = request.form["name_english"]
+    db_sess.commit()
+    db_sess.close()
+    return redirect("/wiki")
 
 
 @wiki.route("/errors")
@@ -71,6 +107,20 @@ def error_page():
 @wiki.route("/delete_page")
 def delete_new_page():
     pass
+
+
+@wiki.route("/edit/<name_page>")
+def edit_page_wiki(name_page):
+    db_sess = db_session.create_session()
+    page = db_sess.query(Page).filter(Page.name_english == name_page).first()
+    db_sess.close()
+    if page is None or not (current_user.is_authenticated and current_user.admin):
+        return abort(404)
+    file = open(f"templates/wiki/data/{page.file_name}", mode="r")
+    html_text = file.read()
+    file.close()
+    return render_template(f"/wiki/edit_page.html", page=page,  title="Редактирование страницы",
+                           description="Редактирование страницы", html_text=html_text)
 
 
 @wiki.route("/bad_info", methods=["GET"])
@@ -100,7 +150,6 @@ def search_def():
     for page in pages:
         if request.form["search_text"] in page.name or request.form["search_text"] in page.description:
             p.append(page)
-    print(p, )
     return render_template("/wiki/searche.html", pages=p)
 
 

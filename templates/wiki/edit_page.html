@@ -1,0 +1,22 @@
+{% extends "/wiki/base_wiki.html" %}
+
+{% block content %}
+<h4>Изменение данных об отображении</h4>
+<form method="post">
+    <label for="description">Описание</label>
+    <textarea class="text-form form-control" id="description" name="description">{{page.description}}</textarea>
+    <label for="name">Название</label>
+    <input class="text-form form-control" id="name" name="name"  value="{{page.name}}">
+    <button class="btn btn-primary" type="submit">Изменить</button>
+</form>
+<h4>Изменение содержимого страницы</h4>
+<form action="/wiki/edit_html/{{page.name_english}}" method="post">
+  <label>Редактирование текста страницы</label>
+  <textarea class="text-form form-control" id="new_html" name="new_html" rows="30">{{html_text}}</textarea>
+      <label for="name_english">Название на английском</label>
+  <input class="text-form form-control" id="name_english" name="name_english" value="{{page.name_english}}">
+    <button class="btn btn-primary" type="submit">Изменить</button>
+</form>
+
+
+{% endblock %}

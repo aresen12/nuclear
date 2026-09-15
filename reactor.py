@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, redirect, render_template, request,
+    Blueprint, redirect, render_template, request, abort
 )
 from data import db_session
 from data.user import User
@@ -24,10 +24,12 @@ s = [
 @rs.route("/<id_re>")
 def bsm(id_re):
     db_sess = db_session.create_session()
-
     try:
         r = int(id_re)
         room = db_sess.query(Reactor).filter(Reactor.id == r).first()
+        if room is None:
+            db_sess.close()
+            return abort(404)
         type_game = room.mode
     except ValueError:
         r = id_re

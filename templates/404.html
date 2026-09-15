@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}404 Not Found{% endblock %}
+{% block content %}
+<style>.error-html-text{
+    font-size: 100px;
+    margin:auto;
+    text-align:center;
+}
+
+    .d-text {
+        font-size: 50px;
+    margin:auto;
+    text-align:center;
+    }
+
+    .center-btn {
+        margin:auto;
+        display:flex;
+        width: 20vw;
+    text-align:center;
+    }
+</style>
+<p class="error-html-text">404</p>
+<p class="d-text">УПС! Похоже, страница по этому адресу не существует.</p>
+<a class="btn btn-success center-btn" href="/">Вернуться на главную страницу</a>
+{% endblock %}

@@ -49,7 +49,7 @@
     },
     "1_n": {
       "broken": false,
-      "g": 10800,
+      "g": 1000,
       "source_power": 3,
       "work": true
     },
@@ -73,7 +73,7 @@
     },
     "3_n": {
       "broken": false,
-      "g": 2800,
+      "g": 100,
       "source_power": 3,
       "work": true
     },
@@ -93,7 +93,7 @@
   "graphite_temp": 585.2151619699728,
   "outlet_temp": 244.96394961560384,
   "ozr": 100,
-  "ozr_ar": 95,
+  "ozr_ar": 0,
   "p_in_reactor": 6.5,
   "period_power": -0.004927831867406727,
   "power_ar": 1600000000,

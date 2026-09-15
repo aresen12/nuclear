@@ -213,6 +213,11 @@ def robots():
     file.close()
     return text
 
+@application.errorhandler(404)
+def page_not_found(e):
+    # Сначала рендерим шаблон, а потом явно возвращаем код состояния 404
+    return render_template('404.html'), 404
+
 
 if __name__ == "__main__":
     socketio.run(application, host='0.0.0.0', debug=True, allow_unsafe_werkzeug=True, port=8000)
