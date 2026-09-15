@@ -79,7 +79,7 @@ def edit_post_page_wiki(name_page):
     return redirect("/wiki")
 
 
-@wiki.route("/edit_html/<name_page>")
+@wiki.route("/edit_html/<name_page>", methods=["POST"])
 def edit_html_post_page_wiki(name_page):
     db_sess = db_session.create_session()
     page = db_sess.query(Page).filter(Page.name_english == name_page).first()
