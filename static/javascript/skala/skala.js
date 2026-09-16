@@ -14,7 +14,6 @@ class Skala{
     }
 
     load_data(data){
-
         this.last_data = data;
         let c_e = [];
         if (data["thermal_power"] / 1e6 > 3200){
@@ -36,8 +35,6 @@ class Skala{
             c_e.push("alert_high_e_power_t1");
         }
         if (data["t2"]["w_e"] > 500){
-            my_alert("alert_high_e_power_t2");
-            flag = true;
             c_e.push("alert_high_e_power_t2");
         }
         if (data["t1"]["broken"]){
@@ -68,8 +65,6 @@ class Skala{
             c_e.push("h_high_water_level_BS2");
         }
         if(this.az_5){
-            my_alert("alert_az_5");
-            flag = true;
             c_e.push("alert_az_5");
         }
          if(data["az_b"]){

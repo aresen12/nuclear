@@ -207,9 +207,8 @@ class Reactor {
         this.reynolds = 0; // Число Рейнольдса.
         this.friction_factor = 0; // Коэффициент трения Darcy.
         this.pressure_loss = 0; // Потери давления в гидравлическом тракте, МПа.
-        // Среднее давление БС, МПа.
         this.separator_pressure = 6.5;
-        // Целевое давление реактора, МПа.
+        this.tsn = new TSN();
         this.target_pressure = this.p_in_reactor;
         // Предыдущее давление, МПа.
         this.previous_pressure = this.p_in_reactor;
@@ -331,7 +330,8 @@ class Reactor {
             1: {"w": this.rdg1.power_e, "consumer":[]},
             2: {"w": this.rdg2.power_e, "consumer":[]},
             3: {"w": this.power_lep1, "consumer":[]},
-            4: {"w": this.power_lep1, "consumer":[]}
+            4: {"w": this.power_lep1, "consumer":[]},
+            5: {"w": this.tsn.w_e, "consumer":[]}
          }
          var k = Object.keys(this.gcn);
          for (i = 0; i < k.length; i++){
@@ -599,6 +599,7 @@ class Reactor {
 //        this.update_pressure();
         this.t1.update(this.bs1.m_sep, this.p_in_reactor);
         this.t2.update(this.bs2.m_sep, this.p_in_reactor);
+        this.tsn.update(this.t1.w_e * 1e3, this.t2.w_e * 1e3, this.t1.obr, this.t2.obr);
         this.update_electrical(); // Обновляем электроснабжение.
         setup_UI(this);
         rc.update();

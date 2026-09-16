@@ -676,6 +676,12 @@ function calculate_power_sek(sterg){
         return sek;
     }
 
+function check_sek_power(sek, power){
+    power /= (1e6 * 7);
+
+}
+
+
 function get_sektor_number(i, j){
     let x = Math.floor(i / 3);
     let y = Math.floor(j / 3);

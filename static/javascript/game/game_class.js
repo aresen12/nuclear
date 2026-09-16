@@ -1,5 +1,3 @@
-
-
 class Game{
     constructor(type=0, inaccuracy=0.01){
     this.win = false;
@@ -7,21 +5,21 @@ class Game{
   "1": {
     "text": "Вывести реактор на проектную мощность 3200 мвт тепловых.",
     "points": 80,
-    "time": 600,
-    "time_work": 60, "condition": "w1600"
+    "time": 900,
+    "time_work": 30, "condition": "w1600"
   },
   "2": {
     "text": "вывести реактор на мощность 1600 мвт и подключить тг1",
     "points": 75,
-    "time": 600,
-    "time_work": 60
+    "time": 900,
+    "time_work": 20
     , "condition": "w0"
   },
   "3": {
     "text": "Удержать реактор на мощности 3200 Мвт",
     "points": 80,
     "time": 600,
-    "time_work": 60,
+    "time_work": 30,
     "condition": "w3200"
   },
   "4": {
@@ -52,8 +50,15 @@ class Game{
         this.id_task = 0;
         this.time_work = 0;
         this.global_time = 0
-        if (this.type == 0 || this.type == 4){
+        if (this.type == 0){
             select_game_menu();
+        } else if (this.type == 2){
+            select_game_menu();
+            this.teacher = new Teacher(re);
+            this.teacher.update_step();
+        } else if (this.type == 4){
+            select_game_menu();
+            gener_select_task_menu(json.tasks)
         }
     }
 
@@ -74,6 +79,9 @@ class Game{
                 }
 
             }
+        }
+        if (this.type == 2){
+            this.teacher.update();
         }
     }
 
@@ -106,7 +114,12 @@ class Game{
 
     set_type(type, number_task){
         this.type = type;
-        showdiv1("game_select_d")
+        console.log(this.type)
+        if (this.type == 2){
+            this.teacher = new Teacher(re);
+        } else {
+            showdiv1("game_select_d");
+        }
     }
 
     set_task(id_task){

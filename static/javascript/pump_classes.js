@@ -5,11 +5,11 @@ class Pump{
         this.g = 0; // расход воды м3/ч
         this.work = false;
         this.direction = 0; // направление понижения или повышения расхода
-        this.max_g = 24000; // макс расход
+        this.max_g = 32000; // макс расход
         this.id_pump = id_pump;
         this.broken = false; // сломан или нет
         this.w_e = 0;
-        this.source_power = 1; // 1 - rdg1 2 - rdg2 3 - lep1 4 - lep2
+        this.source_power = 1;
     }
 
     set_g(){

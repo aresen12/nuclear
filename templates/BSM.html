@@ -23,12 +23,15 @@
 <div class="main-content main-cont" >
     <div style="display:flex;height:95vh;align-items: flex-start;" >
     <!--            СУЗ-->
-        <div style="" class="column-bsm ">
+        <div   class="column-bsm ">
+
             <div class="up-panel">
+                            <div id="w_q_r">
                 СФКРЭ
         <input id="W_Q" class="input-big" readonly>
             Реактивность
         <input id="reactivnost" class="input-big" readonly>
+                </div>
                 <div style="display:flex;">
                     <div>АР<br>
                     Включен<div id="lar_s" class="signal"></div>
@@ -40,7 +43,7 @@
                          </div>
 <div>
             {% for i in range(0, 9)%}
-            <div class="row-mnemo">
+            <div class="row-mnemo" id="mnemo_sel">
                 {% for j in range(0, 9)%}
                 {% if s[i][j] == 1 %}
                         <div id="m{{i}}_{{j}}" class="mnemo-ball mnemo-ball-rr"></div>
@@ -113,7 +116,7 @@
              <div class="down-panel">
                  <div>
             <!--            аз -->
-            <div class="az">
+            <div class="az" id="az_btn_cont">
 
                 <button class="az-btn" style="width:80px;" onclick="re.az.turn_on_or_down_power_SYZ()">
                     <div id="key_power_btn">
@@ -154,7 +157,7 @@
 
             </div>
                      <div style="display:flex;">
-                         <div>
+                         <div id="ar_cont">
                          АР<br>
             <button class="black-btn" onclick="re.az.turn_on_or_down_ar()">ВКЛ</button><br>
                          W, АР<br>
@@ -162,8 +165,11 @@
                      <button class="black-btn" onclick="set_w_ar()">УСТ</button>
                          </div>
                      <div>
+                         <div id="p_syz">
+
+
             {% for i in range(0, 9)%}
-            <div class="row-mnemo">
+            <div class="row-mnemo" >
                 {% for j in range(0, 9)%}
                 {% if s[i][j] == 1 %}
                     <button id="s{{i}}_{{j}}" class="mnemo-rr " onclick="sterg({{i}}, {{j}})"></button>
@@ -184,6 +190,7 @@
                 {% endfor %}
                 </div>
             {% endfor %}
+                             </div>
                          </div>
                 <div class="cow">
                     <div>
@@ -193,7 +200,7 @@
                         <button id="s4" onclick="re.set_speed_SYZ(4)">4</button>
                         <button id="s5" onclick="re.set_speed_SYZ(5)">5</button>
                     </div>
-                    <button class="black-btn" onclick="re.set_unset_up_direction()">Извлек</button>
+                    <button id="up_direction_btn" class="black-btn" onclick="re.set_unset_up_direction()">Извлек</button>
             <button class="black-btn"  onclick="re.set_unset_down_direction()">Опуск</button>
             <button  class="black-btn"  onclick="re.az.stop_sound(1)">Съём звука</button>
             <button>Мигание</button>
@@ -274,7 +281,7 @@
                 </div>
             </div>
             <div>
-                <div style="display:flex;">
+                <div style="display:flex;" id="pumps_up_cont">
         {% for j in range(1, 5) %}
                 <div style="">
                     {% if j < 3 %}
@@ -516,6 +523,8 @@
                     <div id="rdg2_broken" class="alert-error">РДГ2 неиспр</div>
                     <div id="lep1_broken" class="alert-error">ЛЭП1 неиспр</div>
                     <div id="lep2_broken" class="alert-error">ЛЭП2 неиспр</div>
+                    <div id="tsn_broken" class="alert-error">ТСН неиспр</div>
+                    <div id="e_h" class="alert-error">Превыш Нагрузки </div>
                 </div>
             </div>
             </div>
@@ -571,6 +580,7 @@
                     <button id="4_source_{{j}}_n" onclick="re.gcn['{{j}}_n'].set_power_source(4)">ЛЭП2</button>
                     <button id="1_source_{{j}}_n" onclick="re.gcn['{{j}}_n'].set_power_source(1)">РДГ1</button>
                     <button id="2_source_{{j}}_n" onclick="re.gcn['{{j}}_n'].set_power_source(2)">РДГ2</button>
+                    <button id="5_source_{{j}}_n" onclick="re.gcn['{{j}}_n'].set_power_source(5)">ТСН</button>
                    </div>
                     </div>
                 {% endfor %}
@@ -589,6 +599,7 @@
                     <button id="4_source_{{j}}_a"  onclick="re.gcn['{{j}}_a'].set_power_source(4)">ЛЭП2</button>
                     <button id="1_source_{{j}}_a"  onclick="re.gcn['{{j}}_a'].set_power_source(1)">РДГ1</button>
                     <button id="2_source_{{j}}_a" onclick="re.gcn['{{j}}_a'].set_power_source(2)">РДГ2</button>
+                        <button id="5_source_{{j}}_a" onclick="re.gcn['{{j}}_a'].set_power_source(5)">ТСН</button>
                    </div>
                     </div>
                 {% endfor %}
@@ -612,7 +623,8 @@
         <a class="btn btn-danger" href="/">На главное меню</a>
         <button  class="btn btn-success" onclick="save_game()">Сохранить игру</button>
         <button  class="btn btn-success" onclick="stop_pause()">Продолжить</button>
-        <a  class="btn btn-success" target="_blank" href="/skala/{{id_reactor}}">Скала</a>
+        <a  class="btn btn-success" target="_blank" href="/skala/{{id_reactor}}">СЦК Скала</a>
+        <a  class="btn btn-success" target="_blank" href="/info">Справка</a>
     </div>
 </div>
 <div class="z-d" style="display:none;" id="game_select_d">
@@ -620,13 +632,14 @@
         <div id="select">
         <p>Добро пожаловать в симулятор управления реактором РБМК 1000. Выберите свой стиль игры:</p>
         <button class="btn btn-warning btn-game " onclick="game.set_type(3, 0)">Свободная игра</button>
-        <button onclick="game.set_type(2, 0)" class="btn btn-game btn-danger">Управление реактором в аварийных ситуациях</button>
-        <button onclick="game.set_type(1, 0)" class="btn  btn-game btn-success">Учебная игра</button>
+        <button onclick="game.set_type(1, 0)" class="btn btn-game btn-danger">Управление реактором в аварийных ситуациях</button>
+        <button onclick="game.set_type(2, 0)" class="btn  btn-game btn-success">Учебная игра</button>
         <button onclick="gener_select_task_menu(game.tasks)" class="btn  btn-game btn-primary">Выполнение заданий</button>
             </div>
         <div id="select_task" class="card-cont">
 
         </div>
+        <div id="teach_alert"></div>
     </div>
 
 </div>
@@ -642,7 +655,11 @@
 <script src="/static/javascript/grafiti.js"></script>
 <script src="/static/javascript/bs_grafiti.js"></script>
 <script src="/static/javascript/BS_classes.js"></script>
+<script src="/static/javascript/TSN.js"></script>
+<script src="/static/javascript/game/game_function.js"></script>
 <script src="/static/javascript/reactor.js"></script>
+<script src="/static/javascript/game/teacher_class.js"></script>
+<script src="/static/javascript/game/ui_teach.js"></script>
 <script src="/static/javascript/game/game_class.js"></script>
 <script src="/static/javascript/remote_control.js"></script>
 {% if id_reactor == "not_auth" %}
@@ -655,7 +672,9 @@
 rc = new RC(false)
 re = new Reactor();
 game = new Game({{type_game}});
-load_game_from_db();
+ if (game.type == 3 || game.type == 1){
+        load_game_from_db();
+    }
 show_mnemo(re);
 </script>
 <script src="/static/javascript/socketio.js"></script>
@@ -668,7 +687,9 @@ show_mnemo(re);
  //</script>
 {% endif %}
 <script>
-    load_game_from_db();
+    if (game.type == 3 || game.type == 1){
+        load_game_from_db();
+    }
 setInterval(() => {
     re.update();
     game.update(re);

@@ -216,7 +216,7 @@ function setup_UI(reactor){
     document.getElementById("power_lep1").value = reactor.power_lep1;
     document.getElementById("power_lep2").value = reactor.power_lep2;
     console.log(game.type)
-    if (game.type != 3 && game.type != 0){
+    if (game.type == 4){
         document.getElementById("game-time").textContent = game.time_work;
         document.getElementById("last_time").textContent = game.tasks[game.id_task]["time"] - game.global_time;
     }
