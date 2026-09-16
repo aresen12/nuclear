@@ -58,7 +58,7 @@ class Game{
             this.teacher.update_step();
         } else if (this.type == 4){
             select_game_menu();
-            gener_select_task_menu(json.tasks)
+            gener_select_task_menu(this.tasks)
         }
     }
 
