@@ -167,10 +167,9 @@ socket.on('server_sid_response', (data) => {
 
 
 
-socket.on('connect_rc', (data) => {
-    if (rc.copy){
+socket.on('connect_rc_user', (data) => {
+        rc.connect_flag = true;
         alert("Вы успешно подключились");
-    }
 });
 
 

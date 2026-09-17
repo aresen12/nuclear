@@ -358,7 +358,12 @@ class Reactor {
             }
         }
     }
-
+    unset_chosen(){
+        let b_chosen = this.chosen.length;
+        for (let i = 0; i < b_chosen; i++){
+            this.chosen_delete(0);
+        }
+    }
     update_water_flow() {
         // переводим м3/ ч в кг/с
         this.water_flow = (this.gcn["1_n"].g + this.gcn["2_n"].g + this.gcn["1_a"].g + this.gcn["2_a"].g) / 3.6;
@@ -366,9 +371,7 @@ class Reactor {
     // Обновляет физическое состояние теплоносителя
     // и гидравлические характеристики активной зоны.
     update_hydraulics() {
-        // Обновляем общий расход.
         this.update_water_flow();
-        // Используем текущую температуру теплоносителя.
         let temperature = this.coolant_temp;
         // Используем текущее давление реактора.
         let pressure = this.p_in_reactor;
@@ -446,11 +449,7 @@ class Reactor {
             average_separator_fill = (this.separator_fill_1 * flow_bs1 + this.separator_fill_2 * flow_bs2)
             / total_bs_flow;
         } else {
-            average_separator_fill =
-                (
-                    this.separator_fill_1 +
-                    this.separator_fill_2
-                ) / 2.0;
+            average_separator_fill = (this.separator_fill_1 + this.separator_fill_2) / 2.0;
         }
         // Определяем долю свободного парового пространства.
         let free_steam_fraction = 1.0 - average_separator_fill;
@@ -649,6 +648,10 @@ class RemoteControl extends Reactor{
 
     update(){
         this.time++;
+        if (!rc.connect_flag && this.time - rc.start_connect_time >= 3 && rc.wait){
+            rc.wait = false;
+            alert("Не удалось подключиться. Возможно тут никого нет. Создайте свой реактор, чтобы быть организатором.")
+        }
         this.bs1.grafiti.init_UI(this.bs1.condition, this.time);
         this.bs2.grafiti.init_UI(this.bs2.condition, this.time);
         this.az.update();

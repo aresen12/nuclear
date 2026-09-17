@@ -325,3 +325,8 @@ width: 28px;
   border-left-color: #007bff; /* Изменяем цвет стрелки */
 }
 
+
+.margin-cont{
+    margin-right:7px;
+    margin-left:7px;
+}

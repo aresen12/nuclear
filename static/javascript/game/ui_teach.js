@@ -14,6 +14,39 @@ function display_syz_info(){
 }
 
 
+function display_q_next(){
+    showdiv1('game_select_d');
+    document.getElementById("teach_alert").innerHTML = `<p>Хочешь продолжить изучать другие должности в симуляторе<p>
+    <button class="btn btn-game btn-warning" onclick="game.teacher.next()">Хочу</button>
+    <button class="btn btn-game btn-danger" onclick="showdiv1('game_select_d')">пока освоюсь с этим</button>
+    `;
+}
+
+function display_viyb_info(){
+    window.location.hash = "#viyb";
+    document.getElementById("teach_alert").innerHTML = `<p>Теперь мы переместились не пульт ВИУБ(Ведущего инженера
+    по управлению блоком. Его задача контролировать охлаждение реактора.<p>
+    <button class="btn btn-game btn-warning" onclick="game.teacher.next()">Дальше</button>
+    `;
+}
+
+
+function display_gcn_info(){
+    document.getElementById("teach_alert").innerHTML = `<p>Реактор охлаждается водой. В него её подают Главные
+    циркуляционные насосы(ГЦН). Чтобы увеличить подачу воды нужно нажать кнопку Б напротив насоса.<p>
+    <button class="btn btn-game btn-warning" onclick="game.teacher.next()">Дальше</button>
+    `;
+    }
+
+
+function display_pvs_info(){
+    document.getElementById("teach_alert").innerHTML = `<p>Попадая в реактор вода нагревается и частично испаряется.
+    И попадает в Барабан сепараторы(БС), где пароводяная смесь(ПВС) разделяется на воду и пар.<p>
+    <button class="btn btn-game btn-warning" onclick="game.teacher.next()">Дальше</button>
+    `;
+}
+
+
 function add_tolip(id_div, text, id_t, top=true){
     let cont = document.getElementById(id_div);
     if (top){

@@ -150,24 +150,6 @@ function send_win(){
 }
 
 
-function get_data_start_task(condition){
-    $.ajax({
-        url: `/b/get_data_start/${condition}`,
-        type: 'GET',
-        dataType: 'json',
-        contentType:'application/json',
-        success: function(json){
-            load_data_DB(json);
-            console.log(json)
-            showdiv1("game_select_d");
-            },
-        error: function(err) {
-            console.error(err);
-        }
-});
-}
-
-
 function check_win1(reactor){
     console.log(reactor.thermal_power / 1e6 )
     if (reactor.thermal_power / 1e6 >= 10 && reactor.thermal_power / 1e6 < 11){

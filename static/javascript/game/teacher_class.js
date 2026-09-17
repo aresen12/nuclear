@@ -74,25 +74,40 @@ class Teacher{
             "Здесь ты можешь включить автоматический регулятор. Он будет пытаться поддерживать мощность с помощью синих стержней",
              "ar_cont_toolip");
             this.toolip.push("ar_cont_toolip");
-        }else if (this.step == 8){
-            this.clear_toolip();
-            add_tolip("ar_cont",
-            "Здесь ты можешь включить автоматический регулятор. Он будет пытаться поддерживать мощность с помощью синих стержней. Кликни на меня, для продолжения",
-             "ar_cont_toolip");
-            this.toolip.push("ar_cont_toolip");
-        }else if (this.step == 9){
+        } else if (this.step == 9){
             this.clear_toolip();
             add_tolip("az_btn_cont",
             "Если что-то пойдет не по плану, ты можешь вызвать аварийную защиту, которая заглушит реактор. Кликни на меня, для продолжения",
-             "az_btn_cont_toolip");
+             "az_btn_cont_toolip", false);
             this.toolip.push("az_btn_cont_toolip");
         }else if (this.step == 10){
             this.clear_toolip();
             add_tolip("pumps_up_cont",
-            "Если будешь увеличивать мощность больше 20 МВт, тебе придется увеличивать расход теплоносителя. Все нужные параметры, ты найдешь в справке",
+            "Если будешь увеличивать мощность больше 20 МВт, тебе придется увеличивать расход теплоносителя. Все нужные параметры, ты найдешь в справке Кликни на меня, для продолжения",
              "pumps_up_cont_toolip");
-            this.toolip.push("az_btn_cont_toolip");
+            this.toolip.push("pumps_up_cont_toolip");
         } else if (this.step == 11){
+            this.clear_toolip();
+            display_q_next();
+        } else if (this.step == 12){
+            display_viyb_info();
+        } else if (this.step == 13){
+            display_gcn_info();
+        } else if (this.step == 14){
+            display_pvs_info();
+        } else if (this.step == 15){
+            showdiv1('game_select_d');
+            add_tolip("canvas_cont",
+            "Здесь схематически представлена схема трубопроводов и насосов.  Кликни на меня, для продолжения",
+             "canvas_cont_toolip", false);
+            this.toolip.push("canvas_cont_toolip");
+        }else if (this.step == 16){
+            this.clear_toolip();
+            add_tolip("bs1_cont",
+            "Пытайтесь поддерживать уровень в БС в диапазоне от 67 до 70.  Кликни на меня, для продолжения",
+             "bs1_cont_toolip", false);
+            this.toolip.push("bs1_cont_toolip");
+        }else if (this.step == 17){
             this.clear_toolip();
         }
     }

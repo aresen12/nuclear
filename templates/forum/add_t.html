@@ -1,0 +1,10 @@
+{% extends "/wiki/base_wiki.html" %}
+
+{% block content %}
+<form method="post">
+    <label for="url_page">Название темы</label>
+    <input class="text-form form-control" id="name" name="url_page">
+    <button class="btn btn-primary" type="submit">Отправить</button>
+</form>
+
+{% endblock %}
