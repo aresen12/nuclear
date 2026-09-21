@@ -651,7 +651,7 @@ class RemoteControl extends Reactor{
         this.time++;
         if (!rc.connect_flag && this.time - rc.start_connect_time >= 3 && rc.wait){
             rc.wait = false;
-            alert("Не удалось подключиться. Возможно тут никого нет.")
+            alert("Возможно тут никого нет. Делаем вас организатором этой комнаты.")
             window.location.href = `/b/${room_id}`;
         }
         this.bs1.grafiti.init_UI(this.bs1.condition, this.time);

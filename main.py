@@ -90,6 +90,7 @@ def main():
     db_sess = db_session.create_session()
     users = db_sess.query(User).all()
     reactors = db_sess.query(Reactor).all()
+    reactors.sort(key=lambda r: r.cnt_player, reverse=True)
     db_sess.close()
     users.sort(key=lambda user: user.points, reverse=True)
     my = []
