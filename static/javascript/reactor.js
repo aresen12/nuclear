@@ -594,6 +594,7 @@ class Reactor {
             this.t2.g_max, this.gcn["2_a"].g, this.gcn["4_a"].g, this.time);
         this.separator_fill_1 = clamp(this.bs1.v_inBS / BS_INITIAL_VOLUME, 0.0, 1.0);
         this.separator_fill_2 = clamp(this.bs2.v_inBS / BS_INITIAL_VOLUME, 0.0, 1.0);
+        console.log(this.bs2.v_inBS / BS_INITIAL_VOLUME);
         this.update_hydraulics();
 //        this.update_pressure();
         this.t1.update(this.bs1.m_sep, this.p_in_reactor);
@@ -650,7 +651,8 @@ class RemoteControl extends Reactor{
         this.time++;
         if (!rc.connect_flag && this.time - rc.start_connect_time >= 3 && rc.wait){
             rc.wait = false;
-            alert("Не удалось подключиться. Возможно тут никого нет. Создайте свой реактор, чтобы быть организатором.")
+            alert("Не удалось подключиться. Возможно тут никого нет.")
+            window.location.href = `/b/${room_id}`;
         }
         this.bs1.grafiti.init_UI(this.bs1.condition, this.time);
         this.bs2.grafiti.init_UI(this.bs2.condition, this.time);

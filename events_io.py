@@ -11,7 +11,6 @@ def handle_connect():
     if current_user.is_authenticated:
         join_room(f'u{current_user.id}')
     client_sid = request.sid  # Получаем SID клиента
-    print(client_sid, "sid")
     # Можно отправить SID обратно клиенту
     emit('server_sid_response', {'sid': client_sid})
 
@@ -24,17 +23,18 @@ def send_connect(data):
 @socketio.on('join')
 def on_join(data):
     room = data['room']
-    join_room(room)
-    db_sess = db_session.create_session()
-    r = db_sess.query(Reactor).filter(Reactor.id == room).first()
-    if not (r is None):
-        r.cnt_player += 1
-        db_sess.commit()
-    if current_user.is_authenticated:
-        emit('join_event', {"name": current_user.name}, to=room)
-        if not (r is None) and r.main_player == current_user.id:
-            emit("join_main_player", to=room)
-    db_sess.close()
+    if not (room in rooms()):
+        join_room(room)
+        db_sess = db_session.create_session()
+        r = db_sess.query(Reactor).filter(Reactor.id == room).first()
+        if not (r is None):
+            r.cnt_player += 1
+            db_sess.commit()
+        if current_user.is_authenticated:
+            emit('join_event', {"name": current_user.name}, to=room)
+            if not (r is None) and r.main_player == current_user.id:
+                emit("join_main_player", to=room)
+        db_sess.close()
 
 
 # @socketio.on("join_main_player")
@@ -86,6 +86,27 @@ def set_unset_down_direction(data):
     emit("set_unset_down_direction", data, to=data['room'])
 
 
+@socketio.on('disconnect')
+def handle_disconnect():
+    for room in list(rooms()):  # Создаём копию, чтобы безопасно менять ключи
+        leave_room(room)
+        db_sess = db_session.create_session()
+        r = db_sess.query(Reactor).filter(Reactor.id == room).first()
+        if not (r is None):
+            print("leave", r.cnt_player)
+            if r.cnt_player - 1 > 0:
+                r.cnt_player -= 1
+            else:
+                r.cnt_player = 0
+                r.activiti = False
+            print("leave2", r.cnt_player)
+            db_sess.commit()
+        db_sess.close()
+        # if request.namespace and room in socketio.server.rooms[request.namespace]:
+        print("test")
+
+
+
 @socketio.on("chosen_current")
 def chosen_current(data):
     emit("chosen_current", data, to=data['room'])
@@ -106,7 +127,7 @@ def connect_other_room(data):
     data["id_device"] = request.sid
     emit("connect_other_room", data, to=data['room'])
 
-@socketio.on("method_"
-             "send")
+
+@socketio.on("method_send")
 def method_send(data):
     emit("method_send", data, to=data['room'])

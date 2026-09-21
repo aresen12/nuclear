@@ -1,10 +1,16 @@
 class Skala{
     constructor(){
         this.time = 0;
-        this.last_data = {"thermal_power" : 0, "period_power": 0};
+        this.last_data = {"thermal_power" : 0, "period_power": 0, "rho_total": 0};
         this.thermal_power_g = new Grafi("power", 1, 1e-7* 0.7);
         this.speed_power_g = new Grafi("period_power", 1, 3, 0.5);
-        this.speed_power_g.draw_line(this.speed_power_g.canvas.height / 200);
+        this.rho_total_g = new Grafi("rho_total", 1, 1e6, 0.5);
+        this.speed_power_g.draw_line(0);
+        this.rho_total_g.draw_line(0);
+        this.thermal_power_g.draw(1600 * 1e6, 1600 * 1e6, 0, this.thermal_power_g.canvas.width, "#0000ff");
+        this.thermal_power_g.draw_text("1600 МВт", this.thermal_power_g.canvas.width - 20, -16.8 * 7);
+        this.thermal_power_g.draw_text("3200 МВт", this.thermal_power_g.canvas.width - 20, -32.8 * 7);
+        this.thermal_power_g.draw(3200 * 1e6, 3200 * 1e6, 0, this.thermal_power_g.canvas.width, "#0000ff");
         this.c_e = [];
         this.red_e = [];
     }

@@ -212,6 +212,7 @@ function setup_UI(reactor){
     document.getElementById("m_sep2").value = reactor.bs2.m_sep;
     document.getElementById("m_sep1").value = reactor.bs1.m_sep;
     document.getElementById("p_bs1").value = reactor.bs1.p;
+    document.getElementById("p_bs1").value = reactor.bs2.p;
     document.getElementById("T_H2O2").value = reactor.bs2.T_H2O;
     document.getElementById("power_lep1").value = reactor.power_lep1;
     document.getElementById("power_lep2").value = reactor.power_lep2;
@@ -296,7 +297,7 @@ function ui_direction(direction){
 
 
 function ui_power_source(number, id_pump){
-    for (let i = 1; i < 5; i++){
+    for (let i = 1; i < 6; i++){
         if (number == i){
             start_alert(`${number}_source_${id_pump}`);
         }  else {

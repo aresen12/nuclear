@@ -1,0 +1,151 @@
+.header-color{
+    background:#010c1a;
+    border-bottom: 1px solid #072743;
+}
+
+.background-color{
+    background:#010c1a;
+}
+
+.background-color2{
+    background:#000a16;
+}
+
+.bg-img{
+    z-index:0;
+    width: 100vw;
+    position:absolute;
+}
+
+.right-main{
+    width:99vw;
+    height: 60vh;
+    background-image: url('/static/img/bg_main.png');
+    border-bottom: 1px solid #072743;
+    overflow:hidden;
+}
+
+.blue-logo{
+    color:#0993fe;
+}
+.white-logo{
+    color:white;
+}
+
+.logo1{
+    font-size: 45px;
+    font-weight:bolder;
+}
+
+.logo0{
+    font-size: 70px;
+    font-weight:bolder;
+}
+.logo2{
+    font-size: 30px;
+    font-weight:bolder;
+}
+
+.prob{
+    margin-right: 20px;
+}
+
+.light-color{
+    color:#d2ebf3;
+}
+
+.cont-bshy{
+    display:flex;
+    width: 90vw;
+    margin-left: auto;
+    margin-right: auto;
+    overflow-x:scroll;
+    overflow-y:hidden;
+}
+
+
+.card-bshy{
+    background: #021629;
+    border: 1px solid #072743;
+    margin: 10px;
+}
+
+.cont-bshy ::-webkit-scrollbar-track {
+    background: #021629;
+}
+
+.cont-bshy ::-webkit-scrollbar-thumb {
+    background-color: black;
+}
+
+.nav-bottom{
+    background: #000813;
+    display:flex;
+    bottom:0px;
+}
+
+.cont{
+    width:90vw;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.main-table-head{
+    background: #02162a;
+    color:#d2ebf3;
+    padding: 40px;
+    height: 50px;
+}
+
+.th-b-l{
+    border-top-left-radius: 20px;
+}
+.th-b-r{
+    border-top-right-radius: 20px;
+}
+
+
+.main-table{
+    width:60vw;
+     color:#d2ebf3;
+}
+
+.row-n{
+    background: #000f1d;
+}
+
+
+.base-row {
+    height: 40px;
+}
+
+.start-top{
+    position:relative;
+    top: 4vh;
+}
+
+.l-div{
+    position:relative;
+    left: 5vw;
+}
+
+.table-div{
+    border-radius: 20px;
+    border: 1px solid #072743;
+}
+
+.c-a {
+    text-align:center;
+}
+
+
+.main{
+    min-height: 100vh;
+}
+
+.bg-img-login{
+    width:100%;
+    min-height: 120vh;
+    overflow-x:auto;
+    background-image: url('/static/img/bg_full.png');
+}

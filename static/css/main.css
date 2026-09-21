@@ -1,13 +1,4 @@
-.table-reactor {
-    height: 30vh;
-    overflow-y: scroll;
-    width: 97vw;
-    display:flex;
-    margin:auto;
-}
-.main{
-    min-height: 100vh;
-}
+
 
 .white-alert{
     background:white;
@@ -23,3 +14,5 @@
     margin-right: 30px;
 
 }
+
+

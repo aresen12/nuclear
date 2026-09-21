@@ -9,15 +9,21 @@
 <main class="main-cont">
 <h1>Скала</h1>
 <h4>Оперативный журнал</h4>
+
 <textarea id="journal"></textarea>
 <button>Copy</button>
-<div> <h3>СФКРЭ</h3>
-<canvas id="power" width="600px" height="400px"></canvas>
+    <div  style="display:flex;">
+<div >
+    <h3>СФКРЭ</h3>
+    <canvas id="power" class="cont-canvas" width="600px" height="400px"></canvas>
    </div>
     <div>
-        <h3>Скорость СФКРЭ</h3>
-<canvas id="period_power" width="300px" height="200px"></canvas>
+        <h4>Скорость СФКРЭ</h4>
+<canvas class="cont-canvas" id="period_power" width="300px" height="200px"></canvas>
+        <h4>Реактивность</h4>
+<canvas class="cont-canvas" id="rho_total" width="300px" height="200px"></canvas>
   </div>
+    </div>
     <div style="display:flex;">
         <div class="sektor" id="s00"></div>
         <div class="sektor" id="s01"></div>

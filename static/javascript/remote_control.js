@@ -11,7 +11,6 @@ class RC{
     update(){
         if (!this.copy && this.connect_device.length != 0){
             send_update();
-console.log("send_update");
         }
     }
 
@@ -29,17 +28,28 @@ console.log("send_update");
     }
 
     connect_other_room(){
+        try{
         this.start_connect_time = re.time;
         this.wait = true;
+        } catch(e){
         socket.emit("connect_other_room", {"id_device": this.sid, "room": room_id});
+        }
     }
 
+    connect_skala()   {
+        socket.emit("connect_other_room", {"id_device": this.sid, "room": room_id});
+
+    }
 
 
     set_sid(new_sid){
         this.sid = new_sid;
         if (this.copy){
-            this.connect_other_room(room_id);
+            try{
+                this.connect_other_room(room_id);
+            } catch(e){
+                this.connect_skala();
+            }
             console.log("connect");
         }
     }

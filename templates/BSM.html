@@ -111,6 +111,9 @@
                     <div id="down_direction" class="alert-error">Опуск</div>
                     <div id="azs" class="alert-error">АЗС</div>
                 </div>
+                <div>
+                    <div id="mode_kom" class="alert-error">Режим КОМ</div>
+                </div>
             </div>
                 </div>
              <div class="down-panel">
@@ -247,36 +250,52 @@
         </div>
                <div style="" class="column-bsm " id="viyb">
             <div class="up-panel">
+
                 <div style="display:flex;">
                     <canvas class="bs-graf" id="bs1" width="190px" height="100px"></canvas>
                 <canvas class="bs-graf" id="bs2" width="200px" height="100px"></canvas>
 
                 </div>
                 <div id="canvas_cont"></div>
-            <div style="display:flex;">
-                <div class="bs-zone">
-                Т воды в БС<br>
-            <input id="T_H2O1" class="input-big" readonly>
-
-                </div>
-                <div class="bs-zone"> УВ БС1<br>
-                    <input id="h_braban_s1" class="input-big" readonly>
-                    <div id="bs1_cont"></div>
+            <div  style="display:flex;">
+                <div class="sector">
+                    <div class="title-s">БС1</div>
+                    <div style="display:flex;">
+                        <div class="bs-zone">
+                            Т воды<br>
+                            <input id="T_H2O1" class="input-big" readonly>
                         </div>
-                <div class="bs-zone">
-                Т воды в БС<br>
-            <input id="T_H2O2" class="input-big" readonly>
+                        <div class="bs-zone"> УВ<br>
+                            <input id="h_braban_s1" class="input-big" readonly>
+                            <div id="bs1_cont"></div>
+                        </div>
+                        <div class="bs-zone">
+                    P МПа<br>
+                    <input id="p_bs1" class="input-big" readonly>
+                </div>
+
                     </div>
-                <div class="bs-zone"> УВ БС2<br>
+                </div>
+                <div class="sector">
+                    <div class="title-s">БС2</div>
+                <div style="display:flex;">
+                    <div class="bs-zone"> УВ БС2<br>
                     <input id="h_braban_s2" class="input-big" readonly>
                        </div>
+                    <div class="bs-zone">
+                        Т воды<br>
+                        <input id="T_H2O2" class="input-big" readonly>
+                        </div>
+                <div class="bs-zone">
+                    P МПа<br>
+                    <input id="p_bs2" class="input-big" readonly>
+
+                </div>
+                    </div>
+                    </div>
                 <div class="bs-zone">
                     Т ПВС<br>
                     <input id="T_reactor" class="input-big" readonly>
-                </div>
-                <div class="bs-zone">
-                    P БС1 МПА<br>
-                    <input id="p_bs1" class="input-big" readonly>
                 </div>
                 <div class="bs-zone">
                 Т_твэл<br>
@@ -287,40 +306,45 @@
             <input id="T_2_H2O" class="input-big" readonly>
                 </div>
             </div>
-            <div>
-                <div style="display:flex;" id="pumps_up_cont">
-        {% for j in range(1, 5) %}
-                <div style="">
-                    {% if j < 3 %}
-                     ГЦН{{j}}
-                    {% else %}
-                    ПЭН{{j - 2 }}
-                    {% endif %}
-            <input id="{{j}}_n" class="input-big" readonly>
-                    <div>
-                    питаниe<div id="{{j}}_n_s" class="signal"></div>
-                        </div>
-                    </div>
-            {% endfor %}
-</div>Аварийные<br>
             <div style="display:flex;">
-        {% for j in range(1, 5)%}
-            <div >
-            {% if j < 3 %}
-                     ГЦН{{j}}
-                    {% else %}
-                    ПЭН{{j - 2 }}
-                    {% endif %}<br>
-            <input id="{{j}}_a" class="input-big" readonly><br>
-                <div>
-                    питаниe<div id="{{j}}_a_s" class="signal"></div>
+                <div class="sector">
+                    <div class="title-s">Штатные Насосы</div>
+                    <div style="display:flex;" id="pumps_up_cont">
+                        {% for j in range(1, 5) %}
+                        <div class="gcn-cont-up-panel margin-cont">
+                            {% if j < 3 %}
+                            ГЦН{{j}}
+                            {% else %}
+                            ПЭН{{j - 2 }}
+                            {% endif %}
+                            <br>
+                            <input id="{{j}}_n" class="input-big" readonly>
+                            <div>
+                                питаниe<div id="{{j}}_n_s" class="signal"></div>
+                            </div>
                         </div>
+                        {% endfor %}
                     </div>
-            {% endfor %}
-
                 </div>
-
+                <div class="sector">
+                    <div class="title-s">Аварийные насосы</div>
+                    <div style="display:flex;">
+                        {% for j in range(1, 5)%}
+                        <div class="margin-cont">
+                            {% if j < 3 %}
+                            ГЦН{{j}}
+                            {% else %}
+                            ПЭН{{j - 2 }}
+                            {% endif %}<br>
+                            <input id="{{j}}_a" class="input-big" readonly><br>
+                            <div>
+                                питаниe<div id="{{j}}_a_s" class="signal"></div>
+                            </div>
+                        </div>
+                        {% endfor %}
                     </div>
+                </div>
+            </div>
             <div class="errors-table" style="display:flex;">
                 <div>
                     <div id="h_lower_water_level_BS1" class="alert-error">УВ БС1 опасно низкий</div>
@@ -362,6 +386,13 @@
                 <div>
                     <div id="4_a_turn_down" class="alert-error">АПЭН2 ОТКЛ</div>
                     <div id="tk_broke" class="alert-error"> Разрыв ТК</div>
+                    <div id="mpa" class="alert-error">МПА</div>
+                    <div id="saor" class="alert-error">САОР</div>
+
+                </div>
+                <div>
+                    <div id="bs1_level_up" class="alert-error">УВ БС1 ↑</div>
+                    <div id="bs2_level_up" class="alert-error">УВ БС2 ↑</div>
                 </div>
             </div>
                 </div>
@@ -423,6 +454,9 @@
                 <div>
                  <button  class="black-btn"  onclick="re.az.stop_sound(2)">Съём звука</button>
             <button>Мигание</button>
+                </div>
+                <div>
+                    <button style="background:red;">САОР</button>
                 </div>
                                 </div>
         </div>

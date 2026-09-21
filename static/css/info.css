@@ -1,0 +1,74 @@
+.mini-img-div{
+     background-image: url('/static/img/bg_main.png');
+     width:75vw;
+    min-height: 90vh;
+}
+
+.margin-div{
+    margin-bottom: 20vh;
+}
+
+.menu-div{
+    width:24vw;
+    background:#000d1f;
+}
+
+.text-div{
+    background:#010f23;
+    margin: 20px;
+    padding: 10px;
+}
+
+
+.blue-color{
+    color:#63caef;
+}
+.abr{
+    font-weight:bolder;
+    display:inline-block;
+}
+
+.item-menu{
+    display:block;
+   font-size: 20px;
+    padding:4px;
+    padding-left: 10px;
+    height: 40px;
+    color:#63caef;
+text-decoration:none;
+}
+
+
+.current-item{
+    display:block;
+   font-size: 20px;
+    padding:4px;
+    padding-left: 10px;
+    height: 40px;
+    color:#63caef;
+    text-decoration: underline;
+}
+
+.b-c{
+    border-radius: 20px;
+    border: 2px solid #072743;
+}
+
+.img-n-b{
+    width: 40vw;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.card-plus{
+    width: 120px;
+    height: 100px;
+    border-left: 1-px solid #072743;
+    padding: 20px;
+
+}
+
+.item-tips{
+    padding: 5px;
+    min-width: 20vw;
+}

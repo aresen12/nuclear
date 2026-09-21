@@ -125,6 +125,8 @@ socket.on('update', (data) => {
 
     sk.thermal_power_g.draw(sk.last_data["thermal_power"], data["thermal_power"], sk.time, sk.time - 1);
     sk.speed_power_g.draw(sk.last_data["period_power"], data["period_power"], sk.time, sk.time - 1)
+    sk.rho_total_g.draw(sk.last_data["rho_total"], data["rho_total"], sk.time, sk.time - 1);
+    console.log(data["rho_total"] * 1e7 * 0.7, sk.last_data["period_power"], data["period_power"])
     sk.load_data(data);
     ui_sek_power(calculate_power_sek(data["sterg"]));
 //    sk.update(data);

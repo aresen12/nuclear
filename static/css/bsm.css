@@ -330,3 +330,21 @@ width: 28px;
     margin-right:7px;
     margin-left:7px;
 }
+
+.gcn-cont-up-panel{
+
+}
+.title-s{
+    font-weight:bolder;
+    background:white;
+    margin-left:auto;
+    margin-right:auto;
+    text-align:center;
+    max-width: 200px;
+}
+
+.sector{
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}

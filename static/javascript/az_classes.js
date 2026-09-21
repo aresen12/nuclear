@@ -46,20 +46,35 @@ class SAOR {
     constructor(){
         this.q_current = 0;
         this.v_total = 40.8;
+        this.c_v = 36;
         this.v_w0 = 36;
-        this.p1 = 90;
+        this.v_g0 = this.v_total - this.c_v;
+        this.p1 = 9 * 1e6;
         this.work = false;
         this.time = 0;
+        this.s_c = 0.004707;
+        this.p0 = 6.5 * 1e6;
     }
 
     update(){
         if (this.work){
-
+            this.update_v();
+            console.log(this.c_v, "v")
+            this.q_current = Math.sqrt((2 * (this.p_g() - this.p0)) / 1000) * this.s_c;
+            this.time++;
+            console.log(this.q_current * 3600, "saor_q", this.time, this.p_g(), this.c_v);
         }
     }
 
-    p_g(t){
+    update_v(){
+        console.log((this.v_total - this.v_w0) * (this.v_total - this.v_w0) -
+        (2 * this.s_c * this.s_c * this.s_c * this.p1 * this.v_g0 * this.time) / 1000)
+        this.c_v = this.v_total - Math.sqrt(Math.abs((this.v_total - this.v_w0) * (this.v_total - this.v_w0) -
+        (2 * this.s_c * this.s_c * this.s_c * this.p1 * this.v_g0 * this.time) / 1000));
+    }
 
+    p_g(){
+        return (this.p1 * this.v_total) / (this.v_total - this.c_v);
 
     }
 
@@ -83,10 +98,13 @@ class Az{
         this.temporary_alert = [];
         this.period_power = 0;
         this.last_power = this.reactor.thermal_power;
+        this.last_bs1_level = this.reactor.bs1.v_inBS;
+        this.last_bs2_level = this.reactor.bs2.v_inBS;
         this.ozr_ar = 0;
         this.time_stop_az = 0;
         this.power_SYZ = true;
         this.time_danger = 0;
+        this.saor = new SAOR();
     }
 
     turn_on_or_down_ar(){
@@ -192,18 +210,69 @@ class Az{
     ui_thermal_power_mnemo(color_mnemo);
     }
 
+    set_pos_ar_on_h_p(speed, n){
+        let cnt = 0;
+        for (let i = 0; i < AR_K.length; i++) {
+            if (this.reactor.sterg[AR_K[i][0]][AR_K[i][1]] < 100 && this.reactor.sterg[AR_K[i][0]][AR_K[i][1]] + speed <= 100){
+                cnt += 1;
+                this.reactor.sterg[AR_K[i][0]][AR_K[i][1]] += speed;
+                if (cnt == n){
+                    break;
+                }
+            }
+        }
+    }
+
+    set_pos_ar_d_h_p(speed, n){
+        let cnt = 0;
+        for (let i = 0; i < AR_K.length; i++) {
+            if (this.reactor.sterg[AR_K[i][0]][AR_K[i][1]] > 0 && this.reactor.sterg[AR_K[i][0]][AR_K[i][1]] - speed >= 0){
+                cnt += 1;
+                this.reactor.sterg[AR_K[i][0]][AR_K[i][1]] -= speed;
+                if (cnt == n){
+                    break;
+                }
+            }
+        }
+    }
+
     update_ar(){
-        if (this.ar){
-            if (this.reactor.rho_total > 0.0005){
-                this.set_position_ar(-1, calculate_speed_ar_rho(this.reactor.rho_total));
-            } else if (this.period_power > 7 && this.reactor.rho_total > 0) {
-                this.set_position_ar(-1, calculate_speed_ar_power_speed(this.period_power));
-            } else if (this.reactor.thermal_power > this.power_ar && this.period_power > 0){
-                let r = (this.reactor.thermal_power - this.power_ar) / 1e6;
-                this.set_position_ar(-1, calculate_speed_ar_power(r));
-            } else if (this.reactor.thermal_power < this.power_ar && this.period_power < 0){
-                let r =(this.power_ar - this.reactor.thermal_power) / 1e6;
-                this.set_position_ar(1  , calculate_speed_ar_power(r));
+        if (this.ar && this.power_SYZ){
+            if (this.reactor.thermal_power / 1e6 > 2850 && this.power_ar / 1e6 == 3200){
+                let r = (this.thermal_power - this.power_ar) / 1e6;
+                if (r < 0){
+                    if (this.period_power < 0){
+                        set_pos_ar_d_h_p(1, 1);
+                    } else {
+                        if (this.period_power > 4){
+                            this.set_pos_ar_on_h_p(2, 1);
+                        } else if (this.period_power > 1){
+                            this.set_pos_ar_on_h_p(1, 1);
+                        }
+                    }
+                } else {
+                    if (this.reactor.thermal_power / 1e6 > 3200){
+                        if (this.period_power > 0.7){
+                            this.set_pos_ar_on_h_p(1, 4);
+                        } else if (this.period_power >= -2){
+                            this.set_pos_ar_on_h_p(1, 2);
+                        }
+                    } if (this.period_power > 1){
+                        this.set_pos_ar_on_h_p(1, 1);
+                    }
+                }
+            } else {
+                if (this.reactor.rho_total > 0.0005){
+                    this.set_position_ar(-1, calculate_speed_ar_rho(this.reactor.rho_total));
+                } else if (this.period_power > 7 && this.reactor.rho_total > 0) {
+                    this.set_position_ar(-1, calculate_speed_ar_power_speed(this.period_power));
+                } else if (this.reactor.thermal_power > this.power_ar && this.period_power > 0){
+                    let r = (this.reactor.thermal_power - this.power_ar) / 1e6;
+                    this.set_position_ar(-1, calculate_speed_ar_power(r));
+                } else if (this.reactor.thermal_power < this.power_ar && this.period_power < 0){
+                    let r =(this.power_ar - this.reactor.thermal_power) / 1e6;
+                    this.set_position_ar(1  , calculate_speed_ar_power(r));
+                }
             }
             this.update_laz();
         }
@@ -265,16 +334,26 @@ class Az{
 
     set_position_baz(){
         var flag = true;
-        for (let i = 0; i < BAZ_K.length; i++) {
-                if(this.reactor.sterg[BAZ_K[i][0]][BAZ_K[i][1]] < 100){
-                    if (this.reactor.sterg[BAZ_K[i][0]][BAZ_K[i][1]] + 25 <= 100){
-                        this.reactor.sterg[BAZ_K[i][0]][BAZ_K[i][1]] += 25;
-                        flag = false;
-                    } else{
-                        this.reactor.sterg[BAZ_K[i][0]][BAZ_K[i][1]] = 100;
+        let k = 0;
+        for (let i = 0; i < 9; i++) {
+            for (let j = 0; j < 9; j++) {
+                let speed = 10;
+                if (BAZ_K[k][0] == i && BAZ_K[k][1] == j){
+                    speed = 25;
+                    if (k + 1 < BAZ_K.length){
+                        k++;
                     }
                 }
-                show_mnemo_i_j(this.reactor.sterg[BAZ_K[i][0]][BAZ_K[i][1]], BAZ_K[i][0], BAZ_K[i][1]);
+                if(this.reactor.sterg[i][j] < 100){
+                    if (this.reactor.sterg[i][j] + speed <= 100){
+                        this.reactor.sterg[i][j] += speed;
+                        flag = false;
+                    } else{
+                        this.reactor.sterg[i][j] = 100;
+                    }
+                }
+                show_mnemo_i_j(this.reactor.sterg[i][j], i, j);
+            }
         }
         this.az_b = !flag;
         if (flag){
@@ -288,10 +367,16 @@ class Az{
             red_alert("az_call");
             if (!manual){
                 setTimeout(() => {
-                 this.az_5 = true;
-            }, 2000);
+                    this.az_5 = true;
+                    if (this.ar){
+                        this.turn_on_or_down_ar();
+                    }
+                }, 2000);
             } else {
                 this.az_5 = true;
+                if (this.ar){
+                        this.turn_on_or_down_ar();
+                    }
             }
             turn("az_btn", 1);
             this.az_run = 1;
@@ -367,7 +452,13 @@ class Az{
         }
 
     }
-
+    check_azsr(){
+        if (this.mode == 2){
+             if (this.reactor.bs1.v_inBS < 55 || this.reactor.bs2.v_inBS < 55){
+                this.az5();
+            }
+        }
+    }
     check_error_alerts(){
         let flag = false;
         let viyb = [];
@@ -410,6 +501,7 @@ class Az{
         if (this.reactor.t2.broken){
             viyt.push("error_t2");
         }
+
         if (this.reactor.T_2_H2O >= 260){
             viyb.push("alert_high_temperature2");
         }
@@ -447,6 +539,9 @@ class Az{
         if(this.az_2){
             viyr.push("alert_az_2");
         }
+        if (!this.power_SYZ){
+            viyr.push("mode_kom");
+        }
         var k = Object.keys(this.reactor.gcn);
         for (i = 0; i < k.length; i++){
             if  (this.reactor.gcn[k[i]].broken){
@@ -458,6 +553,15 @@ class Az{
         }
         if (this.reactor.bs2.v_inBS < 66){
             viyb.push("h_lower_water_level_BS2");
+        }
+        if (this.reactor.bs1.v_inBS - this.last_bs1_level > 0.1){
+            viyb.push("bs1_level_up");
+        }
+        if (this.reactor.bs2.v_inBS - this.last_bs2_level > 0.1){
+            viyb.push("bs2_level_up");
+        }
+        if (this.saor.work){
+            viyb.push("saor");
         }
         var k = Object.keys(this.reactor.bs2.condition);
         let tk_broke_f = true;
@@ -538,6 +642,7 @@ class Az{
     }
 
     update(){
+//        this.saor.update();
         if (this.time_stop_az > 0){
             this.time_stop_az -= 1;
             this.az_run = false;
@@ -558,6 +663,7 @@ class Az{
         this.check_az_work();
         this.update_ar();
         this.check_azs();
+        this.check_azsr();
         var c_index = [];
         for (let i = 0; i < this.temporary_alert.length; i++){
             if (this.temporary_alert[i].update()){
@@ -567,6 +673,8 @@ class Az{
         for (let i = 0; i < c_index.length; i++){
             this.temporary_alert.splice(c_index[i], 1);
         }
+        this.last_bs1_level = this.reactor.bs1.v_inBS;
+        this.last_bs2_level = this.reactor.bs2.v_inBS;
         return this.az_run;
     }
 }
