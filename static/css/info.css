@@ -72,3 +72,22 @@ text-decoration:none;
     padding: 5px;
     min-width: 20vw;
 }
+
+.t-on-desktop{
+    width: 35vw;
+}
+
+@media screen and (width < 981px) and (pointer:none), (pointer:coarse) {
+    .menu-div{
+        width:100vw;
+    }
+    .mini-img-div{
+        width:100vw;
+    }
+    .t-on-desktop{
+    max-width: 90vw;
+}
+    .margin-div{
+        margin-bottom: 60px;
+    }
+}

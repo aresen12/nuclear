@@ -66,9 +66,9 @@ outline: none;
 }
 
 @media screen and (pointer:none), (pointer:coarse) {
-    .login-p {
-
-        }
+    .login-form{
+        width: 90vw;
+    }
 
     .input-class{
     }

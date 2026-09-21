@@ -17,8 +17,12 @@
     position:absolute;
 }
 
+.flex-on-desktop{
+    display: flex;
+}
+
 .right-main{
-    width:99vw;
+    width:100%;
     height: 60vh;
     background-image: url('/static/img/bg_main.png');
     border-bottom: 1px solid #072743;
@@ -68,6 +72,8 @@
     background: #021629;
     border: 1px solid #072743;
     margin: 10px;
+    min-width: 20vw;
+    border-radius:20px;
 }
 
 .cont-bshy ::-webkit-scrollbar-track {
@@ -148,4 +154,33 @@
     min-height: 120vh;
     overflow-x:auto;
     background-image: url('/static/img/bg_full.png');
+}
+
+.ch-on-desktop{
+    width: 400px;
+}
+
+@media screen and (width < 981px) and (pointer:none), (pointer:coarse) {
+    .card-bshy {
+        min-width: 70vw;
+    }
+
+    .logo0{
+        font-size: 55px;
+    }
+    .logo1{
+        font-size: 30px;
+    }
+
+    .ch-on-desktop{
+    width: 80vw;
+}
+
+    .main-table{
+        width: 90vw;
+    }
+
+    .flex-on-desktop{
+        display:block;
+    }
 }
