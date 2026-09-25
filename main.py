@@ -10,6 +10,7 @@ from data.reactor import Reactor
 from forms.register_form import RegisterForm
 from reactor import rs
 from wiki import wiki
+from forum import forum
 from events_io import socketio
 
 application = Flask(__name__)
@@ -36,6 +37,7 @@ def logout():
 db_session.global_init('db/master.db')
 application.register_blueprint(rs)
 application.register_blueprint(wiki)
+application.register_blueprint(forum)
 socketio.init_app(application)
 
 

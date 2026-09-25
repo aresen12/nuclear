@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+<link href="/static/css/info.css" rel="stylesheet" type="text/css">
+<link href="/static/css/forum.css" rel="stylesheet" type="text/css">
+<div class="background-color2 flex-on-desktop">
+  <div class="b-c menu-div">
+    <a href="/forum " class="current-item">Все темы</a>
+    <a href="/forum " class="item-menu">Общее</a>
+    <a href="/forum/sort/5" class="item-menu">
+      Технические вопросы</a>
+    <a href="/forum/sort/6" class="item-menu">Сценарии и тактика</a>
+    <a href="/forum/sort/4" class="item-menu">Ошибки и баги</a>
+  </div>
+  <div class="left-cont" >
+    <div class="mini-img-div">
+      <div>
+      <div class="white-logo logo2 l-div t-on-desktop">{{chat.name}}</div>
+      <div class="light-color  l-div t-on-desktop" >Общайся, делись опытом, обсуждай сценарии</div>
+      </div>
+      <div class="chats-global">
+          <div id="content" class="cont-message">
+
+          </div>
+
+      <div class="b-c text-div chat-form-my"
+      {% if not auth_flag %}
+           style="display:none;"
+           {% endif %}
+      >
+          <div id="edit-label"></div>
+        <textarea id="about" cols="2" class="form-control my-textarea"></textarea>
+        <textarea id="html_m" name="html_m" style="display:none;"></textarea>
+        <button onclick="send_io_mess({{id_chat}});" class="btn btn-primary submit_btn">
+                <svg width="30px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                      x="0px" y="0px" viewBox="0 0 466.897 466.897"
+                     style="enable-background:new 0 0 466.897 466.897;" xml:space="preserve"><g><g>
+                    <polygon style="fill:#010002;" points="374.105,73.807 203.974,318.03 203.974,432.042 259.801,358.275
+                     410.505,466.897 441.012,0 25.885,189.672 143.823,274.681 "/></g></g></svg>
+            </button>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+<script src="/static/javascript/forum/socketio.js"></script>
+<script src="/static/javascript/forum/UI.js"></script>
+<script src="/static/javascript/forum/app.js"></script>
+<script src="/static/javascript/forum/events.js"></script>
+<script src="/static/javascript/forum/app_class.js"></script>
+      {% if auth_flag %}
+        <script>const app = new Application({{current_user.id}},  "chat{{chat.id}}", {{chat.status}});</script>
+
+{% else %}
+<script>const app = new Application(-1, "chat{{chat.id}}", 1);</script>
+           {% endif %}
+
+
+<script>
+      socket.emit('join', {"room":  "chat{{chat.id}}"
+      });
+    show();
+</script>
+{% endblock %}

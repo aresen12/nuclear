@@ -8,7 +8,7 @@
 
     <a href="/forum " class="current-item">Все темы</a>
 
-    <a href="/forum " class="item-menu">Общее</a>
+    <a href="/info/turnover" class="item-menu">Общее</a>
     <a href="/forum/sort/5" class="item-menu">
 
       Технические вопросы</a>
@@ -33,13 +33,14 @@
      {% for i in range(chats|length) %}
 
         <div  class="chat-item">
-            <a href="/forum/chat/{{chats[i].id}}" class="base-row chat-a">
+            <a class="btn btn-danger" href="/forum/delete/chat/{{chats[i].id}}">Удалить</a><a href="/forum/chat/{{chats[i].id}}" class="base-row chat-a">
               <div class="icon-chat">
               <svg height="30px" width="30px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" xml:space="preserve" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle style="fill:#63caef;" cx="255.998" cy="255.997" r="246.811"></circle> <g> <path style="fill:#666666;" d="M256,512C114.842,512,0.001,397.159,0.001,255.999S114.842,0,256,0s255.999,114.841,255.999,255.999 S397.16,512,256,512z M256,18.371c-131.029,0-237.628,106.6-237.628,237.628S124.972,493.628,256,493.628 s237.628-106.6,237.628-237.628S387.03,18.371,256,18.371z"></path> <path style="fill:#666666;" d="M355.098,427.67c-63.542,36.691-138.95,34.191-198.249,0.021l56.695-98.195 c12.486,7.225,26.987,11.362,42.456,11.362c15.458,0,29.949-4.127,42.424-11.341L355.098,427.67z"></path> <path style="fill:#666666;" d="M213.544,182.513c-25.339,14.67-42.392,42.088-42.392,73.486H57.761 c0-73.371,39.851-137.427,99.088-171.693L213.544,182.513z"></path> <path style="fill:#666666;" d="M454.239,255.999H340.848c0-31.409-17.064-58.837-42.424-73.507l56.674-98.164 C418.629,121.008,454.186,187.564,454.239,255.999z"></path> <circle style="fill:#666666;" cx="255.998" cy="255.997" r="43.818"></circle> </g>
                 </g></svg></div>
               {{chats[i].name}}
               <div class="blue-color last-mess">
                  {{chats[i].last_message.name_sender}}: {{chats[i].last_message.text}}<div></div>
+
               </div>
             </a>
 

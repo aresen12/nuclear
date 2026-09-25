@@ -46,8 +46,12 @@ text-decoration:none;
     padding-left: 10px;
     height: 40px;
     color:#63caef;
-    text-decoration: underline;
+    text-decoration: none;
+    background:#003268;
+    border-radius: 20px;
 }
+
+
 
 .b-c{
     border-radius: 20px;
@@ -85,7 +89,7 @@ text-decoration:none;
         width:100vw;
     }
     .t-on-desktop{
-    max-width: 90vw;
+    min-width: 90vw;
 }
     .margin-div{
         margin-bottom: 60px;
