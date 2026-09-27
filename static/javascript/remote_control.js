@@ -29,15 +29,15 @@ class RC{
 
     connect_other_room(){
         try{
-        this.start_connect_time = re.time;
-        this.wait = true;
-        } catch(e){
-        socket.emit("connect_other_room", {"id_device": this.sid, "room": room_id});
-        }
+            this.start_connect_time = re.time;
+            this.wait = true;
+            console.log(this.sid)
+            socket.emit("connect_other_room_server", {"id_device": this.sid, "room": room_id});
+            } catch(e){}
     }
 
     connect_skala()   {
-        socket.emit("connect_other_room", {"id_device": this.sid, "room": room_id});
+        socket.emit("connect_other_room_server", {"id_device": this.sid, "room": room_id});
 
     }
 

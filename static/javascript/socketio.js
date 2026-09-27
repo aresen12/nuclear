@@ -1,6 +1,6 @@
 const socket = io.connect();
 socket.emit('join', {room: room_id});
-
+console.log(room_id)
 
 function send_chosen_delete(i2){
     socket.emit("chosen_delete", {"i2": i2, "room": room_id});

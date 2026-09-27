@@ -100,6 +100,29 @@
 }
 
 
+.answer-a {
+    width: 100%;
+    color:rgba(1,1,1,1);
+    text-decoration: none;
+    border:none;
+    text-align: left;
+    margin-top:7px;
+}
+
+
+div.my-message button.answer-a{
+    background-color: #215290;
+    border-left: 3px solid #004997;
+}
+
+
+div.message-other button.answer-a{
+    background-color: #204770;
+    border-left: 3px solid #6495ed;
+}
+
+
+
 .context-menu-open ul {
     padding: 0;
     margin: 0;

@@ -359,7 +359,18 @@ function gener_emoji(id_mess, html_m, other, id_emoji){
 }
 
 
-
+function answer_color (src){
+    window.location.hash = "#" + src;
+    var mess = document.getElementById(src);
+    mess.style.background = "#6666ff";
+    setTimeout(function() {
+    if (mess.className == "my-message"){
+        mess.style.background = "#D1E7DD";
+    } else{
+        mess.style.background = "#CFF4FC";
+    }
+}, 2000);
+}
 
 
 function open_menu_mess(id_mess){
