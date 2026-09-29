@@ -38,7 +38,7 @@ class RC{
 
     connect_skala()   {
         socket.emit("connect_other_room_server", {"id_device": this.sid, "room": room_id});
-
+        console.log("skala")
     }
 
 

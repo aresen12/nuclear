@@ -84,13 +84,10 @@
 }
 
 .column-bsm{
-position:relative;
-    top:0px;
-    display:block;
+    display:inline-block;
     height:95vh;
     border: 1px solid black;
-    flex-grow: 0;
-    min-width:70vw;
+    width: fit-content;
 }
 
 .bs-zone{

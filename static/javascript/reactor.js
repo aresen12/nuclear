@@ -176,7 +176,7 @@ class Reactor {
         this.t1 = new Turnover("t1");
         this.t2 = new Turnover("t2");
         // Барабаны-сепараторы.
-        this.bs1 = new BS(1);
+        this.bs1 = new BS(1, true);
         this.bs2 = new BS(2);
         this.T_2_H2O = 190; // Температура второго контура, °C.
         // Температура кипения при начальном давлении, °C.
@@ -431,6 +431,20 @@ class Reactor {
         this.pressure_loss = scaled_system_loss + physical_loss / 1e6;
     }
 
+    check_broke(){
+        if (this.bs1.v_inBS > 100){
+            this.t1.break_t()
+        }
+        if (this.bs2.v_inBS > 100){
+            this.t2.break_t()
+        }
+        if (this.bs1.T_H2O > 271){
+            this.gcn["1_n"].broken = true;
+        }if (this.bs2.T_H2O > 271){
+            this.gcn["2_n"].broken = true;
+        }
+    }
+
     update_pressure() {
         // Расход через первый БС.
         let flow_bs1 = this.gcn["1_n"].g + this.gcn["1_a"].g;
@@ -601,6 +615,7 @@ class Reactor {
         this.t2.update(this.bs2.m_sep, this.p_in_reactor);
         this.tsn.update(this.t1.w_e * 1e3, this.t2.w_e * 1e3, this.t1.obr, this.t2.obr);
         this.update_electrical(); // Обновляем электроснабжение.
+        this.check_broke();
         setup_UI(this);
         rc.update();
     }

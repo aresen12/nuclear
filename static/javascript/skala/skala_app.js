@@ -5,6 +5,13 @@ socket.emit('join', {room: room_id});
 socket.on('chosen_delete', (data) => {
 });
 
+
+socket.on('server_sid_response', (data) => {
+    rc.sid = data["sid"];
+    rc.connect_skala();
+});
+
+
 socket.on('set_w_ar', (data) => {
         save_error(`Установка мощности АР${data["w"]}`)
 //        re.az.set_w_ar(data["w"]);
@@ -144,8 +151,8 @@ socket.on('connect', () => {
 
 socket.on('join_main_player', () => {
     if (rc.copy){
-        rc.connect_other_room();
-//        alert("Организатор присоединился")
+        rc.connect_skala();
+        alert("Организатор присоединился")
     }
 });
 

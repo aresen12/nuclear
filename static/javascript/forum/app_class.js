@@ -27,7 +27,7 @@ class UIdata{
         this.check_mobile();
     }
     check_mobile(){
-        if ((/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i .test(navigator.userAgent)) && (auto == 1)){
+        if ((/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i .test(navigator.userAgent))){
             this.mobile = true;
             mobile_settings();
         }
@@ -46,11 +46,7 @@ class UIdata{
 
 
 function mobile_settings() {
-        var x = document.getElementById("background-img");
-        var y = document.getElementById("container-mess");
-        x.style.display = "none";
-        var button = document.getElementById("button").style.visibility = 'hidden';
-        y.style.display = "none";
+
 }
 
 

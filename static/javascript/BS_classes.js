@@ -1,12 +1,12 @@
 class BS{
-    constructor(number){
+    constructor(number, left=false){
         this.number = number;
         this.h_braban_s = 10;
         this.v_inBS = 67;
         this.T_H2O = 270;
         this.m_sep = 0;
         this.work = false;
-        this.grafiti = new BSGrafiti(`bs${this.number}`, this.number);
+        this.grafiti = new BSGrafiti(`bs${this.number}`, this.number, left);
         this.condition = {"1": false, "2": false, "3": false, "4": false};
         this.p = 6.5;
     }

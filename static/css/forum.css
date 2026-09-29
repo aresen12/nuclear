@@ -108,7 +108,10 @@
     text-align: left;
     margin-top:7px;
 }
-
+.submit_btn {
+    margin-top:auto;
+    margin-bottom:40px;
+}
 
 div.my-message button.answer-a{
     background-color: #215290;
@@ -145,4 +148,29 @@ div.message-other button.answer-a{
 
 .context-menu-open ul li:hover {
     background-color: #BFE2FF;
+}
+
+
+@media screen and (width < 981px) and (pointer:none), (pointer:coarse) {
+.message-other  {
+        width: 80vw;
+        left:1vw;
+    }
+    .my-message {
+        max-width: 80vw;
+        left: 10vw;
+    }
+
+    .my-textarea{
+        width: 80%;
+    }
+
+    .chat-a{
+    width: 87vw;
+    }
+
+    .chat-cont{
+             width: 83vw;
+    }
+
 }

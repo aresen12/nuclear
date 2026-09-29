@@ -55,7 +55,11 @@ function red_alert(id_error){
 
 function stop_alert(id_error){
     var div = document.getElementById(id_error);
-    div.style.background = "";
+    try{
+        div.style.background = "";
+    } catch(e){
+        console.log("error id", id_error);
+    }
 }
 
 

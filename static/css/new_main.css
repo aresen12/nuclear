@@ -74,6 +74,7 @@
     margin: 10px;
     min-width: 20vw;
     border-radius:20px;
+    overflow:hidden;
 }
 
 .cont-bshy ::-webkit-scrollbar-track {
@@ -138,6 +139,13 @@
 .table-div{
     border-radius: 20px;
     border: 1px solid #072743;
+    height: 300px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.bsm-rbmk-logo{
+    display:flex;
 }
 
 .c-a {
@@ -182,5 +190,9 @@
 
     .flex-on-desktop{
         display:block;
+    }
+
+    .bsm-rbmk-logo{
+        margin-top: 5px;
     }
 }

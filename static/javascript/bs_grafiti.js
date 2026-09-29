@@ -1,25 +1,37 @@
 class BSGrafiti extends Grafi{
-    constructor(id_canvas, id_bs){
+    constructor(id_canvas, id_bs, left=false){
         super(id_canvas);
         this.background_color = "green";
         this.scale_x = 1;
         this.scale_y = 1;
         this.id_bs = id_bs;
         this.line_width = 2;
+        this.left = left;
+        if(left){
+           this.context.scale(-1, 1);
+           this.context.translate(-this.canvas.width, 0 );
+        }
 //        this.init_UI();
     }
 
     draw_circle(){
-    this.context.beginPath();
-     this.context.strokeStyle = "green";
-    this.context.arc(95, 60, 20, 0, 2 * Math.PI);
-    this.context.stroke();
+        this.context.beginPath();
+        this.context.strokeStyle = "green";
+        this.context.arc(95, 60, 20, 0, 2 * Math.PI);
+        this.context.stroke();
     }
 
     draw_text(text, x, y){
         this.context.save();
-        this.context.rotate(180 * Math.PI / 180);
-        this.context.scale(-1, 1);
+        if (!this.left){
+            this.context.scale(-1, 1);
+            this.context.rotate(180 * Math.PI / 180);
+        } else{
+//             this.context.scale(1, -1);
+             this.context.rotate(180 * Math.PI / 180);
+             x -= this.canvas.width;
+        }
+
         this.context.font = '10px Arial';
         this.context.fillStyle = this.background_color;
         this.context.textAlign = 'center';

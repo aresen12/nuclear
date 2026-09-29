@@ -24,7 +24,7 @@ def m_st(cnt=10):
         chats = get_chats(cnt)
         return render_template("/forum/forum_main.html",
                                title='Форум', chats=chats[0], auth_flag=auth_flag,
-                               description="Форум Симулятора ядерного реактора РБМК-1000"
+                               description="Форум Симулятора ядерного реактора РБМК-1000", number=1
                                )
     return redirect("/login")
 
@@ -36,7 +36,7 @@ def admin_panel(cnt=10):
         chats = get_chats(cnt)
         return render_template("/forum/admin.html",
                                title='Форум', chats=chats[0], auth_flag=True,
-                               description="Форум Симулятора ядерного реактора РБМК-1000"
+                               description="Форум Симулятора ядерного реактора РБМК-1000", number=1
                                )
     return redirect("/login")
 
@@ -51,7 +51,7 @@ def sort_by_type(type_chat, cnt=10):
         chats = get_chats_by(cnt, int(type_chat))
         return render_template("/forum/forum_main.html",
                                title='Форум', chats=chats[0], auth_flag=auth_flag,
-                               description="Форум РБМК-1000"
+                               description="Форум РБМК-1000", number=int(type_chat)
                                )
     return redirect("/login")
 
@@ -67,9 +67,10 @@ def chat_tem(id_chat):
         file___ = open("static/img/emoji/meta_data.json", mode="r")
         metadata = json.load(file___)
         file___.close()
+        mode = chat.status
         db_sess.close()
         return render_template("/forum/forum_chat.html", meta_data=metadata,
-                               title='Форум', chat=chat, auth_flag=auth_flag)
+                               title='Форум', chat=chat, auth_flag=auth_flag, number=int(mode))
     return redirect("/login")
 
 

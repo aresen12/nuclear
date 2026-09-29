@@ -10,15 +10,15 @@ import json
 
 rs = Blueprint('simylator', __name__, url_prefix='/b')
 s = [
-        [0, 0, 1, 1, 1, 1, 1, 0, 0],
-        [0, 1, 1, 2, 3, 2, 1, 1, 0],
-        [1, 1, 5, 1, 5, 1, 5, 1, 1],
-        [1, 2, 1, 3, 4, 3, 1, 2, 1],
-        [1, 3, 5, 4, 1, 4, 5, 3, 1],
-        [1, 2, 1, 3, 4, 3, 1, 2, 1],
-        [1, 1, 5, 1, 5, 1, 5, 1, 1],
-        [0, 1, 1, 2, 3, 2, 1, 1, 0],
-        [0, 0, 1, 1, 1, 1, 1, 0, 0]]
+    [0, 0, 1, 1, 1, 1, 1, 0, 0],
+    [0, 1, 1, 2, 3, 2, 1, 1, 0],
+    [1, 1, 5, 1, 5, 1, 5, 1, 1],
+    [1, 2, 1, 3, 4, 3, 1, 2, 1],
+    [1, 3, 5, 4, 1, 4, 5, 3, 1],
+    [1, 2, 1, 3, 4, 3, 1, 2, 1],
+    [1, 1, 5, 1, 5, 1, 5, 1, 1],
+    [0, 1, 1, 2, 3, 2, 1, 1, 0],
+    [0, 0, 1, 1, 1, 1, 1, 0, 0]]
 
 
 @rs.route("/<id_re>")
@@ -30,6 +30,11 @@ def bsm(id_re):
         if room is None:
             db_sess.close()
             return abort(404)
+        room: Reactor
+        if room.private and (not current_user.is_authenticated or (current_user.id != room.main_player)):
+            db_sess.close()
+            return render_template("check_private.html", title="Блочный щит управления",
+                                   description="Приватный Блочный щит управления РБМК-1000", id_re=id_re)
         type_game = room.mode
     except ValueError:
         r = id_re
@@ -45,6 +50,33 @@ def bsm_user(id_re):
                            title="Блочный щит управления", description="Блочный щит управления РБМК-1000")
 
 
+@rs.route("/private/main/<id_re>", methods=["POST"])
+def bsm_private(id_re):
+    db_sess = db_session.create_session()
+    try:
+        r = int(id_re)
+        room = db_sess.query(Reactor).filter(Reactor.id == r).first()
+        if room is None:
+            db_sess.close()
+            return abort(404)
+        room: Reactor
+        copy = False
+        if room.cnt_player != 0:
+            copy = True
+        if room.check_password(request.form["password"]):
+            type_game = room.mode
+            db_sess.close()
+            return render_template("BSM.html", s=s, id_reactor=r, copy=copy, type_game=type_game,
+                                   title="Блочный щит управления", description="Блочный щит управления РБМК-1000")
+        db_sess.close()
+        return render_template("check_private.html", title="Блочный щит управления",
+                               description="Приватный Блочный щит управления РБМК-1000", id_re=id_re)
+
+    except ValueError:
+        db_sess.close()
+        return abort(404)
+
+
 @rs.route("/get_data_start/<condition>")
 def get_data_task(condition):
     try:
@@ -54,5 +86,3 @@ def get_data_task(condition):
         return json.loads(data_json)
     except FileNotFoundError:
         return {"log": "error"}
-
-

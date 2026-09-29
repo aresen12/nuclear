@@ -27,18 +27,18 @@ def send_connect(data):
 @socketio.on('join')
 def on_join(data):
     room = data['room']
-    # if not (room in rooms()):
-    join_room(room)
-    db_sess = db_session.create_session()
-    r = db_sess.query(Reactor).filter(Reactor.id == room).first()
-    if not (r is None):
-        r.cnt_player += 1
-        db_sess.commit()
-    if current_user.is_authenticated:
-        emit('join_event', {"name": current_user.name}, to=room)
-        if not (r is None) and r.main_player == current_user.id:
-            emit("join_main_player", to=room)
-    db_sess.close()
+    if not (room in rooms()):
+        join_room(room)
+        db_sess = db_session.create_session()
+        r = db_sess.query(Reactor).filter(Reactor.id == room).first()
+        if not (r is None):
+            r.cnt_player += 1
+            db_sess.commit()
+        if current_user.is_authenticated:
+            emit('join_event', {"name": current_user.name}, to=room)
+            if not (r is None) and r.main_player == current_user.id:
+                emit("join_main_player", to=room)
+        db_sess.close()
 
 
 @socketio.on('room_message')
