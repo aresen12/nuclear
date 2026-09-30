@@ -45,7 +45,7 @@
     position:relative;
     left:3vw;
     width:20vw;
-    text-overflow:clip;
+    text-overflow:clip; 
     background:#215290;
     color:#000d1f;
     border-radius: 10px;

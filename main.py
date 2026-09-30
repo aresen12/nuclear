@@ -56,8 +56,10 @@ def login():
         db_sess.close()
         return render_template('login.html',
                                message="Неправильный логин или пароль",
-                               form=form)
-    return render_template('login.html', title='Авторизация', form=form)
+                               form=form,
+                               description="Авторизация в симуляторе РБМК. Добро пожаловать оператор!")
+    return render_template('login.html', title='Авторизация', form=form,
+                           description="Авторизация в симуляторе РБМК. Добро пожаловать оператор!")
 
 
 @application.route('/register', methods=['GET', 'POST'])
@@ -67,13 +69,15 @@ def reqister():
         if form.password.data != form.password_again.data:
             return render_template('register.html', title='Регистрация',
                                    form=form,
-                                   message="Пароли не совпадают")
+                                   message="Пароли не совпадают", description='''Регистрация  в симуляторе РБМК.
+Присоединяйся к команде. Управляй АЭС.''')
         db_sess = db_session.create_session()
         if db_sess.query(User).filter(User.email == form.email.data).first():
             db_sess.close()
             return render_template('register.html', title='Регистрация',
                                    form=form,
-                                   message="Такой пользователь уже есть")
+                                   message="Такой пользователь уже есть", description='''Регистрация  в симуляторе РБМК.
+Присоединяйся к команде. Управляй АЭС.''')
         user = User()
         user.name = form.name.data
         user.email = form.email.data
@@ -83,7 +87,8 @@ def reqister():
         login_user(user, remember=True, duration=datetime.timedelta(hours=24 * 90))
         db_sess.close()
         return redirect('/')
-    return render_template('register.html', title='Регистрация', form=form)
+    return render_template('register.html', title='Регистрация', form=form, description='''Регистрация  в симуляторе РБМК.
+Присоединяйся к команде. Управляй АЭС.''')
 
 
 @application.route("/main", methods=["GET"])
@@ -100,14 +105,17 @@ def main():
         for i in range(len(reactors)):
             if reactors[i].main_player == current_user.id:
                 my.append(reactors[i])
-    return render_template("main.html", title='симулятор ядерного реактора', my_reactor=my, users=users, reactors=reactors)
+    return render_template("main.html", title='симулятор ядерного реактора', my_reactor=my, users=users,
+                           reactors=reactors,
+                           description="Симулятор ядерного реактора. Управляй реактором в расширенном режиме.")
 
 
 @application.route("/add_new_reactor", methods=["GET", "POST"])
 def add_new_reactor():
     if request.method == "GET":
         if current_user.is_authenticated:
-            return render_template("new_reactor.html", title="симулятор ядерного реактора")
+            return render_template("new_reactor.html", title="симулятор ядерного реактора",
+                                   description="Создание нового реактора(БЩУ) в симуляторе РБМК-1000.")
         else:
             return redirect("/")
     else:
@@ -133,7 +141,8 @@ def add_new_reactor():
 
 @application.route("/info/syz")
 def info_syz():
-    return render_template("syz_info.html", title="СУЗ РБМК-1000")
+    return render_template("syz_info.html", title="СУЗ РБМК-1000",
+                           description="Игровая справка для оператора реактора симулятора РБМК-1000.")
 
 
 @application.route("/win_game", methods=["POST"])
@@ -154,7 +163,8 @@ def win():
 
 @application.route("/info/turnover")
 def info_turnover():
-    return render_template("turnover_info.html", title="Турбина РБМК")
+    return render_template("turnover_info.html", title="Турбина РБМК",
+                           description="Игровая справка для оператора турбины симулятора РБМК-1000.")
 
 
 @application.route("/delete/<room>", methods=["DELETE", "POST", "GET"])
@@ -173,7 +183,8 @@ def skala(id_bsm):
     file = open("db/errors.json")
     errors = file.read()
     file.close()
-    return render_template("skala.html", errors=errors, title="Скала", id_reactor=id_bsm)
+    return render_template("skala.html", errors=errors, title="Скала", id_reactor=id_bsm,
+                           description='Система центролизованного  контроля "Скала". Симулятор РБМК-1000.')
 
 
 @application.route("/save_game", methods=["POST"])
@@ -201,12 +212,14 @@ def get_game(id_room):
 
 @application.route("/info/freeze")
 def info_freeze():
-    return render_template("freeze_info.html", title="Охлаждение реактора")
+    return render_template("freeze_info.html", title="Охлаждение реактора",
+                           description="Игровая справка для оператора охлаждения(ВИУБ) симулятора РБМК-1000.")
 
 
 @application.route("/info")
 def info():
-    return render_template("info.html",  title="симулятор упралением ядерного реактора")
+    return render_template("info.html", title="симулятор упралением ядерного реактора",
+                           description="Игровая справка для симулятора РБМК-1000.")
 
 
 @application.route("/robots.txt")
@@ -216,12 +229,11 @@ def robots():
     file.close()
     return text
 
+
 @application.errorhandler(404)
 def page_not_found(e):
-    # Сначала рендерим шаблон, а потом явно возвращаем код состояния 404
     return render_template('404.html'), 404
 
 
 if __name__ == "__main__":
     socketio.run(application, host='0.0.0.0', debug=True, allow_unsafe_werkzeug=True, port=8000)
-

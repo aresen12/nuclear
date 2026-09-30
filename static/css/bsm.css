@@ -83,6 +83,10 @@
     padding:  3px;
 }
 
+.max-class{
+    width:max-content;
+}
+
 .column-bsm{
     display:inline-block;
     height:95vh;
