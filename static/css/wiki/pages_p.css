@@ -6,3 +6,11 @@
 .cont{
     display:flex;
 }
+
+.card-img-new {
+    border-radius:20px;
+    border: 1px solid grey;
+    margin: 10px;
+    min-width: 25vw;
+    overflow:hidden;
+}

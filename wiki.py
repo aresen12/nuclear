@@ -15,9 +15,10 @@ wiki = Blueprint('wiki', __name__, url_prefix='/wiki')
 def main_wiki():
     db_sess = db_session.create_session()
     pages = db_sess.query(Page).all()
+    pages.sort(key=lambda x: x.cnt_read)
     db_sess.close()
     return render_template("/wiki/main.html", title="Энциклопедия РБМК",
-                           description="Энциклопедия РБМК справочник по реакторам РБМК", pages=pages)
+                           description="Энциклопедия РБМК. Cправочник по реакторам РБМК", pages=pages)
 
 
 @wiki.route("/add_new_page", methods=["POST", "GET"])
@@ -119,7 +120,7 @@ def edit_page_wiki(name_page):
     file = open(f"templates/wiki/data/{page.file_name}", mode="r")
     html_text = file.read()
     file.close()
-    return render_template(f"/wiki/edit_page.html", page=page,  title="Редактирование страницы",
+    return render_template(f"/wiki/edit_page.html", page=page, title="Редактирование страницы",
                            description="Редактирование страницы", html_text=html_text)
 
 
