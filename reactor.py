@@ -39,6 +39,8 @@ def bsm(id_re):
     except ValueError:
         r = id_re
         type_game = 0
+        if id_re == "teach":
+            type_game = 2
     db_sess.close()
     return render_template("BSM.html", s=s, id_reactor=r, copy=False, type_game=type_game,
                            title="Блочный щит управления", description="Блочный щит управления РБМК-1000")

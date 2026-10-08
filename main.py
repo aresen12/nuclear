@@ -86,7 +86,7 @@ def reqister():
         db_sess.commit()
         login_user(user, remember=True, duration=datetime.timedelta(hours=24 * 90))
         db_sess.close()
-        return redirect('/')
+        return redirect('/b/teach')
     return render_template('register.html', title='Регистрация', form=form, description='''Регистрация  в симуляторе РБМК.
 Присоединяйся к команде. Управляй АЭС.''')
 
@@ -96,16 +96,15 @@ def reqister():
 def main():
     db_sess = db_session.create_session()
     users = db_sess.query(User).all()
-    reactors = db_sess.query(Reactor).all()
+    reactors = db_sess.query(Reactor).filter(Reactor.cnt_player != 0).all()
     reactors.sort(key=lambda r: r.cnt_player, reverse=True)
-    db_sess.close()
     users.sort(key=lambda user: user.points, reverse=True)
-    my = []
     if current_user.is_authenticated:
-        for i in range(len(reactors)):
-            if reactors[i].main_player == current_user.id:
-                my.append(reactors[i])
-    return render_template("main.html", title='симулятор ядерного реактора', my_reactor=my, users=users,
+        my = db_sess.query(Reactor).filter(Reactor.main_player == current_user.id).all()
+        for k in my:
+            reactors.insert(0, k)
+    db_sess.close()
+    return render_template("main.html", title='симулятор ядерного реактора', users=users,
                            reactors=reactors,
                            description="Симулятор ядерного реактора. Управляй реактором в расширенном режиме.")
 

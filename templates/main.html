@@ -38,6 +38,7 @@
     <a href="/b/not_auth" class="btn btn-primary">Присоединиться</a>
   </div>
             </div>
+
             {% for i in range(reactors|length) %}
             <div class="card card-bshy">
                 {% if (i + 1) % 2 != 0 %}
@@ -46,7 +47,7 @@
                     <img src="/static/img/bg_room2.png" class="card-img-top" alt="...">
                 {% endif %}
             <div class="card-body">
-    <h5 class="card-title logo3 white-logo">{{reactors[i].name}}</h5>
+    <h5 class="card-title logo3 white-logo">{{reactors[i].name}} (Игроков {{reactors[i].cnt_player}})</h5>
     <p class="card-text light-color">
         {% if reactors[i].mode == 1 %}
         Управление реактором в аварийных ситуациях

@@ -15,7 +15,7 @@ wiki = Blueprint('wiki', __name__, url_prefix='/wiki')
 def main_wiki():
     db_sess = db_session.create_session()
     pages = db_sess.query(Page).all()
-    pages.sort(key=lambda x: x.cnt_read)
+    pages.sort(reverse=True, key=lambda x: x.cnt_read)
     db_sess.close()
     return render_template("/wiki/main.html", title="Энциклопедия РБМК",
                            description="Энциклопедия РБМК. Cправочник по реакторам РБМК", pages=pages)

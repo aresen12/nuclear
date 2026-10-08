@@ -73,6 +73,7 @@
     border: 1px solid #072743;
     margin: 10px;
     min-width: 20vw;
+    width:20vw;
     border-radius:20px;
     overflow:hidden;
 }

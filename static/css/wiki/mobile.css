@@ -1,19 +1,16 @@
 @media screen and (width < 981px) and (pointer:none), (pointer:coarse) {
+
     .card{
         position:relative;
         width:90vw;
         max-height: 60vh;
         margin:auto;
     }
-    .first-text {
-
-    }
-
-    .cont{
+    .cont {
         display:block;
     }
 
-    .card-img{
+    .card-img-new{
         width: 90vw;
     }
 }

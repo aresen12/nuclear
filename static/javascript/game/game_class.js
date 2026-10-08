@@ -85,6 +85,18 @@ class Game{
         }
     }
 
+    teach_start(){
+
+        if (this.type == 2 ){
+            this.teacher.next();
+        } else {
+            this.type = 2;
+            this.teacher = new Teacher(re);
+            this.teacher.update();
+        }
+
+    }
+
     check_end_game(reactor){
         if (reactor.thermal_power /1e6 >= 3300){
             return true;

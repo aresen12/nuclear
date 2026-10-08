@@ -10,11 +10,13 @@
 </head>
 <body>
 <div class="exit-btn div-time">
+    <button type="button" class=" btn btn-light" onclick="game.teach_start()">?</button>
 <button id="pause_btn" type="button" class=" btn btn-light" onclick="pause()">
        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause"
             viewBox="0 0 16 16">
   <path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5"/>
 </svg>
+
     </button>
     <div id="game_process" style="display:none;">
     оставшееся время<div id="last_time" class="watch"></div>
@@ -107,7 +109,7 @@
                     <div id="m_ozr" class="alert-error">М ОЗР</div>
                 </div>
                 <div>
-                    <div id="az_call" class="alert-error">аз набран</div>
+                    <div id="az_call" class="alert-error">АЗ набран</div>
                     <div id="up_direction" class="alert-error">Извлек</div>
                     <div id="down_direction" class="alert-error">Опуск</div>
                     <div id="azs" class="alert-error">АЗС</div>
@@ -309,7 +311,7 @@
             </div>
             <div style="display:flex;">
                 <div class="sector">
-                    <div class="title-s">Штатные Насосы</div>
+                    <div class="title-s">Штатные насосы</div>
                     <div style="display:flex;" id="pumps_up_cont">
                         {% for j in range(1, 5) %}
                         <div class="gcn-cont-up-panel margin-cont">
@@ -702,7 +704,7 @@
 <script src="/static/javascript/game/ui_teach.js"></script>
 <script src="/static/javascript/game/game_class.js"></script>
 <script src="/static/javascript/remote_control.js"></script>
-{% if id_reactor == "not_auth" %}
+{% if id_reactor == "not_auth" or id_reactor == "teach" %}
 <script>const room_id = "{{id_reactor}}";</script>
 {% else %}
 <script>const room_id = {{id_reactor}};</script>

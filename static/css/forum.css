@@ -125,6 +125,12 @@ div.message-other button.answer-a{
 }
 
 
+.text-in-mess {
+    overflow:none;
+    overflow-y:hidden;
+    margin:0px;
+}
+
 
 .context-menu-open ul {
     padding: 0;
