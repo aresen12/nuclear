@@ -7,6 +7,8 @@ class BSGrafiti extends Grafi{
         this.id_bs = id_bs;
         this.line_width = 2;
         this.left = left;
+        this.last_data = {"1": false, "2": false, "3": false, "4": false};
+        this.context.font = '10px Arial';
         if(left){
            this.context.scale(-1, 1);
            this.context.translate(-this.canvas.width, 0 );
@@ -32,16 +34,24 @@ class BSGrafiti extends Grafi{
              x -= this.canvas.width;
         }
 
-        this.context.font = '10px Arial';
+
         this.context.fillStyle = this.background_color;
-        this.context.textAlign = 'center';
-        this.context.textBaseline = 'middle';
         this.context.fillText(text, x, y);
         this.context.stroke();
         this.context.restore();
     }
 
     init_UI(condition, time){
+
+        if (condition == this.last_data){
+            for (let i = 1; i < 5; i++){
+                if (condition[`${i}`]){
+                    break;
+                }
+            }
+            return;
+        }
+        this.last_data = condition;
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.draw_circle();
         // на ТГ

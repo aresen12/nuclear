@@ -47,6 +47,18 @@ function display_pvs_info(){
 }
 
 
+function show_hints(id_hint){
+    const del_div = document.getElementById(`${id_hint}_hint`);
+    if (del_div){
+        del_div.remove();
+    } else {
+    add_tolip(id_hint, `${hints_json[id_hint]}
+    <button class="btn btn-game btn-warning">Закрыть</button>
+    `, `${id_hint}_hint`);
+    }
+}
+
+
 function add_tolip(id_div, text, id_t, top=true){
     let cont = document.getElementById(id_div);
     if (top){

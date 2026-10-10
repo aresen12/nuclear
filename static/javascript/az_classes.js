@@ -207,7 +207,7 @@ class Az{
                 }
             }
         }
-    ui_thermal_power_mnemo(color_mnemo);
+//    ui_thermal_power_mnemo(color_mnemo);
     }
 
     set_pos_ar_on_h_p(speed, n){
@@ -274,7 +274,7 @@ class Az{
                     this.set_position_ar(1  , calculate_speed_ar_power(r));
                 }
             }
-            this.update_laz();
+//            this.update_laz();
         }
 
     }

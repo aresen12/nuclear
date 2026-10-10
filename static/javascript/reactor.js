@@ -439,9 +439,9 @@ class Reactor {
             this.t2.break_t()
         }
         if (this.bs1.T_H2O > 271){
-            this.gcn["1_n"].broken = true;
+//            this.gcn["1_n"].broken = true;
         }if (this.bs2.T_H2O > 271){
-            this.gcn["2_n"].broken = true;
+//            this.gcn["2_n"].broken = true;
         }
     }
 
@@ -504,6 +504,7 @@ class Reactor {
         for (let i = 0; i < pump_keys.length; i++) {
             this.gcn[pump_keys[i]].update();
         }
+//        const start = performance.now();
         // Рассчитываем температуру входа
         // как расходно-взвешенное среднее температур двух БС.
         let flow_bs1 = this.gcn["1_n"].g +  this.gcn["1_a"].g;
@@ -591,6 +592,7 @@ class Reactor {
         // Ограничиваем паросодержание.
         this.void_fraction = clamp(this.void_fraction, MIN_VOID, MAX_VOID);
         // Двигаем выбранные стержни.
+//        console.log(`Время выполнения: ${performance.now() - start} мс`);
         if (this.direction != 0) {
             for (let i = 0; i < this.chosen.length; i++) {
                 this.set_s_position(this.chosen[i][0], this.chosen[i][1], this.direction);
@@ -608,7 +610,6 @@ class Reactor {
             this.t2.g_max, this.gcn["2_a"].g, this.gcn["4_a"].g, this.time);
         this.separator_fill_1 = clamp(this.bs1.v_inBS / BS_INITIAL_VOLUME, 0.0, 1.0);
         this.separator_fill_2 = clamp(this.bs2.v_inBS / BS_INITIAL_VOLUME, 0.0, 1.0);
-        console.log(this.bs2.v_inBS / BS_INITIAL_VOLUME);
         this.update_hydraulics();
 //        this.update_pressure();
         this.t1.update(this.bs1.m_sep, this.p_in_reactor);

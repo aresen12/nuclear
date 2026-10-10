@@ -4,6 +4,9 @@ class Grafi{
 //        this.canvas.style.backgroundColor = "white";
         this.context = this.canvas.getContext("2d");
         this.context.translate(0, this.canvas.height * y);
+        this.context.font = '10px Arial';
+        this.context.textAlign = 'center';
+        this.context.textBaseline = 'middle';
         this.context.scale(1, -1);
         this.context.stroke();
         this.scale_x = scale_x;
@@ -37,10 +40,7 @@ class Grafi{
         this.context.save();
         this.context.rotate(180 * Math.PI / 180);
         this.context.scale(-1, 1);
-        this.context.font = '10px Arial';
         this.context.fillStyle = this.background_color;
-        this.context.textAlign = 'center';
-        this.context.textBaseline = 'middle';
         this.context.fillText(text, x, y);
         this.context.stroke();
         this.context.restore();
