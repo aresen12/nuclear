@@ -116,7 +116,7 @@ def add_new_reactor():
             return render_template("new_reactor.html", title="симулятор ядерного реактора",
                                    description="Создание нового реактора(БЩУ) в симуляторе РБМК-1000.")
         else:
-            return redirect("/")
+            return redirect("/login")
     else:
         if current_user.is_authenticated:
             db_sess = db_session.create_session()
@@ -224,6 +224,14 @@ def info():
 @application.route("/robots.txt")
 def robots():
     file = open("db/robots.txt", mode="r")
+    text = file.read()
+    file.close()
+    return text
+
+
+@application.route("/sitemap.txt")
+def sitemap():
+    file = open("db/sitemap.txt", mode="r")
     text = file.read()
     file.close()
     return text

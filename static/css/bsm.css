@@ -1,8 +1,9 @@
 .up-panel {
     position: relative;
     top: 0px;
-    height: 58vh;
-    background:#b5b8b1;
+    height: 55vh;
+background-image: url('/static/img/bg.png');
+    linear-gradient(90deg, rgb(255, 9, 0), rgb(191, 66, 64))
 
 }
 
@@ -45,18 +46,18 @@
 
 
 .down-panel{
-    height: 38vh;
+    height:35vh;
     border: solid 1px red;
-    background: #b5b8b1;
+    background: #a0a19b;
     bottom:0px;
+    background-image: url('/static/img/bg.png');
 }
 
 
 .main-content{
-    width:96vw;
+    width:100%;
     overflow-y:hidden;
     overflow-x:scroll;
-   background:#b5b8b1;
 
 }
 
@@ -75,12 +76,20 @@
 .input-big{
     font-size: 14px;
     width: 60px;
+    background:#121312;
+    color:#b0c98e;
+    border-radius:5px;
+    border: 1px solid black;
+}
+
+.zone{
+    color: white;
+    background: #2e3738;
 }
 
 .az {
     border: solid 1px red;
     width:fit-content;
-    padding:  3px;
 }
 
 .max-class{
@@ -89,7 +98,7 @@
 
 .column-bsm{
     display:inline-block;
-    height:95vh;
+    height:100%;
     border: 1px solid black;
     width: fit-content;
 }
@@ -105,10 +114,18 @@
 }
 
 .mnemo-sell{
+    width: 22px;
+    height:22px;
+    border:none;
+    background:none;
+}
+
+
+.mnemo-sell2{
     width: 20px;
     height:20px;
-    border: solid 1px  #b5b8b1;
-    background:#b5b8b1;
+    border:none;
+    background:none;
 }
 
 .mnemo-s{
@@ -224,6 +241,8 @@ width: 28px;
 .watch{
     min-width: 5px;
     padding:2px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 
@@ -291,6 +310,42 @@ width: 28px;
 }
 
 
+
+.up-panel-settings{
+    width: 100%;
+    background: #2e3432;
+    height: 35px;
+    display: flex;
+}
+
+
+.center-up-panel{
+    width: 100%;
+    text-align:center;
+}
+
+
+.up-btn {
+    text-decoration: none;
+    background: none;
+    border-radius: 5px;
+    border: 1px solid #cdd0cc;
+    margin: 2px;
+    color: #cdd0cc;
+    font-size: 18px;
+}
+
+.left-up-panel{
+    display: flex;
+}
+
+
+.game-process{
+        color: #cdd0cc;
+        width: 250px;
+
+}
+
 .cont-tooltip-bottom{
    position:absolute;
    margin-top:
@@ -340,13 +395,19 @@ width: 28px;
 .gcn-cont-up-panel{
 
 }
+
+.margin-input{
+    margin-top: 5px;
+}
 .title-s{
     font-weight:bolder;
-    background:white;
+    background:#2e3738;
     margin-left:auto;
     margin-right:auto;
     text-align:center;
-    max-width: 200px;
+    max-width: 230px;
+    border-bottom: 2px solid #c8c9bf;
+    color:white;
 }
 
 .sector{

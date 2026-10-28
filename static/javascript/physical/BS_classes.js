@@ -1,3 +1,6 @@
+
+
+
 class BS{
     constructor(number, left=false){
         this.number = number;
@@ -8,6 +11,7 @@ class BS{
         this.work = false;
         this.grafiti = new BSGrafiti(`bs${this.number}`, this.number, left);
         this.condition = {"1": false, "2": false, "3": false, "4": false};
+//        this.fill = clamp(this.v_inBS / BS_INITIAL_VOLUME, 0.0, 1.0);
         this.p = 6.5;
     }
 

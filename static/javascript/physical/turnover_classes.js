@@ -10,7 +10,7 @@ class Turnover{
         this.g_max_teor = 3000;  // максимальный расход через турбину
         this.direction = 0;
         this.id_turnover = id_turnover;
-        this.steam_direction = 1; // направление пара 1- турбина 2 - пусковой отсек
+        this.mode = 1; // направление пара 1- турбина 2 - пусковой отсек
         this.time = 0;
     }
 
@@ -31,15 +31,6 @@ class Turnover{
             }
     }
 
-    set_unset_up_direction() {
-        if (this.work){
-            if (this.direction == 1){
-                this.direction = 0;
-            } else {
-                this.direction = 1;
-            }
-        }
-    }
 
     break_t(){
         this.broken = true;
@@ -48,6 +39,15 @@ class Turnover{
         this.direction = false;
     }
 
+    set_unset_up_direction(){
+         if (this.work){
+            if (this.direction == 1){
+                this.direction = 0;
+            } else {
+                this.direction = 1;
+            }
+        }
+    }
     set_unset_down_direction() {
         if (this.work){
             if (this.direction == -1){
@@ -59,9 +59,8 @@ class Turnover{
     }
 
     start(){
-        if(this.p_start >= 6 && !this.broken){
-        this.obr = 350;
-        this.p_start = 2;
+        if (!this.broken){
+            this.mode = 2;
         }
     }
 
@@ -76,23 +75,8 @@ class Turnover{
         }
     }
 
-    update_p_start(g_c, p_in_reactor){
-        let v = (g_c / 12000) * 20000;
-        if (this.p_start < p_in_reactor){
-            if (this.p_start + v <= p_in_reactor ){
-                this.p_start += v;
-            } else if (this.p_start + v >= p_in_reactor && p_in_reactor >= 6){
-                this.p_start = p_in_reactor;
-            }
-        }
-    }
-
     update(g_re, p_in_reactor){
         var current_g = Math.min(g_re, this.g_max);
-        if (!this.steam_direction){
-            this.update_p_start(current_g, p_in_reactor);
-            current_g = 0;
-        }
         if (!this.work && this.obr > 0){
             if (this.time < 10){
                 this.time += 1;
@@ -114,13 +98,10 @@ class Turnover{
             }
         } else {
             this.w_e = 0;
-            if (this.obr != 0 && current_g >= 1000 && this.obr + current_g / 20 <= 3000 ){
-                this.obr += current_g / 20;
-                if (current_g / 20 >= 75){
-                    this.break_t();
+            if (this.mode == 2){
+                if (this.obr <= 3000 ){
+                    this.obr += 150;
                 }
-            } else if (this.obr != 0 && current_g >= 1000){
-                this.obr = 3000;
             } else{
                 if (this.obr - this.v_down >= 0){
                     this.obr -= this.v_down;

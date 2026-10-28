@@ -13,12 +13,6 @@
     background:#000d1f;
 }
 
-.text-div{
-    background:#010f23;
-    margin: 20px;
-    padding: 10px;
-}
-
 
 .blue-color{
     color:#63caef;
@@ -51,12 +45,6 @@ text-decoration:none;
     border-radius: 20px;
 }
 
-
-
-.b-c{
-    border-radius: 20px;
-    border: 2px solid #072743;
-}
 
 .img-n-b{
     width: 40vw;

@@ -19,7 +19,7 @@ class Teacher{
                 this.next();
             }
         }else if (this.step == 8 && this.reactor.chosen.length >= 3){
-          if (this.reactor.chosen.length == 26){
+            if (this.reactor.chosen.length == 26){
                 this.clear_toolip();
                 add_tolip("p_syz",
             `Теперь можешь извлекать стержни ручного регулирования (РР) серые.
@@ -127,6 +127,13 @@ class Teacher{
             this.toolip.push("bs1_cont_toolip");
         }else if (this.step == 18){
             this.clear_toolip();
+            display_viyt_info();
+        }else if (this.step == 19){
+            display_end();
+        } else if (this.step == 20){
+            document.getElementById("select").style.display = "block";
+            document.getElementById("select_task").style.display = "block";
+            document.getElementById("teach_alert").innerHTML = "";
         }
     }
 
@@ -142,6 +149,8 @@ class Teacher{
         this.toolip = [];
     }
 }
+
+
 const hints_json = {
 "mode_kom": "Вы обесточили сервоприводы стержней. Стержни должны падать в реактор под действием силы тяжести, чтобы уменьшить мощность.",
   "down_direction": "Стержни опускаются в реактор (мощность должна падать).",
@@ -160,6 +169,10 @@ const hints_json = {
   "alert_power_q": "Высокая тепловая мощность. Номинальная мощность 3200 МВт.",
   "1_n_error": "ГЦН1 сломан. Вода в БС1 наверное закончилась.",
   "2_n_error": "ГЦН2 сломан. Вода в БС2 наверное закончилась.",
+    "3_n_error": "ПЭН 1 сломан.",
+  "4_n_error": "ПЭН 1 сломан.",
+  "1_a_error": "АГЦН1 сломан. Вода в БС1 наверное закончилась.",
+  "2_a_error": "АГЦН2 сломан. Вода в БС2 наверное закончилась.",
   "h_high_water_level_BS2": "Высокий уровень воды в БС2, нужно уменьшать расход ПЭН2.",
   "h_high_water_level_BS1": "Высокий уровень воды в БС1, нужно уменьшать расход ПЭН1.",
   "h_lower_water_level_BS2": "Низкий уровень воды в БС2, нужно увеличивать расход ПЭН2.",

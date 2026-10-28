@@ -15,14 +15,16 @@ class TemporaryAlert{
     }
 
     show(){
-        my_alert(this.id);
+        if (re.time % 2 == 0){
+            start_alert(this.id);
+        } else{
+            stop_alert(this.id)
+        }
     }
 
     delete_show(){
         if (this.does_stop){
-             if (this.max_time % 2 != 0){
-                my_alert(this.id);
-            }
+            start_alert(this.id);
             return;
         } else {
             stop_alert(this.id);
@@ -82,7 +84,11 @@ class SAOR {
 
 class Az{
     constructor(reactor){
-        this.mode = 0 // 0 - откл 1- азс 2 -азср
+        if (reactor.thermal_power / 1e6 >= 700){
+            this.mode = 2; // 0 - откл 1- азс 2 -азср
+        } else {
+            this.mode = 1;
+        }
         this.sound1 = false;
         this.sound2 = false;
         this.sound3 = false;
@@ -118,12 +124,12 @@ class Az{
     turn_on_or_down_power_SYZ(){
         this.power_SYZ = !this.power_SYZ;
         if (this.power_SYZ){
-            turn("key_power_btn", 0);
+            turn("key_power_btn", 0, "КОМ");
             if (this.ar){
                 this.turn_on_or_down_ar();
             }
         } else {
-            turn("key_power_btn", 1);
+            turn("key_power_btn", 1, "КОМ");
         }
 
     }
@@ -238,8 +244,8 @@ class Az{
 
     update_ar(){
         if (this.ar && this.power_SYZ){
-            if (this.reactor.thermal_power / 1e6 > 2850 && this.power_ar / 1e6 == 3200){
-                let r = (this.thermal_power - this.power_ar) / 1e6;
+            if (this.reactor.physical.thermal_power / 1e6 > 2850 && this.power_ar / 1e6 == 3200){
+                let r = (this.physical.thermal_power - this.power_ar) / 1e6;
                 if (r < 0){
                     if (this.period_power < 0){
                         set_pos_ar_d_h_p(1, 1);
@@ -266,11 +272,11 @@ class Az{
                     this.set_position_ar(-1, calculate_speed_ar_rho(this.reactor.rho_total));
                 } else if (this.period_power > 7 && this.reactor.rho_total > 0) {
                     this.set_position_ar(-1, calculate_speed_ar_power_speed(this.period_power));
-                } else if (this.reactor.thermal_power > this.power_ar && this.period_power > 0){
-                    let r = (this.reactor.thermal_power - this.power_ar) / 1e6;
+                } else if (this.reactor.physical.thermal_power > this.power_ar && this.period_power > 0){
+                    let r = (this.reactor.physical.thermal_power - this.power_ar) / 1e6;
                     this.set_position_ar(-1, calculate_speed_ar_power(r));
-                } else if (this.reactor.thermal_power < this.power_ar && this.period_power < 0){
-                    let r =(this.power_ar - this.reactor.thermal_power) / 1e6;
+                } else if (this.reactor.physical.thermal_power < this.power_ar && this.period_power < 0){
+                    let r =(this.power_ar - this.reactor.physical.thermal_power) / 1e6;
                     this.set_position_ar(1  , calculate_speed_ar_power(r));
                 }
             }
@@ -327,7 +333,7 @@ class Az{
         }
         this.az_5 = !flag;
         if (flag){
-            turn("az_btn", 0);
+            turn("az_btn", 0, "АЗ-5");
         }
         return flag;
     }
@@ -357,7 +363,7 @@ class Az{
         }
         this.az_b = !flag;
         if (flag){
-            turn("baz_btn", 0);
+            turn("baz_btn", 0, "БАЗ");
         }
         return flag;
     }
@@ -378,7 +384,7 @@ class Az{
                         this.turn_on_or_down_ar();
                     }
             }
-            turn("az_btn", 1);
+            turn("az_btn", 1, "АЗ-5");
             this.az_run = 1;
 
         }
@@ -386,7 +392,7 @@ class Az{
     }
 
     baz(){
-        turn("baz_btn", 1);
+        turn("baz_btn", 1, "БАЗ");
         this.az_run = true;
         this.az_b = true;
     }
@@ -403,13 +409,13 @@ class Az{
     azs_start(){
         if (this.mode == 1){
             this.mode = 0;
-            turn("azs_start", 0);
+            turn("azs_start", 0, "АЗС");
             stop_alert("azs_on");
             this.temporary_alert.push(new TemporaryAlert('azs_turn_down', 2, true))
         } else {
             this.mode = 1;
-            turn("azs_start", 1);
-            turn("azsr_start", 0);
+            turn("azs_start", 1, "АЗС");
+            turn("azsr_start", 0, "АЗСР");
             green_alert("azs_on")
             stop_alert("azsr_on");
             stop_alert('azs_turn_down');
@@ -419,13 +425,13 @@ class Az{
     azsr_start(){
         if (this.mode == 2){
             this.mode = 0;
-            turn("azsr_start", 0);
+            turn("azsr_start", 0, "АЗСР");
             stop_alert("azsr_on");
             this.temporary_alert.push(new TemporaryAlert('azsr_turn_down', 2, true))
         } else {
             this.mode = 2;
-            turn("azsr_start", 1);
-            turn("azs_start", 0);
+            turn("azsr_start", 1, "АЗСР");
+            turn("azs_start", 0, "АЗС");
             stop_alert("azs_on");
             green_alert("azsr_on");
             stop_alert('azsr_turn_down');
@@ -433,8 +439,8 @@ class Az{
     }
 
     check_azs(){
-        this.period_power = (this.reactor.thermal_power - this.last_power) / 1e6;
-        this.last_power = this.reactor.thermal_power;
+        this.period_power = (this.reactor.physical.thermal_power - this.last_power) / 1e6;
+        this.last_power = this.reactor.physical.thermal_power;
         if (this.period_power > 10 && this.mode == 1){
             my_alert("high_speed_power");
             this.current_errors.push("high_speed_power");
@@ -446,8 +452,8 @@ class Az{
                 this.az5();
                 this.azs_start();
             }
-            if (this.thermal_power > 700){
-                this.azs_start();
+            if (this.physical.thermal_power > 700){
+//                this.azs_start();
             }
         }
 
@@ -457,30 +463,34 @@ class Az{
              if (this.reactor.bs1.v_inBS < 55 || this.reactor.bs2.v_inBS < 55){
                 this.az5();
             }
+            if (this.period_power >= 20 && this.reactor.physical.rho_total > 0){
+                this.az5()
+            }
         }
     }
+
+
     check_error_alerts(){
         let flag = false;
         let viyb = [];
         let viyr = [];
         let viyt = [];
-        if (this.reactor.thermal_power / 1e6 > 3205){
+        if (this.reactor.physical.thermal_power / 1e6 > 3205){
             viyr.push("alert_power_q");
-            if (this.reactor.thermal_power / 1e6 >= 3250){
+            if (this.reactor.physical.thermal_power / 1e6 >= 3250){
                 this.az5();
             }
-            if(this.reactor.thermal_power / 1e6 > 3300){
+            if(this.reactor.physical.thermal_power / 1e6 > 3300){
                 if (this.time_danger == 0){
-                    alert("Вы расплавляете реактор! Нужно понижать мощность!!");
+                    global_error("Вы расплавляете реактор! Нужно понижать мощность!!");
                 }
                 this.time_danger++;
-//                this.reactor.pause = true;
             }
         }
         if (this.ozr_ar > 50 & this.period_power > 0){
              viyr.push("m_ozr_ar");
         }
-        if (this.reactor.ozr < 5.78){
+        if (this.reactor.physical.ozr < 5.78){
              viyr.push("m_ozr");
         }
         if (this.reactor.t1.obr > 3000){
@@ -502,7 +512,7 @@ class Az{
             viyt.push("error_t2");
         }
 
-        if (this.reactor.T_2_H2O >= 260){
+        if (this.reactor.physical.T_2_H2O >= 260){
             viyb.push("alert_high_temperature2");
         }
         if (this.reactor.bs1.T_H2O > 271){
@@ -581,7 +591,7 @@ class Az{
                 }
             }
         }
-        if (this.reactor.rho_total > 0.00055){
+        if (this.reactor.physical.rho_total > 0.00055){
             viyr.push("high_rho_total");
         }
         let c_e = [...viyr, ...viyb, ...viyt];

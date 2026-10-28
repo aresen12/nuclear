@@ -41,7 +41,7 @@ function gener_json(){
         "period_power": re.az.period_power,
         "sterg": re.sterg,
         "ozr": re.ozr,
-        "graphite_temp": re.graphite_temp,
+        "graphite_temp": re.physical.graphite_temp,
         "ozr_ar": re.az.ozr_ar,
         "power_ar": re.az.power_ar,
         "bs1": {
@@ -57,13 +57,13 @@ function gener_json(){
             "m_sep": re.bs2.m_sep
         },
         "fuel_temp":re.fuel_temp,
-        "p_in_reactor":re.p_in_reactor,
-        "thermal_power":re.thermal_power,
-        "rho_total":re.rho_total,
+        "p_in_reactor":re.physical.p_in_reactor,
+        "thermal_power":re.physical.thermal_power,
+        "rho_total":re.physical.rho_total,
         "chosen":re.chosen,
         "direction": re.direction,
-        "outlet_temp":re.outlet_temp,
-        "T_2_H2O": re.T_2_H2O,
+        "outlet_temp":re.physical.outlet_temp,
+        "T_2_H2O": re.physical.T_2_H2O,
         "t1":{
             "w_e":re.t1.w_e,
             "obr":re.t1.obr,
@@ -110,10 +110,10 @@ function gener_json(){
 
 function gener_json_DB(){
     data = gener_json();
-    data["precursors"] = re.precursors;
-    data["void_fraction"] = re.void_fraction;
-    data["coolant_temp"] = re.coolant_temp;
-    data["t_boil"] = re.t_boil;
+    data["precursors"] = re.physical.precursors;
+    data["void_fraction"] = re.physical.void_fraction;
+    data["coolant_temp"] = re.physical.coolant_temp;
+    data["t_boil"] = re.physical.t_boil;
     data["ar"] = re.az.ar;
     data["bs1"]["p"] = re.bs1.p;
     data["bs2"]["p"] = re.bs2.p;
@@ -139,11 +139,16 @@ function save_game(){
 
 function load_data_DB(json){
     load_data(json);
-    re.precursors = json["precursors"];
-    re.void_fraction = json["void_fraction"];
-    re.coolant_temp = json["coolant_temp"];
-    re.t_boil = json["t_boil"];
+    re.physical.precursors = json["precursors"];
+    re.physical.void_fraction = json["void_fraction"];
+    re.physical.coolant_temp = json["coolant_temp"];
+    re.physical.t_boil = json["t_boil"];
     re.az.ar = json["ar"];
+    if (re.physical.thermal_power / 1e6 >= 700){
+            re.az.mode = 2; // 0 - откл 1- азс 2 -азср
+        } else {
+            re.az.mode = 1;
+    }
     start_UI(re);
     show_mnemo(re);
 }
@@ -197,17 +202,17 @@ function load_data(data){
     re.bs2.v_inBS = data["bs2"]["v_inBS"];
     re.bs2.h_braban_s = data["bs2"]["h_braban_s"];
     re.bs2.T_H2O = data["bs2"]["T_H2O"];
-    re.p_in_reactor = data["p_in_reactor"];
-    re.thermal_power = data["thermal_power"];
+    re.physical.p_in_reactor = data["p_in_reactor"];
+    re.physical.thermal_power = data["thermal_power"];
     re.chosen = data["chosen"];
-    re.rho_total = data["rho_total"];
+    re.physical.rho_total = data["rho_total"];
     re.direction = data["direction"];
-    re.fuel_temp = data["fuel_temp"];
-    re.outlet_temp = data["outlet_temp"];
+    re.physical.fuel_temp = data["fuel_temp"];
+    re.physical.outlet_temp = data["outlet_temp"];
     re.T_2_H2O = data["T_2_H2O"];
     re.sterg = data["sterg"];
-    re.ozr = data["ozr"];
-    re.graphite_temp = data["graphite_temp"];
+    re.physical.ozr = data["ozr"];
+    re.physical.graphite_temp = data["graphite_temp"];
     re.az.ozr_ar = data["ozr_ar"];
     re.az.power_ar = data["power_ar"];
     re.az.period_power = data["period_power"];
@@ -215,7 +220,7 @@ function load_data(data){
     for (let i = 0; i < k.length; i++){
         re.gcn[k[i]].g = data["gcn"][k[i]]["g"];
         re.gcn[k[i]].work = data["gcn"][k[i]]["work"];
-        turn(`${k[i]}_btn`, data["gcn"][k[i]]["work"]);
+        turn(`${k[i]}_btn`, data["gcn"][k[i]]["work"], re.gcn[k[i]].name);
         re.gcn[k[i]].broken = data["gcn"][k[i]]["broken"];
         re.gcn[k[i]].source_power = data["gcn"][k[i]]["source_power"];
     }

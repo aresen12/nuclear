@@ -1,5 +1,5 @@
 class Pump{
-    constructor(id_pump, speed){
+    constructor(id_pump, speed, name){
 //    g max 8000
         this.speed = speed;
         this.g = 0; // расход воды м3/ч
@@ -10,6 +10,7 @@ class Pump{
         this.broken = false; // сломан или нет
         this.w_e = 0;
         this.source_power = 1;
+        this.name = name;
     }
 
     set_g(){
@@ -25,25 +26,22 @@ class Pump{
             this.work = false;
             this.direction = -1;
             ui_power(`${this.id_pump}_s`, false);
-            turn(`${this.id_pump}_btn`, false);
+            turn(`${this.id_pump}_btn`, false, this.name);
             re.az.temporary_alert.push(new TemporaryAlert(`${this.id_pump}_turn_down`, 3, true))
             this.w_e = 0;
         } else if (!this.broken){
             this.work = true
-            turn(`${this.id_pump}_btn`, true);
+            turn(`${this.id_pump}_btn`, true, this.name);
             ui_power(`${this.id_pump}_s`, true);
             my_alert(`${this.id_pump}_turn_down`);
         }
     }
 
     set_unset_up_direction() {
-
         if (this.work){
         if (this.direction == 1){
-
             this.direction = 0;
         } else {
-         console.log("test")
             this.direction = 1;
         }
         }
@@ -61,7 +59,6 @@ class Pump{
 
     update(){
         if (this.direction != 0){
-            console.log("set_g")
             this.set_g();
         }
         if (this.work){
@@ -71,7 +68,7 @@ class Pump{
             this.work = false;
             this.direction = -1;
             ui_power(`${this.id_pump}_s`, false);
-            turn(`${this.id_pump}_btn`, false);
+            turn(`${this.id_pump}_btn`, false, this.name);
         }
     }
 

@@ -12,6 +12,7 @@ wiki = Blueprint('wiki', __name__, url_prefix='/wiki')
 
 
 @wiki.route("/")
+@wiki.route("")
 @wiki.route("/main", methods=["GET"])
 def main_wiki():
     db_sess = db_session.create_session()
@@ -19,7 +20,7 @@ def main_wiki():
     pages.sort(reverse=True, key=lambda x: x.cnt_read)
     db_sess.close()
     return render_template("/wiki/main.html", title="Главная страница энциклопедии РБМК",
-                           description="Энциклопедия РБМК. Cправочник по реакторам РБМК", pages=pages)
+                           description="Энциклопедия РБМК. Cправочник по реакторам РБМК", pages=pages), 200
 
 
 @wiki.route("/add_new_page", methods=["POST", "GET"])

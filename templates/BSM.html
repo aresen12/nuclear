@@ -8,27 +8,60 @@
     <link href="/static/css/buttons.css" rel="stylesheet" type="text/css">
     <link rel="icon" href="/static/img/main.ico">
 </head>
-<body>
-<div class="exit-btn div-time">
+<body id="all" style="overflow-y:hidden;">
+<div class="up-panel-settings">
     <button type="button" class=" btn btn-light" onclick="game.teach_start()">?</button>
-    <button id="pause_btn" type="button" class=" btn btn-light" onclick="pause()">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause"
-             viewBox="0 0 16 16">
-            <path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5"/>
-        </svg>
+    <div class="center-up-panel">
+        <button class="up-btn" onclick="go_sector(1)">ВИУР</button>
+        <button class="up-btn" onclick="go_sector(2)">ВИУБ</button>
+        <button class="up-btn" onclick="go_sector(3)">ВИУТ</button>
+        <button class="up-btn" onclick="">СЦК Скала</button>
+    </div>
 
-    </button>
-    <div id="game_process" style="display:none;">
+    <div class="left-up-panel">
+          <div id="game_process"  class="game-process" style="display:none;">
         оставшееся время
         <div id="last_time" class="watch"></div>
         Время удержания
         <div id="game-time" class="watch"></div>
     </div>
+        <button class="up-btn" onclick="document.documentElement.requestFullscreen();">
+            <svg height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                    <path fill-rule="evenodd" clip-rule="evenodd" stroke="#cdd0cc"
+                          d="M3 4C3 3.44772 3.44772 3 4 3H8C8.55228 3 9 3.44772 9 4C9 4.55228 8.55228 5 8 5H6.41421L9.70711 8.29289C10.0976 8.68342 10.0976 9.31658 9.70711 9.70711C9.31658 10.0976 8.68342 10.0976 8.29289 9.70711L5 6.41421V8C5 8.55228 4.55228 9 4 9C3.44772 9 3 8.55228 3 8V4ZM16 3H20C20.5523 3 21 3.44772 21 4V8C21 8.55228 20.5523 9 20 9C19.4477 9 19 8.55228 19 8V6.41421L15.7071 9.70711C15.3166 10.0976 14.6834 10.0976 14.2929 9.70711C13.9024 9.31658 13.9024 8.68342 14.2929 8.29289L17.5858 5H16C15.4477 5 15 4.55228 15 4C15 3.44772 15.4477 3 16 3ZM9.70711 14.2929C10.0976 14.6834 10.0976 15.3166 9.70711 15.7071L6.41421 19H8C8.55228 19 9 19.4477 9 20C9 20.5523 8.55228 21 8 21H4C3.44772 21 3 20.5523 3 20V16C3 15.4477 3.44772 15 4 15C4.55228 15 5 15.4477 5 16V17.5858L8.29289 14.2929C8.68342 13.9024 9.31658 13.9024 9.70711 14.2929ZM14.2929 14.2929C14.6834 13.9024 15.3166 13.9024 15.7071 14.2929L19 17.5858V16C19 15.4477 19.4477 15 20 15C20.5523 15 21 15.4477 21 16V20C21 20.5523 20.5523 21 20 21H16C15.4477 21 15 20.5523 15 20C15 19.4477 15.4477 19 16 19H17.5858L14.2929 15.7071C13.9024 15.3166 13.9024 14.6834 14.2929 14.2929Z"
+                          fill="#cdd0cc"></path>
+                </g>
+            </svg>
+        </button>
+        <button id="pause_btn" type="button" class="up-btn" onclick="pause()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" class="bi bi-pause"
+                 stroke="#cdd0cc"
+                 viewBox="0 0 16 16">
+                <path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5"/>
+            </svg>
+
+        </button>
+        <button class="up-btn">
+            <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                    <circle cx="12" cy="12" r="3" stroke="#cdd0cc" stroke-width="1.5"></circle>
+                    <path d="M13.7654 2.15224C13.3978 2 12.9319 2 12 2C11.0681 2 10.6022 2 10.2346 2.15224C9.74457 2.35523 9.35522 2.74458 9.15223 3.23463C9.05957 3.45834 9.0233 3.7185 9.00911 4.09799C8.98826 4.65568 8.70226 5.17189 8.21894 5.45093C7.73564 5.72996 7.14559 5.71954 6.65219 5.45876C6.31645 5.2813 6.07301 5.18262 5.83294 5.15102C5.30704 5.08178 4.77518 5.22429 4.35436 5.5472C4.03874 5.78938 3.80577 6.1929 3.33983 6.99993C2.87389 7.80697 2.64092 8.21048 2.58899 8.60491C2.51976 9.1308 2.66227 9.66266 2.98518 10.0835C3.13256 10.2756 3.3397 10.437 3.66119 10.639C4.1338 10.936 4.43789 11.4419 4.43786 12C4.43783 12.5581 4.13375 13.0639 3.66118 13.3608C3.33965 13.5629 3.13248 13.7244 2.98508 13.9165C2.66217 14.3373 2.51966 14.8691 2.5889 15.395C2.64082 15.7894 2.87379 16.193 3.33973 17C3.80568 17.807 4.03865 18.2106 4.35426 18.4527C4.77508 18.7756 5.30694 18.9181 5.83284 18.8489C6.07289 18.8173 6.31632 18.7186 6.65204 18.5412C7.14547 18.2804 7.73556 18.27 8.2189 18.549C8.70224 18.8281 8.98826 19.3443 9.00911 19.9021C9.02331 20.2815 9.05957 20.5417 9.15223 20.7654C9.35522 21.2554 9.74457 21.6448 10.2346 21.8478C10.6022 22 11.0681 22 12 22C12.9319 22 13.3978 22 13.7654 21.8478C14.2554 21.6448 14.6448 21.2554 14.8477 20.7654C14.9404 20.5417 14.9767 20.2815 14.9909 19.902C15.0117 19.3443 15.2977 18.8281 15.781 18.549C16.2643 18.2699 16.8544 18.2804 17.3479 18.5412C17.6836 18.7186 17.927 18.8172 18.167 18.8488C18.6929 18.9181 19.2248 18.7756 19.6456 18.4527C19.9612 18.2105 20.1942 17.807 20.6601 16.9999C21.1261 16.1929 21.3591 15.7894 21.411 15.395C21.4802 14.8691 21.3377 14.3372 21.0148 13.9164C20.8674 13.7243 20.6602 13.5628 20.3387 13.3608C19.8662 13.0639 19.5621 12.558 19.5621 11.9999C19.5621 11.4418 19.8662 10.9361 20.3387 10.6392C20.6603 10.4371 20.8675 10.2757 21.0149 10.0835C21.3378 9.66273 21.4803 9.13087 21.4111 8.60497C21.3592 8.21055 21.1262 7.80703 20.6602 7C20.1943 6.19297 19.9613 5.78945 19.6457 5.54727C19.2249 5.22436 18.693 5.08185 18.1671 5.15109C17.9271 5.18269 17.6837 5.28136 17.3479 5.4588C16.8545 5.71959 16.2644 5.73002 15.7811 5.45096C15.2977 5.17191 15.0117 4.65566 14.9909 4.09794C14.9767 3.71848 14.9404 3.45833 14.8477 3.23463C14.6448 2.74458 14.2554 2.35523 13.7654 2.15224Z"
+                          stroke="#cdd0cc" stroke-width="1.5"></path>
+                </g>
+            </svg>
+        </button>
+    </div>
 </div>
+
 <div class="main-content main-cont">
-    <div style="height:95vh; display:flex;">
+    <div style="height:100%;     display:flex;">
         <!--            СУЗ-->
-        <div class="column-bsm ">
+        <div class="column-bsm " id="viyr">
 
             <div class="up-panel">
                 <div id="w_q_r">
@@ -41,11 +74,14 @@
                     <div>АР<br>
                         Включен
                         <div id="lar_s" class="signal"></div>
+
                         <input class="input-big" id="power_lar_show" readonly>
                         <br> Скор
                         <input class="input-big" id="speed_power" readonly>
                         <br> ОЗР АР %
                         <input class="input-big" id="ozr_ar" readonly>
+                        <br> Т графита<input class="input-big" id="grafit_temp" readonly>
+                        <br> ОЗР<input class="input-big" id="ozr" readonly>
                     </div>
                     <div>
                         {% for i in range(0, 9)%}
@@ -83,58 +119,67 @@
                         {% endfor %}
                     </div>
                     <div>
-                        <br> Т графита<input class="input-big" id="grafit_temp" readonly>
-                        <br> ОЗР<input class="input-big" id="ozr" readonly>
-                    </div>
-                </div>
-                <div style="display:flex;">
-                    <div>
-                        <div id="high_rho_total" class="alert-error"  onclick="show_hints(this.id)">реактивность
-                            <svg height="14" viewBox="8 7 8 10" fill="none"
-                                 xmlns="http://www.w3.org/2000/svg" transform="matrix(-1, 0, 0, -1, 0, 0)">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <path d="M12 16L12 8" stroke="#323232" stroke-width="2"
-                                          stroke-linecap="round" stroke-linejoin="round">
-                                    </path>
-                                    <path d="M9 13L11.913 15.913V15.913C11.961 15.961 12.039 15.961 12.087 15.913V15.913L15 13"
-                                          stroke="#323232"
-                                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                </g>
-                            </svg>
-                            1.25
+                        <div>
+                            <div style="display:flex;">
+                                <div id="high_rho_total" class="alert-error" onclick="show_hints(this.id)">
+                                    реактивность
+                                    <svg height="14" viewBox="8 7 8 10" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg" transform="matrix(-1, 0, 0, -1, 0, 0)">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                           stroke-linejoin="round"></g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path d="M12 16L12 8" stroke="#323232" stroke-width="2"
+                                                  stroke-linecap="round" stroke-linejoin="round">
+                                            </path>
+                                            <path d="M9 13L11.913 15.913V15.913C11.961 15.961 12.039 15.961 12.087 15.913V15.913L15 13"
+                                                  stroke="#323232"
+                                                  stroke-width="2" stroke-linecap="round"
+                                                  stroke-linejoin="round"></path>
+                                        </g>
+                                    </svg>
+                                    1.25
+                                </div>
+                                <div id="alert_baz" class="alert-error" onclick="show_hints(this.id)"></div>
+                                <div id="alert_az_2" class="alert-error" onclick="show_hints(this.id)"></div>
+                            </div>
+                            <div style="display:flex;">
+                                <div id="alert_power_q" class="alert-error" onclick="show_hints(this.id)"></div>
+                                <div id="alert_az" class="alert-error" onclick="show_hints(this.id)">ПК-АЗ</div>
+                                <div id="alert_az_1" class="alert-error" onclick="show_hints(this.id)">АЗ-1</div>
+                            </div>
+                            <div style="display:flex;">
+                                <div id="ar_broken" class="alert-error" onclick="show_hints(this.id)">АР неиспр</div>
+                                <div id="ar_turn_down" class="alert-error" onclick="show_hints(this.id)">АР откл</div>
+                                <div id="alert_az_5" class="alert-error" onclick="show_hints(this.id)"></div>
+                            </div>
+                            <div style="display:flex;">
+                                <div id="azsr_turn_down" class="alert-error" onclick="show_hints(this.id)">АЗСР откл
+                                </div>
+                                <div id="azs_turn_down" class="alert-error" onclick="show_hints(this.id)">АЗС откл</div>
+                                <div id="azs" onclick="show_hints(this.id)">АЗС</div>
+                            </div>
+                            <div style="display:flex;">
+                                <div id="azsr_on" class="alert-error" onclick="show_hints(this.id)">АЗСР-ВКЛ</div>
+                                <div id="azs_on" class="alert-error" onclick="show_hints(this.id)">АЗС-ВКЛ
+                                </div>
+                                <div id="mode_kom" class="alert-error" onclick="show_hints(this.id)">Режим КОМ</div>
+                            </div>
+                            <div style="display:flex;">
+                                <div id="high_speed_power" class="alert-error" onclick="show_hints(this.id)">Превыш
+                                    Скор
+                                </div>
+                                <div id="m_ozr_ar" class="alert-error" onclick="show_hints(this.id)">М ОЗР АР</div>
+                                <div id="m_ozr" class="alert-error" onclick="show_hints(this.id)">М ОЗР</div>
+                            </div>
+                            <div style="display:flex;">
+                                <div id="az_call" class="alert-error">АЗ набран</div>
+                                <div id="up_direction" class="alert-error" onclick="show_hints(this.id)">Извлек</div>
+                                <div id="down_direction" class="alert-error" onclick="show_hints(this.id)">Опуск</div>
+
+                            </div>
+
                         </div>
-                        <div id="alert_power_q" class="alert-error" onclick="show_hints(this.id)">АЗС-Р</div>
-                        <div id="alert_baz" class="alert-error" onclick="show_hints(this.id)">БАЗ</div>
-                        <div id="alert_az" class="alert-error" onclick="show_hints(this.id)">ПК-АЗ</div>
-                    </div>
-                    <div>
-                        <div id="ar_broken" class="alert-error" onclick="show_hints(this.id)">АР неиспр</div>
-                        <div id="alert_az_1" class="alert-error" onclick="show_hints(this.id)">АЗ-1</div>
-                        <div id="alert_az_2" class="alert-error" onclick="show_hints(this.id)">АЗ-2</div>
-                        <div id="alert_az_5" class="alert-error" onclick="show_hints(this.id)">АЗ-5</div>
-                    </div>
-                    <div>
-                        <div id="ar_turn_down" class="alert-error" onclick="show_hints(this.id)">АР откл</div>
-                        <div id="azsr_turn_down" class="alert-error" onclick="show_hints(this.id)">АЗСР откл</div>
-                        <div id="azs_turn_down" class="alert-error" onclick="show_hints(this.id)">АЗС откл</div>
-                        <div id="azsr_on" class="alert-error" onclick="show_hints(this.id)">АЗСР-ВКЛ</div>
-                    </div>
-                    <div>
-                        <div id="azs_on" class="alert-error" onclick="show_hints(this.id)">АЗС-ВКЛ</div>
-                        <div id="high_speed_power" class="alert-error" onclick="show_hints(this.id)">Превыш Скор</div>
-                        <div id="m_ozr_ar" class="alert-error" onclick="show_hints(this.id)">М ОЗР АР</div>
-                        <div id="m_ozr" class="alert-error" onclick="show_hints(this.id)">М ОЗР</div>
-                    </div>
-                    <div>
-                        <div id="az_call" class="alert-error">АЗ набран</div>
-                        <div id="up_direction" class="alert-error" onclick="show_hints(this.id)">Извлек</div>
-                        <div id="down_direction" class="alert-error" onclick="show_hints(this.id)">Опуск</div>
-                        <div id="azs" class="alert-error" onclick="show_hints(this.id)">АЗС</div>
-                    </div>
-                    <div>
-                        <div id="mode_kom" class="alert-error" onclick="show_hints(this.id)">Режим КОМ</div>
                     </div>
                 </div>
             </div>
@@ -142,51 +187,389 @@
                 <div>
                     <!--            аз -->
                     <div class="az" id="az_btn_cont">
-
                         <button class="az-btn" style="width:80px;" onclick="re.az.turn_on_or_down_power_SYZ()">
                             <div id="key_power_btn">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="20px"
-                                     height="20px" viewBox="0 0 32 32" xml:space="preserve" fill="#000000">
-                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                    <g id="SVGRepo_iconCarrier"> <style
-                                            type="text/css"> .puchipuchi_een{fill:#111918;} </style>
-                                        <path class="puchipuchi_een"
-                                              d="M30,17c0,7.72-6.28,14-14,14S2,24.72,2,17C2,10.311,6.718,4.71,13,3.332v4.129 C8.948,8.739,6,12.531,6,17c0,5.514,4.486,10,10,10s10-4.486,10-10c0-4.469-2.948-8.261-7-9.539V3.332C25.282,4.71,30,10.311,30,17z M16,13c1.104,0,2-0.896,2-2V3c0-1.104-0.896-2-2-2s-2,0.896-2,2v8C14,12.104,14.896,13,16,13z">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="55" viewBox="8 6 752 435">
+                                    <defs>
+                                        <linearGradient id="plate" x1="0" y1="0" x2=".9" y2="1">
+                                        </linearGradient>
+                                        <linearGradient id="edge" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0" stop-color="#53544d"/>
+                                            <stop offset=".25" stop-color="#b1b09f"/>
+                                            <stop offset=".75" stop-color="#77776b"/>
+                                            <stop offset="1" stop-color="#44463f"/>
+                                        </linearGradient>
+                                        <linearGradient id="steel" x1="0" y1="0" x2="1" y2=".8">
+                                            <stop offset="0" stop-color="#34352f"/>
+                                            <stop offset=".2" stop-color="#a6a494"/>
+                                            <stop offset=".43" stop-color="#77766b"/>
+                                            <stop offset=".7" stop-color="#b8b5a4"/>
+                                            <stop offset="1" stop-color="#34352f"/>
+                                        </linearGradient>
+                                        <radialGradient id="disc" cx=".38" cy=".32" r=".75">
+                                            <stop offset="0" stop-color="#aaa797"/>
+                                            <stop offset=".65" stop-color="#77766c"/>
+                                            <stop offset="1" stop-color="#44453f"/>
+                                        </radialGradient>
+                                        <linearGradient id="handle" x1="0" y1="0" x2="1" y2="0">
+                                            <stop offset="0" stop-color="#111210"/>
+                                            <stop offset=".18" stop-color="#343530"/>
+                                            <stop offset=".45" stop-color="#1d1e1b"/>
+                                            <stop offset=".8" stop-color="#10110f"/>
+                                            <stop offset="1" stop-color="#050605"/>
+                                        </linearGradient>
+                                        <linearGradient id="label" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0" stop-color="#242520"/>
+                                            <stop offset="1" stop-color="#11120f"/>
+                                        </linearGradient>
+                                        <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%">
+                                            <feGaussianBlur stdDeviation="7"/>
+                                        </filter>
+                                        <filter id="softShadow" x="-30%" y="-30%" width="160%" height="170%">
+                                            <feGaussianBlur stdDeviation="3"/>
+                                        </filter>
+                                        <g id="screw">
+                                            <circle r="12" fill="#44453f" stroke="#c7c4b3" stroke-width="3"/>
+                                            <circle r="8" fill="#20211e" stroke="#77776b" stroke-width="1.5"/>
+                                            <circle r="4.5" fill="#090a08"/>
+                                            <path d="M-3-3L3 3" stroke="#77786d" stroke-width="1.5"/>
+                                        </g>
+                                    </defs>
 
-                             </path> </g></svg>
+                                    <!-- Панель без лишних полей -->
+                                    <rect x="28" y="25" width="712" height="405" rx="13"
+                                          fill="none" stroke="#d0cdbb" stroke-width="3" opacity=".75"/>
+                                    <rect x="34" y="31" width="700" height="400" rx="10"
+                                          fill="none" stroke="#65665d" stroke-width="1.5"/>
+
+                                    <use href="#screw" x="34" y="33"/>
+                                    <use href="#screw" x="734" y="33"/>
+                                    <use href="#screw" x="34" y="479"/>
+                                    <use href="#screw" x="734" y="479"/>
+
+                                    <!-- Подписи -->
+                                    <g font-family="Arial, Helvetica, sans-serif"
+                                       font-weight="bold" fill="#24251f" text-anchor="middle">
+                                        <text x="156" y="231" font-size="84">ВКЛ</text>
+                                    </g>
+                                    <g>
+                                        <g>
+                                            <!-- Круглое основание -->
+                                            <ellipse cx="384" cy="180" rx="119" ry="123"
+                                                     fill="#141511" opacity=".4" filter="url(#shadow)"/>
+                                            <circle cx="384" cy="196" r="113"
+                                                    fill="#282923" stroke="#42433c" stroke-width="5"/>
+                                            <circle cx="384" cy="196" r="106"
+                                                    fill="url(#steel)" stroke="#292a25" stroke-width="3"/>
+                                            <circle cx="384" cy="196" r="94"
+                                                    fill="url(#disc)" stroke="#c1beac" stroke-width="3"/>
+                                            <circle cx="384" cy="196" r="89"
+                                                    fill="none" stroke="#56574f" stroke-width="2"/>
+                                            <circle cx="384" cy="206" r="101"
+                                                    fill="none" stroke="#dedbca" stroke-width="1.5" opacity=".6"/>
+
+                                            <!-- Рукоятка -->
+                                            <rect x="353" y="60" width="67" height="260" rx="29"
+                                                  fill="#080908" opacity=".7" filter="url(#softShadow)"/>
+                                            <rect x="354" y="62" width="60" height="254" rx="27"
+                                                  fill="#080908" stroke="#252621" stroke-width="4"/>
+                                            <rect x="359" y="67" width="50" height="244" rx="23"
+                                                  fill="url(#handle)" stroke="#090a08" stroke-width="2"/>
+                                            <rect x="363" y="72" width="4" height="232" rx="2"
+                                                  fill="#77786e" opacity=".6"/>
+                                            <path d="M370 119Q374 111 386 112"
+                                                  fill="none" stroke="#9b9a8d" stroke-width="2"
+                                                  stroke-linecap="round" opacity=".8"/>
+                                            <path d="M402 120V335"
+                                                  fill="none" stroke="#050605" stroke-width="2"/>
+
+                                            <!-- Стрелка -->
+                                            <path d="M384 89L370 127H379V159H389V127H398Z"
+                                                  fill="#e5e0cb" stroke="#c8c3b1" stroke-width="1.5"/>
+
+                                            <!-- Центральный фиксатор -->
+                                            <circle cx="384" cy="194" r="17"
+                                                    fill="#10110f" stroke="#4c4d45" stroke-width="3"/>
+                                            <circle cx="384" cy="194" r="11"
+                                                    fill="url(#steel)" stroke="#191a17" stroke-width="2"/>
+                                            <circle cx="384" cy="194" r="4.5"
+                                                    fill="#e1ddcc" stroke="#66675d" stroke-width="1.5"/>
+                                            <circle cx="382" cy="192" r="1.5" fill="#fff" opacity=".8"/>
+                                        </g>
+                                    </g>
+                                    <rect x="270" y="330" width="232" height="75" rx="10"
+                                          fill="#33342e" opacity=".65"/>
+                                    <rect x="266" y="331" width="236" height="108" rx="10"
+                                          fill="url(#edge)" stroke="#41423b" stroke-width="2"/>
+                                    <rect x="261" y="336" width="246" height="98" rx="7"
+                                          fill="url(#label)" stroke="#d0cbb8" stroke-width="2.5"/>
+                                    <rect x="287" y="332" width="204" height="96" rx="4"
+                                          fill="none" stroke="#55564c" stroke-width="1"/>
+                                    <text x="384" y="410" text-anchor="middle"
+                                          font-family="Arial, Helvetica, sans-serif"
+                                          font-size="100" font-weight="bold"
+                                          letter-spacing="2" fill="#e0dac5">КОМ
+                                    </text>
+
+                                </svg>
                             </div>
-                            ПИТ. Муфт
                         </button>
                         <button class="az-btn" onclick="re.az.baz()">
                             <div id="baz_btn">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="20px"
-                                     height="20px" viewBox="0 0 32 32" xml:space="preserve" fill="#000000">
-                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                    <g id="SVGRepo_iconCarrier"> <style
-                                            type="text/css"> .puchipuchi_een{fill:#111918;} </style>
-                                        <path class="puchipuchi_een"
-                                              d="M30,17c0,7.72-6.28,14-14,14S2,24.72,2,17C2,10.311,6.718,4.71,13,3.332v4.129 C8.948,8.739,6,12.531,6,17c0,5.514,4.486,10,10,10s10-4.486,10-10c0-4.469-2.948-8.261-7-9.539V3.332C25.282,4.71,30,10.311,30,17z M16,13c1.104,0,2-0.896,2-2V3c0-1.104-0.896-2-2-2s-2,0.896-2,2v8C14,12.104,14.896,13,16,13z">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="55" viewBox="8 6 752 435">
+                                    <defs>
+                                        <linearGradient id="plate" x1="0" y1="0" x2=".9" y2="1">
+                                            <stop offset="0" stop-color="#9c9f99"/>
+                                            <stop offset=".48" stop-color="#9c9f99"/>
+                                            <stop offset="1" stop-color="#9c9f99"/>
+                                        </linearGradient>
+                                        <linearGradient id="edge" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0" stop-color="#53544d"/>
+                                            <stop offset=".25" stop-color="#b1b09f"/>
+                                            <stop offset=".75" stop-color="#77776b"/>
+                                            <stop offset="1" stop-color="#44463f"/>
+                                        </linearGradient>
+                                        <linearGradient id="steel" x1="0" y1="0" x2="1" y2=".8">
+                                            <stop offset="0" stop-color="#34352f"/>
+                                            <stop offset=".2" stop-color="#a6a494"/>
+                                            <stop offset=".43" stop-color="#77766b"/>
+                                            <stop offset=".7" stop-color="#b8b5a4"/>
+                                            <stop offset="1" stop-color="#34352f"/>
+                                        </linearGradient>
+                                        <radialGradient id="disc" cx=".38" cy=".32" r=".75">
+                                            <stop offset="0" stop-color="#aaa797"/>
+                                            <stop offset=".65" stop-color="#77766c"/>
+                                            <stop offset="1" stop-color="#44453f"/>
+                                        </radialGradient>
+                                        <linearGradient id="handle" x1="0" y1="0" x2="1" y2="0">
+                                            <stop offset="0" stop-color="#111210"/>
+                                            <stop offset=".18" stop-color="#343530"/>
+                                            <stop offset=".45" stop-color="#1d1e1b"/>
+                                            <stop offset=".8" stop-color="#10110f"/>
+                                            <stop offset="1" stop-color="#050605"/>
+                                        </linearGradient>
+                                        <linearGradient id="label" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0" stop-color="#242520"/>
+                                            <stop offset="1" stop-color="#11120f"/>
+                                        </linearGradient>
+                                        <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%">
+                                            <feGaussianBlur stdDeviation="7"/>
+                                        </filter>
+                                        <filter id="softShadow" x="-30%" y="-30%" width="160%" height="170%">
+                                            <feGaussianBlur stdDeviation="3"/>
+                                        </filter>
+                                        <g id="screw">
+                                            <circle r="12" fill="#44453f" stroke="#c7c4b3" stroke-width="3"/>
+                                            <circle r="8" fill="#20211e" stroke="#77776b" stroke-width="1.5"/>
+                                            <circle r="4.5" fill="#090a08"/>
+                                            <path d="M-3-3L3 3" stroke="#77786d" stroke-width="1.5"/>
+                                        </g>
+                                    </defs>
 
-                             </path> </g></svg>
+                                    <!-- Панель без лишних полей -->
+                                   <rect x="28" y="25" width="712" height="405" rx="13"
+                                          fill="none" stroke="#d0cdbb" stroke-width="3" opacity=".75"/>
+                                    <rect x="34" y="31" width="700" height="400" rx="10"
+                                          fill="none" stroke="#65665d" stroke-width="1.5"/>
+
+                                    <use href="#screw" x="34" y="33"/>
+                                    <use href="#screw" x="734" y="33"/>
+                                    <use href="#screw" x="34" y="479"/>
+                                    <use href="#screw" x="734" y="479"/>
+
+                                    <!-- Подписи -->
+                                    <g font-family="Arial, Helvetica, sans-serif"
+                                       font-weight="bold" fill="#24251f" text-anchor="middle">
+                                        <text x="156" y="231" font-size="84">ВКЛ</text>
+                                    </g>
+                                    <g>
+                                        <g>
+                                            <!-- Круглое основание -->
+                                            <ellipse cx="384" cy="180" rx="119" ry="123"
+                                                     fill="#141511" opacity=".4" filter="url(#shadow)"/>
+                                            <circle cx="384" cy="196" r="113"
+                                                    fill="#282923" stroke="#42433c" stroke-width="5"/>
+                                            <circle cx="384" cy="196" r="106"
+                                                    fill="url(#steel)" stroke="#292a25" stroke-width="3"/>
+                                            <circle cx="384" cy="196" r="94"
+                                                    fill="url(#disc)" stroke="#c1beac" stroke-width="3"/>
+                                            <circle cx="384" cy="196" r="89"
+                                                    fill="none" stroke="#56574f" stroke-width="2"/>
+                                            <circle cx="384" cy="206" r="101"
+                                                    fill="none" stroke="#dedbca" stroke-width="1.5" opacity=".6"/>
+
+                                            <!-- Рукоятка -->
+                                            <rect x="353" y="60" width="67" height="260" rx="29"
+                                                  fill="#080908" opacity=".7" filter="url(#softShadow)"/>
+                                            <rect x="354" y="62" width="60" height="254" rx="27"
+                                                  fill="#080908" stroke="#252621" stroke-width="4"/>
+                                            <rect x="359" y="67" width="50" height="244" rx="23"
+                                                  fill="url(#handle)" stroke="#090a08" stroke-width="2"/>
+                                            <rect x="363" y="72" width="4" height="232" rx="2"
+                                                  fill="#77786e" opacity=".6"/>
+                                            <path d="M370 119Q374 111 386 112"
+                                                  fill="none" stroke="#9b9a8d" stroke-width="2"
+                                                  stroke-linecap="round" opacity=".8"/>
+                                            <path d="M402 120V335"
+                                                  fill="none" stroke="#050605" stroke-width="2"/>
+
+                                            <!-- Стрелка -->
+                                            <path d="M384 89L370 127H379V159H389V127H398Z"
+                                                  fill="#e5e0cb" stroke="#c8c3b1" stroke-width="1.5"/>
+
+                                            <!-- Центральный фиксатор -->
+                                            <circle cx="384" cy="194" r="17"
+                                                    fill="#10110f" stroke="#4c4d45" stroke-width="3"/>
+                                            <circle cx="384" cy="194" r="11"
+                                                    fill="url(#steel)" stroke="#191a17" stroke-width="2"/>
+                                            <circle cx="384" cy="194" r="4.5"
+                                                    fill="#e1ddcc" stroke="#66675d" stroke-width="1.5"/>
+                                            <circle cx="382" cy="192" r="1.5" fill="#fff" opacity=".8"/>
+                                        </g>
+                                    </g>
+                                    <!-- Табличка АЗ-5 -->
+                                    <rect x="270" y="330" width="232" height="75" rx="10"
+                                          fill="#33342e" opacity=".65"/>
+                                    <rect x="266" y="331" width="236" height="108" rx="10"
+                                          fill="url(#edge)" stroke="#41423b" stroke-width="2"/>
+                                    <rect x="261" y="336" width="246" height="98" rx="7"
+                                          fill="url(#label)" stroke="#d0cbb8" stroke-width="2.5"/>
+                                    <rect x="287" y="332" width="204" height="96" rx="4"
+                                          fill="none" stroke="#55564c" stroke-width="1"/>
+                                    <text x="384" y="410" text-anchor="middle"
+                                          font-family="Arial, Helvetica, sans-serif"
+                                          font-size="100" font-weight="bold"
+                                          letter-spacing="2" fill="#e0dac5">БАЗ
+                                    </text>
+
+                                </svg>
                             </div>
-                            БАЗ
                         </button>
                         <button onclick="re.az.az5(true)" class="az-btn">
                             <div id="az_btn">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="20px"
-                                     height="20px" viewBox="0 0 32 32" xml:space="preserve" fill="#000000">
-                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                    <g id="SVGRepo_iconCarrier"> <style
-                                            type="text/css"> .puchipuchi_een{fill:#111918;} </style>
-                                        <path class="puchipuchi_een"
-                                              d="M30,17c0,7.72-6.28,14-14,14S2,24.72,2,17C2,10.311,6.718,4.71,13,3.332v4.129 C8.948,8.739,6,12.531,6,17c0,5.514,4.486,10,10,10s10-4.486,10-10c0-4.469-2.948-8.261-7-9.539V3.332C25.282,4.71,30,10.311,30,17z M16,13c1.104,0,2-0.896,2-2V3c0-1.104-0.896-2-2-2s-2,0.896-2,2v8C14,12.104,14.896,13,16,13z">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="55" viewBox="8 6 752 435">
+                                    <defs>
+                                        <linearGradient id="plate" x1="0" y1="0" x2=".9" y2="1">
+                                        </linearGradient>
+                                        <linearGradient id="edge" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0" stop-color="#53544d"/>
+                                            <stop offset=".25" stop-color="#b1b09f"/>
+                                            <stop offset=".75" stop-color="#77776b"/>
+                                            <stop offset="1" stop-color="#44463f"/>
+                                        </linearGradient>
+                                        <linearGradient id="steel" x1="0" y1="0" x2="1" y2=".8">
+                                            <stop offset="0" stop-color="#34352f"/>
+                                            <stop offset=".2" stop-color="#a6a494"/>
+                                            <stop offset=".43" stop-color="#77766b"/>
+                                            <stop offset=".7" stop-color="#b8b5a4"/>
+                                            <stop offset="1" stop-color="#34352f"/>
+                                        </linearGradient>
+                                        <radialGradient id="disc" cx=".38" cy=".32" r=".75">
+                                            <stop offset="0" stop-color="#aaa797"/>
+                                            <stop offset=".65" stop-color="#77766c"/>
+                                            <stop offset="1" stop-color="#44453f"/>
+                                        </radialGradient>
+                                        <linearGradient id="handle" x1="0" y1="0" x2="1" y2="0">
+                                            <stop offset="0" stop-color="#111210"/>
+                                            <stop offset=".18" stop-color="#343530"/>
+                                            <stop offset=".45" stop-color="#1d1e1b"/>
+                                            <stop offset=".8" stop-color="#10110f"/>
+                                            <stop offset="1" stop-color="#050605"/>
+                                        </linearGradient>
+                                        <linearGradient id="label" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0" stop-color="#242520"/>
+                                            <stop offset="1" stop-color="#11120f"/>
+                                        </linearGradient>
+                                        <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%">
+                                            <feGaussianBlur stdDeviation="7"/>
+                                        </filter>
+                                        <filter id="softShadow" x="-30%" y="-30%" width="160%" height="170%">
+                                            <feGaussianBlur stdDeviation="3"/>
+                                        </filter>
+                                        <g id="screw">
+                                            <circle r="12" fill="#44453f" stroke="#c7c4b3" stroke-width="3"/>
+                                            <circle r="8" fill="#20211e" stroke="#77776b" stroke-width="1.5"/>
+                                            <circle r="4.5" fill="#090a08"/>
+                                            <path d="M-3-3L3 3" stroke="#77786d" stroke-width="1.5"/>
+                                        </g>
+                                    </defs>
 
-                             </path> </g></svg>
+                                    <!-- Панель без лишних полей -->
+                                     <rect x="28" y="25" width="712" height="462" rx="13"
+                                          fill="none" stroke="#d0cdbb" stroke-width="3" opacity=".75"/>
+                                    <rect x="34" y="31" width="700" height="450" rx="10"
+                                          fill="none" stroke="#65665d" stroke-width="1.5"/>
+
+                                    <use href="#screw" x="34" y="33"/>
+                                    <use href="#screw" x="734" y="33"/>
+                                    <use href="#screw" x="34" y="479"/>
+                                    <use href="#screw" x="734" y="479"/>
+
+                                    <!-- Подписи -->
+                                    <g font-family="Arial, Helvetica, sans-serif"
+                                       font-weight="bold" fill="#24251f" text-anchor="middle">
+                                        <text x="156" y="231" font-size="84">ВКЛ</text>
+                                    </g>
+
+                                    <!-- Круглое основание -->
+                                    <ellipse cx="384" cy="180" rx="119" ry="123"
+                                             fill="#141511" opacity=".4" filter="url(#shadow)"/>
+                                    <circle cx="384" cy="196" r="113"
+                                            fill="#282923" stroke="#42433c" stroke-width="5"/>
+                                    <circle cx="384" cy="196" r="106"
+                                            fill="url(#steel)" stroke="#292a25" stroke-width="3"/>
+                                    <circle cx="384" cy="196" r="94"
+                                            fill="url(#disc)" stroke="#c1beac" stroke-width="3"/>
+                                    <circle cx="384" cy="196" r="89"
+                                            fill="none" stroke="#56574f" stroke-width="2"/>
+                                    <circle cx="384" cy="206" r="101"
+                                            fill="none" stroke="#dedbca" stroke-width="1.5" opacity=".6"/>
+
+                                    <!-- Рукоятка -->
+                                    <rect x="353" y="60" width="67" height="260" rx="29"
+                                          fill="#080908" opacity=".7" filter="url(#softShadow)"/>
+                                    <rect x="354" y="62" width="60" height="254" rx="27"
+                                          fill="#080908" stroke="#252621" stroke-width="4"/>
+                                    <rect x="359" y="67" width="50" height="244" rx="23"
+                                          fill="url(#handle)" stroke="#090a08" stroke-width="2"/>
+                                    <rect x="363" y="72" width="4" height="232" rx="2"
+                                          fill="#77786e" opacity=".6"/>
+                                    <path d="M370 119Q374 111 386 112"
+                                          fill="none" stroke="#9b9a8d" stroke-width="2"
+                                          stroke-linecap="round" opacity=".8"/>
+                                    <path d="M402 120V335"
+                                          fill="none" stroke="#050605" stroke-width="2"/>
+
+                                    <!-- Стрелка -->
+                                    <path d="M384 89L370 127H379V159H389V127H398Z"
+                                          fill="#e5e0cb" stroke="#c8c3b1" stroke-width="1.5"/>
+
+                                    <!-- Центральный фиксатор -->
+                                    <circle cx="384" cy="194" r="17"
+                                            fill="#10110f" stroke="#4c4d45" stroke-width="3"/>
+                                    <circle cx="384" cy="194" r="11"
+                                            fill="url(#steel)" stroke="#191a17" stroke-width="2"/>
+                                    <circle cx="384" cy="194" r="4.5"
+                                            fill="#e1ddcc" stroke="#66675d" stroke-width="1.5"/>
+                                    <circle cx="382" cy="192" r="1.5" fill="#fff" opacity=".8"/>
+
+                                    <!-- Табличка АЗ-5 -->
+                                    <rect x="270" y="330" width="232" height="75" rx="10"
+                                          fill="#33342e" opacity=".65"/>
+                                    <rect x="266" y="331" width="236" height="108" rx="10"
+                                          fill="url(#edge)" stroke="#41423b" stroke-width="2"/>
+                                    <rect x="261" y="336" width="246" height="98" rx="7"
+                                          fill="url(#label)" stroke="#d0cbb8" stroke-width="2.5"/>
+                                    <rect x="287" y="332" width="204" height="96" rx="4"
+                                          fill="none" stroke="#55564c" stroke-width="1"/>
+                                    <text x="384" y="410" text-anchor="middle"
+                                          font-family="Arial, Helvetica, sans-serif"
+                                          font-size="100" font-weight="bold"
+                                          letter-spacing="2" fill="#e0dac5">АЗ-5
+                                    </text>
+
+                                </svg>
                             </div>
-                            АЗ-5
                         </button>
 
                     </div>
@@ -216,7 +599,7 @@
                                     {% elif s[i][j] == 5 %}
                                     <button id="s{{i}}_{{j}}" class="mnemo-laz " onclick="sterg({{i}}, {{j}})"></button>
                                     {% else %}
-                                    <button class="mnemo-sell ">
+                                    <button class="mnemo-sell2 ">
 
                                     </button>
                                     {% endif%}
@@ -243,35 +626,264 @@
 
                         <div>
                             Режимы АЗ<br>
-                            <button onclick="re.az.azs_start()" class="az-btn">
-                                <div id="azs_start">
-                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="20px"
-                                         height="20px" viewBox="0 0 32 32" xml:space="preserve" fill="#000000">
-                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                           stroke-linejoin="round"></g>
-                                        <g id="SVGRepo_iconCarrier"> <style type="text/css"> .puchipuchi_een{fill:#111918;} </style>
-                                            <path class="puchipuchi_een"
-                                                  d="M30,17c0,7.72-6.28,14-14,14S2,24.72,2,17C2,10.311,6.718,4.71,13,3.332v4.129 C8.948,8.739,6,12.531,6,17c0,5.514,4.486,10,10,10s10-4.486,10-10c0-4.469-2.948-8.261-7-9.539V3.332C25.282,4.71,30,10.311,30,17z M16,13c1.104,0,2-0.896,2-2V3c0-1.104-0.896-2-2-2s-2,0.896-2,2v8C14,12.104,14.896,13,16,13z">
+                            <button id="azs_start" onclick="re.az.azs_start()" class="az-btn">
 
-                             </path> </g></svg>
-                                </div>
-                                АЗC
+                                <svg xmlns="http://www.w3.org/2000/svg" height="55" viewBox="8 6 752 435">
+                                    <defs>
+                                        <linearGradient id="plate" x1="0" y1="0" x2=".9" y2="1">
+                                            <stop offset="0" stop-color="#a6a499"/>
+                                            <stop offset=".48" stop-color="#89887e"/>
+                                            <stop offset="1" stop-color="#77776e"/>
+                                        </linearGradient>
+                                        <linearGradient id="edge" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0" stop-color="#53544d"/>
+                                            <stop offset=".25" stop-color="#b1b09f"/>
+                                            <stop offset=".75" stop-color="#77776b"/>
+                                            <stop offset="1" stop-color="#44463f"/>
+                                        </linearGradient>
+                                        <linearGradient id="steel" x1="0" y1="0" x2="1" y2=".8">
+                                            <stop offset="0" stop-color="#34352f"/>
+                                            <stop offset=".2" stop-color="#a6a494"/>
+                                            <stop offset=".43" stop-color="#77766b"/>
+                                            <stop offset=".7" stop-color="#b8b5a4"/>
+                                            <stop offset="1" stop-color="#34352f"/>
+                                        </linearGradient>
+                                        <radialGradient id="disc" cx=".38" cy=".32" r=".75">
+                                            <stop offset="0" stop-color="#aaa797"/>
+                                            <stop offset=".65" stop-color="#77766c"/>
+                                            <stop offset="1" stop-color="#44453f"/>
+                                        </radialGradient>
+                                        <linearGradient id="handle" x1="0" y1="0" x2="1" y2="0">
+                                            <stop offset="0" stop-color="#111210"/>
+                                            <stop offset=".18" stop-color="#343530"/>
+                                            <stop offset=".45" stop-color="#1d1e1b"/>
+                                            <stop offset=".8" stop-color="#10110f"/>
+                                            <stop offset="1" stop-color="#050605"/>
+                                        </linearGradient>
+                                        <linearGradient id="label" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0" stop-color="#242520"/>
+                                            <stop offset="1" stop-color="#11120f"/>
+                                        </linearGradient>
+                                        <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%">
+                                            <feGaussianBlur stdDeviation="7"/>
+                                        </filter>
+                                        <filter id="softShadow" x="-30%" y="-30%" width="160%" height="170%">
+                                            <feGaussianBlur stdDeviation="3"/>
+                                        </filter>
+                                        <g id="screw">
+                                            <circle r="12" fill="#44453f" stroke="#c7c4b3" stroke-width="3"/>
+                                            <circle r="8" fill="#20211e" stroke="#77776b" stroke-width="1.5"/>
+                                            <circle r="4.5" fill="#090a08"/>
+                                            <path d="M-3-3L3 3" stroke="#77786d" stroke-width="1.5"/>
+                                        </g>
+                                    </defs>
+
+                                    <!-- Панель без лишних полей -->
+                                             <rect x="28" y="25" width="712" height="462" rx="13"
+                                          fill="none" stroke="#d0cdbb" stroke-width="3" opacity=".75"/>
+                                    <rect x="34" y="31" width="700" height="450" rx="10"
+                                          fill="none" stroke="#65665d" stroke-width="1.5"/>
+
+                                    <use href="#screw" x="34" y="33"/>
+                                    <use href="#screw" x="734" y="33"/>
+                                    <use href="#screw" x="34" y="479"/>
+                                    <use href="#screw" x="734" y="479"/>
+
+                                    <!-- Подписи -->
+                                    <g font-family="Arial, Helvetica, sans-serif"
+                                       font-weight="bold" fill="#24251f" text-anchor="middle">
+                                        <text x="156" y="231" font-size="84">ВКЛ</text>
+                                    </g>
+
+                                    <!-- Круглое основание -->
+                                    <ellipse cx="384" cy="180" rx="119" ry="123"
+                                             fill="#141511" opacity=".4" filter="url(#shadow)"/>
+                                    <circle cx="384" cy="196" r="113"
+                                            fill="#282923" stroke="#42433c" stroke-width="5"/>
+                                    <circle cx="384" cy="196" r="106"
+                                            fill="url(#steel)" stroke="#292a25" stroke-width="3"/>
+                                    <circle cx="384" cy="196" r="94"
+                                            fill="url(#disc)" stroke="#c1beac" stroke-width="3"/>
+                                    <circle cx="384" cy="196" r="89"
+                                            fill="none" stroke="#56574f" stroke-width="2"/>
+                                    <circle cx="384" cy="206" r="101"
+                                            fill="none" stroke="#dedbca" stroke-width="1.5" opacity=".6"/>
+
+                                    <!-- Рукоятка -->
+                                    <rect x="353" y="60" width="67" height="260" rx="29"
+                                          fill="#080908" opacity=".7" filter="url(#softShadow)"/>
+                                    <rect x="354" y="62" width="60" height="254" rx="27"
+                                          fill="#080908" stroke="#252621" stroke-width="4"/>
+                                    <rect x="359" y="67" width="50" height="244" rx="23"
+                                          fill="url(#handle)" stroke="#090a08" stroke-width="2"/>
+                                    <rect x="363" y="72" width="4" height="232" rx="2"
+                                          fill="#77786e" opacity=".6"/>
+                                    <path d="M370 119Q374 111 386 112"
+                                          fill="none" stroke="#9b9a8d" stroke-width="2"
+                                          stroke-linecap="round" opacity=".8"/>
+                                    <path d="M402 120V335"
+                                          fill="none" stroke="#050605" stroke-width="2"/>
+
+                                    <!-- Стрелка -->
+                                    <path d="M384 89L370 127H379V159H389V127H398Z"
+                                          fill="#e5e0cb" stroke="#c8c3b1" stroke-width="1.5"/>
+
+                                    <!-- Центральный фиксатор -->
+                                    <circle cx="384" cy="194" r="17"
+                                            fill="#10110f" stroke="#4c4d45" stroke-width="3"/>
+                                    <circle cx="384" cy="194" r="11"
+                                            fill="url(#steel)" stroke="#191a17" stroke-width="2"/>
+                                    <circle cx="384" cy="194" r="4.5"
+                                            fill="#e1ddcc" stroke="#66675d" stroke-width="1.5"/>
+                                    <circle cx="382" cy="192" r="1.5" fill="#fff" opacity=".8"/>
+
+                                    <!-- Табличка АЗ-5 -->
+                                    <rect x="225" y="330" width="322" height="108" rx="10"
+                                          fill="#33342e" opacity=".65"/>
+                                    <rect x="226" y="331" width="316" height="108" rx="10"
+                                          fill="url(#edge)" stroke="#41423b" stroke-width="2"/>
+                                    <rect x="231" y="336" width="306" height="98" rx="7"
+                                          fill="url(#label)" stroke="#d0cbb8" stroke-width="2.5"/>
+                                    <rect x="227" y="332" width="314" height="96" rx="4"
+                                          fill="none" stroke="#55564c" stroke-width="1"/>
+
+                                    <text x="384" y="410" text-anchor="middle"
+                                          font-family="Arial, Helvetica, sans-serif"
+                                          font-size="100" font-weight="bold"
+                                          letter-spacing="2" fill="#e0dac5">АЗC
+                                    </text>
+
+                                </svg>
                             </button>
-                            <button onclick="re.az.azsr_start()" class="az-btn">
-                                <div id="azsr_start">
-                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="20px"
-                                         height="20px" viewBox="0 0 32 32" xml:space="preserve" fill="#000000">
-                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                           stroke-linejoin="round"></g>
-                                        <g id="SVGRepo_iconCarrier"> <style type="text/css"> .puchipuchi_een{fill:#111918;} </style>
-                                            <path class="puchipuchi_een"
-                                                  d="M30,17c0,7.72-6.28,14-14,14S2,24.72,2,17C2,10.311,6.718,4.71,13,3.332v4.129 C8.948,8.739,6,12.531,6,17c0,5.514,4.486,10,10,10s10-4.486,10-10c0-4.469-2.948-8.261-7-9.539V3.332C25.282,4.71,30,10.311,30,17z M16,13c1.104,0,2-0.896,2-2V3c0-1.104-0.896-2-2-2s-2,0.896-2,2v8C14,12.104,14.896,13,16,13z">
+                            <button id="azsr_start" onclick="re.az.azsr_start()" class="az-btn">
 
-                             </path> </g></svg>
-                                </div>
-                                АЗCР
+                                <svg xmlns="http://www.w3.org/2000/svg" height="55" viewBox="8 6 752 435">
+                                    <defs>
+                                        <linearGradient id="plate" x1="0" y1="0" x2=".9" y2="1">
+                                            <stop offset="0" stop-color="#a6a499"/>
+                                            <stop offset=".48" stop-color="#89887e"/>
+                                            <stop offset="1" stop-color="#77776e"/>
+                                        </linearGradient>
+                                        <linearGradient id="edge" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0" stop-color="#53544d"/>
+                                            <stop offset=".25" stop-color="#b1b09f"/>
+                                            <stop offset=".75" stop-color="#77776b"/>
+                                            <stop offset="1" stop-color="#44463f"/>
+                                        </linearGradient>
+                                        <linearGradient id="steel" x1="0" y1="0" x2="1" y2=".8">
+                                            <stop offset="0" stop-color="#34352f"/>
+                                            <stop offset=".2" stop-color="#a6a494"/>
+                                            <stop offset=".43" stop-color="#77766b"/>
+                                            <stop offset=".7" stop-color="#b8b5a4"/>
+                                            <stop offset="1" stop-color="#34352f"/>
+                                        </linearGradient>
+                                        <radialGradient id="disc" cx=".38" cy=".32" r=".75">
+                                            <stop offset="0" stop-color="#aaa797"/>
+                                            <stop offset=".65" stop-color="#77766c"/>
+                                            <stop offset="1" stop-color="#44453f"/>
+                                        </radialGradient>
+                                        <linearGradient id="handle" x1="0" y1="0" x2="1" y2="0">
+                                            <stop offset="0" stop-color="#111210"/>
+                                            <stop offset=".18" stop-color="#343530"/>
+                                            <stop offset=".45" stop-color="#1d1e1b"/>
+                                            <stop offset=".8" stop-color="#10110f"/>
+                                            <stop offset="1" stop-color="#050605"/>
+                                        </linearGradient>
+                                        <linearGradient id="label" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0" stop-color="#242520"/>
+                                            <stop offset="1" stop-color="#11120f"/>
+                                        </linearGradient>
+                                        <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%">
+                                            <feGaussianBlur stdDeviation="7"/>
+                                        </filter>
+                                        <filter id="softShadow" x="-30%" y="-30%" width="160%" height="170%">
+                                            <feGaussianBlur stdDeviation="3"/>
+                                        </filter>
+                                        <g id="screw">
+                                            <circle r="12" fill="#44453f" stroke="#c7c4b3" stroke-width="3"/>
+                                            <circle r="8" fill="#20211e" stroke="#77776b" stroke-width="1.5"/>
+                                            <circle r="4.5" fill="#090a08"/>
+                                            <path d="M-3-3L3 3" stroke="#77786d" stroke-width="1.5"/>
+                                        </g>
+                                    </defs>
+
+                                    <!-- Панель без лишних полей -->
+                                       <rect x="28" y="25" width="712" height="462" rx="13"
+                                          fill="none" stroke="#d0cdbb" stroke-width="3" opacity=".75"/>
+                                    <rect x="34" y="31" width="700" height="450" rx="10"
+                                          fill="none" stroke="#65665d" stroke-width="1.5"/>
+
+                                    <use href="#screw" x="34" y="33"/>
+                                    <use href="#screw" x="734" y="33"/>
+                                    <use href="#screw" x="34" y="479"/>
+                                    <use href="#screw" x="734" y="479"/>
+
+                                    <!-- Подписи -->
+                                    <g font-family="Arial, Helvetica, sans-serif"
+                                       font-weight="bold" fill="#24251f" text-anchor="middle">
+                                        <text x="156" y="231" font-size="84">ВКЛ</text>
+                                    </g>
+
+                                    <!-- Круглое основание -->
+                                    <ellipse cx="384" cy="180" rx="119" ry="123"
+                                             fill="#141511" opacity=".4" filter="url(#shadow)"/>
+                                    <circle cx="384" cy="196" r="113"
+                                            fill="#282923" stroke="#42433c" stroke-width="5"/>
+                                    <circle cx="384" cy="196" r="106"
+                                            fill="url(#steel)" stroke="#292a25" stroke-width="3"/>
+                                    <circle cx="384" cy="196" r="94"
+                                            fill="url(#disc)" stroke="#c1beac" stroke-width="3"/>
+                                    <circle cx="384" cy="196" r="89"
+                                            fill="none" stroke="#56574f" stroke-width="2"/>
+                                    <circle cx="384" cy="206" r="101"
+                                            fill="none" stroke="#dedbca" stroke-width="1.5" opacity=".6"/>
+
+                                    <!-- Рукоятка -->
+                                    <rect x="353" y="60" width="67" height="260" rx="29"
+                                          fill="#080908" opacity=".7" filter="url(#softShadow)"/>
+                                    <rect x="354" y="62" width="60" height="254" rx="27"
+                                          fill="#080908" stroke="#252621" stroke-width="4"/>
+                                    <rect x="359" y="67" width="50" height="244" rx="23"
+                                          fill="url(#handle)" stroke="#090a08" stroke-width="2"/>
+                                    <rect x="363" y="72" width="4" height="232" rx="2"
+                                          fill="#77786e" opacity=".6"/>
+                                    <path d="M370 119Q374 111 386 112"
+                                          fill="none" stroke="#9b9a8d" stroke-width="2"
+                                          stroke-linecap="round" opacity=".8"/>
+                                    <path d="M402 120V335"
+                                          fill="none" stroke="#050605" stroke-width="2"/>
+
+                                    <!-- Стрелка -->
+                                    <path d="M384 89L370 127H379V159H389V127H398Z"
+                                          fill="#e5e0cb" stroke="#c8c3b1" stroke-width="1.5"/>
+
+                                    <!-- Центральный фиксатор -->
+                                    <circle cx="384" cy="194" r="17"
+                                            fill="#10110f" stroke="#4c4d45" stroke-width="3"/>
+                                    <circle cx="384" cy="194" r="11"
+                                            fill="url(#steel)" stroke="#191a17" stroke-width="2"/>
+                                    <circle cx="384" cy="194" r="4.5"
+                                            fill="#e1ddcc" stroke="#66675d" stroke-width="1.5"/>
+                                    <circle cx="382" cy="192" r="1.5" fill="#fff" opacity=".8"/>
+
+                                    <!-- Табличка АЗ-5 -->
+                                    <rect x="225" y="330" width="322" height="108" rx="10"
+                                          fill="#33342e" opacity=".65"/>
+                                    <rect x="226" y="331" width="316" height="108" rx="10"
+                                          fill="url(#edge)" stroke="#41423b" stroke-width="2"/>
+                                    <rect x="231" y="336" width="306" height="98" rx="7"
+                                          fill="url(#label)" stroke="#d0cbb8" stroke-width="2.5"/>
+                                    <rect x="227" y="332" width="314" height="96" rx="4"
+                                          fill="none" stroke="#55564c" stroke-width="1"/>
+
+                                    <text x="384" y="410" text-anchor="middle"
+                                          font-family="Arial, Helvetica, sans-serif"
+                                          font-size="100" font-weight="bold"
+                                          letter-spacing="2" fill="#e0dac5">АЗCР
+                                    </text>
+
+                                </svg>
+
                             </button>
                             <button style="background:red;" onclick="re.az.stop_az()">Съём АЗ</button>
                         </div>
@@ -290,8 +902,8 @@
             <div class="up-panel">
 
                 <div style="display:flex;">
-                    <canvas class="bs-graf" id="bs1" width="190px" height="100px"></canvas>
-                    <canvas class="bs-graf" id="bs2" width="200px" height="100px"></canvas>
+                    <canvas class="bs-graf" id="bs1" width="290px" height="100px"></canvas>
+                    <canvas class="bs-graf" id="bs2" width="290px" height="100px"></canvas>
 
                 </div>
                 <div id="canvas_cont"></div>
@@ -299,17 +911,17 @@
                     <div class="sector">
                         <div class="title-s">БС1</div>
                         <div style="display:flex;">
-                            <div class="bs-zone">
+                            <div class="bs-zone  zone">
                                 Т воды<br>
-                                <input id="T_H2O1" class="input-big" readonly>
+                                <input id="T_H2O1" class="input-big margin-input" readonly>
                             </div>
-                            <div class="bs-zone"> H(м3)<br>
-                                <input id="h_braban_s1" class="input-big" readonly>
+                            <div class="bs-zone zone"> H(м3)<br>
+                                <input id="h_braban_s1" class="input-big margin-input" readonly>
                                 <div id="bs1_cont"></div>
                             </div>
-                            <div class="bs-zone">
+                            <div class="bs-zone  zone">
                                 P МПа<br>
-                                <input id="p_bs1" class="input-big" readonly>
+                                <input id="p_bs1" class="input-big margin-input" readonly>
                             </div>
 
                         </div>
@@ -317,31 +929,42 @@
                     <div class="sector">
                         <div class="title-s">БС2</div>
                         <div style="display:flex;">
-                            <div class="bs-zone"> H (м3)<br>
-                                <input id="h_braban_s2" class="input-big" readonly>
+                            <div class="bs-zone  zone"> H (м3)<br>
+                                <input id="h_braban_s2" class="input-big margin-input" readonly>
                             </div>
-                            <div class="bs-zone">
+                            <div class="bs-zone zone">
                                 Т воды<br>
-                                <input id="T_H2O2" class="input-big" readonly>
+                                <input id="T_H2O2" class="input-big margin-input" readonly>
                             </div>
-                            <div class="bs-zone">
+                            <div class="bs-zone zone">
                                 P МПа<br>
-                                <input id="p_bs2" class="input-big" readonly>
+                                <input id="p_bs2" class="input-big margin-input" readonly>
 
                             </div>
                         </div>
                     </div>
-                    <div class="bs-zone">
+                    <div class="bs-zone zone">
                         Т ПВС<br>
                         <input id="T_reactor" class="input-big" readonly>
                     </div>
-                    <div class="bs-zone">
+                    <div class="bs-zone zone">
                         Т_твэл<br>
                         <input id="fuel_temp" class="input-big" readonly>
                     </div>
-                    <div class="bs-zone">
+                    <div class="bs-zone zone">
                         Т воды в 2 контуре<br>
                         <input id="T_2_H2O" class="input-big" readonly>
+                    </div>
+<div>
+    <div id="1_a_error" class="alert-error max-class" onclick="show_hints(this.id)">АГНЦ1 неиспр
+                        </div>
+    <div id="2_a_turn_down" class="alert-error" onclick="show_hints(this.id)">АГНЦ2 ОТКЛ</div>
+
+</div>
+                    <div>
+                         <div id="saor" class="alert-error" onclick="show_hints(this.id)">САОР</div>
+ <div id="tk_broke" class="alert-error" onclick="show_hints(this.id)"> Разрыв ТК</div>
+
                     </div>
                 </div>
                 <div style="display:flex;">
@@ -370,8 +993,10 @@
                         <div style="display:flex;">
                             {% for j in range(1, 5)%}
                             <div class="margin-cont">
-                                {% if j < 3 %}
-                                ГЦН{{j}}
+                                {% if j == 1 %}
+                                НОНП
+                                {% elif j == 2 %}
+                                НОАП
                                 {% else %}
                                 ПЭН{{j - 2 }}
                                 {% endif %}<br>
@@ -384,45 +1009,7 @@
                             {% endfor %}
                         </div>
                     </div>
-                </div>
-                <div class="errors-table" style="display:flex;">
                     <div>
-                        <div id="h_lower_water_level_BS1" onclick="show_hints(this.id)" class="alert-error max-class">H БС1
-                            <svg height="14" viewBox="8 7 8 10" fill="none"
-                                 xmlns="http://www.w3.org/2000/svg">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                   stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <path d="M12 16L12 8" stroke="#323232" stroke-width="2"
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round"></path>
-                                    <path d="M9 13L11.913 15.913V15.913C11.961 15.961 12.039 15.961 12.087 15.913V15.913L15 13"
-                                          stroke="#323232"
-                                          stroke-width="2" stroke-linecap="round"
-                                          stroke-linejoin="round"></path>
-                                </g>
-                            </svg>
-                            0.75
-                        </div>
-                        <div id="h_lower_water_level_BS2" onclick="show_hints(this.id)" class="alert-error max-class">H БС2
-                            <svg height="14" viewBox="8 7 8 10" fill="none"
-                                 xmlns="http://www.w3.org/2000/svg">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                   stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <path d="M12 16L12 8" stroke="#323232" stroke-width="2"
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round"></path>
-                                    <path d="M9 13L11.913 15.913V15.913C11.961 15.961 12.039 15.961 12.087 15.913V15.913L15 13"
-                                          stroke="#323232"
-                                          stroke-width="2" stroke-linecap="round"
-                                          stroke-linejoin="round"></path>
-                                </g>
-                            </svg>
-                            0.75
-                        </div>
                         <div id="h_high_water_level_BS1" onclick="show_hints(this.id)" class="alert-error">H БС1
                             <svg height="14" viewBox="8 7 8 10" fill="none"
                                  xmlns="http://www.w3.org/2000/svg" transform="matrix(-1, 0, 0, -1, 0, 0)">
@@ -457,20 +1044,18 @@
                         </div>
                     </div>
                     <div>
-                        <div id="level_down1" class="alert-error" onclick="show_hints(this.id)">Cброс БС1</div>
-                        <div id="level_down2" class="alert-error" onclick="show_hints(this.id)">Cброс БС2</div>
-                        <div id="1_n_error" class="alert-error max-class" onclick="show_hints(this.id)">ГНЦ1 неиспр</div>
+                        <div id="1_n_error" class="alert-error max-class" onclick="show_hints(this.id)">ГНЦ1 неиспр
+                        </div>
                         <div id="2_n_error" class="alert-error" onclick="show_hints(this.id)">ГНЦ2 неиспр</div>
+
                     </div>
                     <div>
-                        <div id="3_n_error" class="alert-error " onclick="show_hints(this.id)">ПЭН1 неиспр</div>
-                        <div id="4_n_error" class="alert-error " onclick="show_hints(this.id)">ПЭН2 неиспр</div>
-                        <div id="1_a_error" class="alert-error max-class" onclick="show_hints(this.id)">АГНЦ1 неиспр</div>
-                        <div id="2_a_error" class="alert-error max-class" onclick="show_hints(this.id)">АГНЦ2 неиспр</div>
+                        <div id="2_n_turn_down" class="alert-error max-class" onclick="show_hints(this.id)">ГНЦ2 ОТКЛ
+                        </div>
+                        <div id="3_n_turn_down" class="alert-error max-class" onclick="show_hints(this.id)">ПЭН1 ОТКЛ
+                        </div>
                     </div>
                     <div>
-                        <div id="3_a_error" class="alert-error" onclick="show_hints(this.id)">АПЭН1 неиспр</div>
-                        <div id="4_a_error" class="alert-error max-class" onclick="show_hints(this.id)">АПЭН2 неиспр</div>
                         <div id="alert_high_temperature2" onclick="show_hints(this.id)" class="alert-error">Т ББ
                             <svg height="13" viewBox="8 7 8 10" fill="none"
                                  xmlns="http://www.w3.org/2000/svg" transform="matrix(-1, 0, 0, -1, 0, 0)">
@@ -503,6 +1088,64 @@
                         </div>
 
                     </div>
+                </div>
+                <div class="errors-table" style="display:flex;">
+                    <div>
+                        <div id="h_lower_water_level_BS1" onclick="show_hints(this.id)" class="alert-error max-class">H
+                            БС1
+                            <svg height="14" viewBox="8 7 8 10" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                   stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path d="M12 16L12 8" stroke="#323232" stroke-width="2"
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round"></path>
+                                    <path d="M9 13L11.913 15.913V15.913C11.961 15.961 12.039 15.961 12.087 15.913V15.913L15 13"
+                                          stroke="#323232"
+                                          stroke-width="2" stroke-linecap="round"
+                                          stroke-linejoin="round"></path>
+                                </g>
+                            </svg>
+                            0.75
+                        </div>
+                        <div id="h_lower_water_level_BS2" onclick="show_hints(this.id)" class="alert-error max-class">H
+                            БС2
+                            <svg height="14" viewBox="8 7 8 10" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                   stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path d="M12 16L12 8" stroke="#323232" stroke-width="2"
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round"></path>
+                                    <path d="M9 13L11.913 15.913V15.913C11.961 15.961 12.039 15.961 12.087 15.913V15.913L15 13"
+                                          stroke="#323232"
+                                          stroke-width="2" stroke-linecap="round"
+                                          stroke-linejoin="round"></path>
+                                </g>
+                            </svg>
+                            0.75
+                        </div>
+
+                    </div>
+                    <div>
+                        <div id="level_down1" class="alert-error" onclick="show_hints(this.id)">Cброс БС1</div>
+                        <div id="level_down2" class="alert-error" onclick="show_hints(this.id)">Cброс БС2</div>
+                           </div>
+                    <div>
+                        <div id="3_n_error" class="alert-error " onclick="show_hints(this.id)">ПЭН1 неиспр</div>
+                        <div id="4_n_error" class="alert-error " onclick="show_hints(this.id)">ПЭН2 неиспр</div>
+
+
+                    </div>
+                    <div>
+                        <div id="3_a_error" class="alert-error" onclick="show_hints(this.id)">АПЭН1 неиспр</div>
+                        <div id="4_a_error" class="alert-error max-class" onclick="show_hints(this.id)">АПЭН2 неиспр
+                        </div>
+                                            </div>
                     <div>
                         <div id="alert_high_temperatureBS2" onclick="show_hints(this.id)" class="alert-error">Т БС2
                             <svg height="14" viewBox="8 7 8 10" fill="none"
@@ -520,26 +1163,19 @@
                             </svg>
                         </div>
                         <div id="1_n_turn_down" class="alert-error" onclick="show_hints(this.id)">ГНЦ1 ОТКЛ</div>
-                        <div id="2_n_turn_down" class="alert-error max-class" onclick="show_hints(this.id)">ГНЦ2 ОТКЛ
-                        </div>
-                        <div id="3_n_turn_down" class="alert-error max-class" onclick="show_hints(this.id)">ПЭН1 ОТКЛ
-                        </div>
+
                     </div>
                     <div>
                         <div id="4_n_turn_down" class="alert-error" onclick="show_hints(this.id)">ПЭН2 ОТКЛ</div>
                         <div id="1_a_turn_down" class="alert-error" onclick="show_hints(this.id)"
                              style="width:max-content;">АГНЦ1 ОТКЛ
                         </div>
-                        <div id="2_a_turn_down" class="alert-error" onclick="show_hints(this.id)">АГНЦ2 ОТКЛ</div>
-                        <div id="3_a_turn_down" class="alert-error max-class" onclick="show_hints(this.id)">АПЭН1 ОТКЛ
-                        </div>
-                    </div>
+                         </div>
                     <div>
                         <div id="4_a_turn_down" class="alert-error max-class" onclick="show_hints(this.id)">АПЭН2 ОТКЛ
                         </div>
-                        <div id="tk_broke" class="alert-error" onclick="show_hints(this.id)"> Разрыв ТК</div>
+
                         <div id="mpa" class="alert-error" onclick="show_hints(this.id)">МПА</div>
-                        <div id="saor" class="alert-error" onclick="show_hints(this.id)">САОР</div>
 
                     </div>
                     <div>
@@ -573,70 +1209,69 @@
                                 </g>
                             </svg>
                         </div>
+                       </div>
+                    <div>
+                        <div id="3_a_turn_down" class="alert-error max-class" onclick="show_hints(this.id)">АПЭН1 ОТКЛ
+                        </div>
+                        <div id="2_a_error" class="alert-error max-class" onclick="show_hints(this.id)">АГНЦ2 неиспр
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="down-panel" style="display:flex;">
-                <p>
                 <div class="panel-item">
-                    {% for j in range(1, 5)%}
-                    <div style="height:50px;display:flex;">
-                        {% if j < 3 %}
-                        ГЦН{{j}}
-                        {% else %}
-                        ПЭН{{j - 2 }}
-                        {% endif %}<br>
-                        <button class="az-btn" onclick="re.gcn['{{j}}_n'].turn_on_or_down()">ВКЛ
-                            <div id="{{j}}_n_btn">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="20px"
-                                     height="20px" viewBox="0 0 32 32" xml:space="preserve" fill="#000000">
-                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                    <g id="SVGRepo_iconCarrier"> <style
-                                            type="text/css"> .puchipuchi_een{fill:#111918;} </style>
-                                        <path class="puchipuchi_een"
-                                              d="M30,17c0,7.72-6.28,14-14,14S2,24.72,2,17C2,10.311,6.718,4.71,13,3.332v4.129 C8.948,8.739,6,12.531,6,17c0,5.514,4.486,10,10,10s10-4.486,10-10c0-4.469-2.948-8.261-7-9.539V3.332C25.282,4.71,30,10.311,30,17z M16,13c1.104,0,2-0.896,2-2V3c0-1.104-0.896-2-2-2s-2,0.896-2,2v8C14,12.104,14.896,13,16,13z">
-
-                             </path> </g></svg>
-                            </div>
-                        </button>
-                        <div>
-                            <button class="black-btn" onclick="re.gcn['{{j}}_n'].set_unset_up_direction()">Б</button>
-                            <button class="black-btn" onclick="re.gcn['{{j}}_n'].set_unset_down_direction()">М</button>
+                    <div style="display:flex;">
+                        <div style="display:flex;">
+                            <button id="1_n_btn" class="az-btn" onclick="re.gcn['1_n'].turn_on_or_down()"></button>
+                            <button class="black-btn" onclick="re.gcn['1_n'].set_unset_up_direction()">Б</button>
+                            <button class="black-btn" onclick="re.gcn['1_n'].set_unset_down_direction()">М</button>
+                        </div>
+                        <div style="display:flex;">
+                            <button id="2_n_btn" class="az-btn" onclick="re.gcn['2_n'].turn_on_or_down()"></button>
+                            <button class="black-btn" onclick="re.gcn['2_n'].set_unset_up_direction()">Б</button>
+                            <button class="black-btn" onclick="re.gcn['2_n'].set_unset_down_direction()">М</button>
                         </div>
                     </div>
-                    {% endfor %}
-                    </p>
+                    <div style="display:flex;">
+                        <div style="display:flex;">
+                            <button id="3_n_btn" class="az-btn" onclick="re.gcn['3_n'].turn_on_or_down()"></button>
+                            <button class="black-btn" onclick="re.gcn['3_n'].set_unset_up_direction()">Б</button>
+                            <button class="black-btn" onclick="re.gcn['3_n'].set_unset_down_direction()">М</button>
+                        </div>
+                        <div style="display:flex;">
+                            <button id="4_n_btn" class="az-btn" onclick="re.gcn['4_n'].turn_on_or_down()"></button>
+                            <button class="black-btn" onclick="re.gcn['4_n'].set_unset_up_direction()">Б</button>
+                            <button class="black-btn" onclick="re.gcn['4_n'].set_unset_down_direction()">М</button>
+                        </div>
+                    </div>
                 </div>
                 <div>
 
                     Аварийные<br>
-                    {% for j in range(1, 5)%}
-                    <div>
-                        {% if j < 3 %}
-                        ГЦН{{j}}
-                        {% else %}
-                        ПЭН{{j - 2 }}
-                        {% endif %}
-                        <button class="az-btn" onclick="re.gcn['{{j}}_a'].turn_on_or_down()">
-                            <div id="{{j}}_a_btn">
-                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="20px"
-                                     height="20px" viewBox="0 0 32 32" xml:space="preserve" fill="#000000">
-                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                    <g id="SVGRepo_iconCarrier"> <style
-                                            type="text/css"> .puchipuchi_een{fill:#111918;} </style>
-                                        <path class="puchipuchi_een"
-                                              d="M30,17c0,7.72-6.28,14-14,14S2,24.72,2,17C2,10.311,6.718,4.71,13,3.332v4.129 C8.948,8.739,6,12.531,6,17c0,5.514,4.486,10,10,10s10-4.486,10-10c0-4.469-2.948-8.261-7-9.539V3.332C25.282,4.71,30,10.311,30,17z M16,13c1.104,0,2-0.896,2-2V3c0-1.104-0.896-2-2-2s-2,0.896-2,2v8C14,12.104,14.896,13,16,13z">
-
-                             </path> </g></svg>
-                            </div>
-                            ВКЛ
-                        </button>
-                        <button class="black-btn" onclick="re.gcn['{{j}}_a'].set_unset_up_direction()">Б</button>
-                        <button class="black-btn" onclick="re.gcn['{{j}}_a'].set_unset_down_direction()">М</button>
+                    <div style="display:flex;">
+                        <div style="display:flex;">
+                            <button id="1_a_btn" class="az-btn" onclick="re.gcn['1_a'].turn_on_or_down()"></button>
+                            <button class="black-btn" onclick="re.gcn['1_a'].set_unset_up_direction()">Б</button>
+                            <button class="black-btn" onclick="re.gcn['1_a'].set_unset_down_direction()">М</button>
+                        </div>
+                        <div style="display:flex;">
+                            <button id="2_a_btn" class="az-btn" onclick="re.gcn['2_a'].turn_on_or_down()"></button>
+                            <button class="black-btn" onclick="re.gcn['2_a'].set_unset_up_direction()">Б</button>
+                            <button class="black-btn" onclick="re.gcn['2_a'].set_unset_down_direction()">М</button>
+                        </div>
                     </div>
-                    {% endfor %}
+                    <div style="display:flex;">
+                        <div style="display:flex;">
+                            <button id="3_a_btn" class="az-btn" onclick="re.gcn['3_a'].turn_on_or_down()"></button>
+                            <button class="black-btn" onclick="re.gcn['3_a'].set_unset_up_direction()">Б</button>
+                            <button class="black-btn" onclick="re.gcn['3_a'].set_unset_down_direction()">М</button>
+                        </div>
+                        <div style="display:flex;">
+                            <button id="4_a_btn" class="az-btn" onclick="re.gcn['4_a'].turn_on_or_down()"></button>
+                            <button class="black-btn" onclick="re.gcn['4_a'].set_unset_up_direction()">Б</button>
+                            <button class="black-btn" onclick="re.gcn['4_a'].set_unset_down_direction()">М</button>
+                        </div>
+                    </div>
                 </div>
                 <div>
                     <button class="black-btn" onclick="re.az.stop_sound(2)">Съём звука</button>
@@ -648,7 +1283,7 @@
             </div>
         </div>
         <!--        ТУрбина-->
-        <div class="column-bsm">
+        <div class="column-bsm" id="viyt">
             <div class="up-panel">давление
                 <input id="p_in_reactor" class="input-big">
                 <div>
@@ -665,10 +1300,6 @@
                         <div>
                             W эл
                             <input id="w_e1" class="input-big">
-                        </div>
-                        <div>
-                            дав пусковое
-                            <input id="p_start1" class="input-big">
                         </div>
                         <div>
                             G max
@@ -690,10 +1321,6 @@
                         <div>
                             W эл
                             <input id="w_e2" class="input-big">
-                        </div>
-                        <div>
-                            дав пусковое
-                            <input id="p_start2" class="input-big">
                         </div>
                         <div>
                             G max
@@ -745,8 +1372,7 @@
                             <div id="alert_high_e_power_t2" class="alert-error" onclick="show_hints(this.id)">Высокая
                                 мощность ТГ2
                             </div>
-                            <div id="error_t1" class="alert-error" onclick="show_hints(this.id)">ТГ1 неиспр</div>
-                            <div id="error_t2" class="alert-error" onclick="show_hints(this.id)">ТГ2 неиспр</div>
+
                         </div>
                         <div>
 
@@ -754,10 +1380,7 @@
                             <div id="turn_down_rdg1" class="alert-error" onclick="show_hints(this.id)">РДГ1 откл</div>
                             <div id="turn_down_t2" class="alert-error" onclick="show_hints(this.id)">ТГ2 откл</div>
                             <div id="turn_down_t1" class="alert-error" onclick="show_hints(this.id)">ТГ1 откл</div>
-                            <div id="m_down_t1" class="alert-error" onclick="show_hints(this.id)">ТГ1 потеря момента
-                            </div>
-                            <div id="m_down_t2" class="alert-error" onclick="show_hints(this.id)">ТГ2 потеря момента
-                            </div>
+
                         </div>
                         <div>
                             <div id="rdg1_broken" class="alert-error" onclick="show_hints(this.id)">РДГ1 неиспр</div>
@@ -765,7 +1388,16 @@
                             <div id="lep1_broken" class="alert-error" onclick="show_hints(this.id)">ЛЭП1 неиспр</div>
                             <div id="lep2_broken" class="alert-error" onclick="show_hints(this.id)">ЛЭП2 неиспр</div>
                             <div id="tsn_broken" class="alert-error" onclick="show_hints(this.id)">ТСН неиспр</div>
+
+                        </div>
+                        <div>
+                            <div id="error_t1" class="alert-error" onclick="show_hints(this.id)">ТГ1 неиспр</div>
+                            <div id="error_t2" class="alert-error" onclick="show_hints(this.id)">ТГ2 неиспр</div>
                             <div id="e_h" class="alert-error" onclick="show_hints(this.id)">Превыш Нагрузки</div>
+                            <div id="m_down_t1" class="alert-error" onclick="show_hints(this.id)">ТГ1 потеря момента
+                            </div>
+                            <div id="m_down_t2" class="alert-error" onclick="show_hints(this.id)">ТГ2 потеря момента
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -775,7 +1407,7 @@
                 <div>
                     Турбина {{i}}<br>
                     <div>
-                        <button class="az-btn" onclick="re.t{{i}}.turn_on_or_down()">ВКЛ
+                        <button class="az-btn" onclick="re.t{{i}}.turn_on_or_down()">
                             <div id="t{{i}}_t_btn">
                                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="20px"
                                      height="20px" viewBox="0 0 32 32" xml:space="preserve" fill="#000000">
@@ -795,14 +1427,6 @@
                     <button class="black-btn" onclick="re.t{{i}}.set_unset_down_direction()">М</button>
                     <button onclick="re.t{{i}}.start()">ПУСК</button>
                     <br>
-                    <div style="display:flex;">
-                        пар
-                        <button id="t{{i}}_direction_steam" onclick="re.t{{i}}.set_steam_direction()">\</button>
-                        <div>
-                            <div>Пусковой отсек</div>
-                            <div>Турбина</div>
-                        </div>
-                    </div>
                 </div>
                 {% endfor %}
 
@@ -896,21 +1520,26 @@
     </div>
 
 </div>
+<div class="z-d" style="display:none;" id="global_error_d">
+
+</div>
+
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 <script src="/static/javascript/app.js"></script>
 <script src="/static/javascript/UI.js"></script>
-<script src="/static/javascript/rdg.js"></script>
+<script src="/static/javascript/physical/rdg.js"></script>
 <script src="/static/javascript/az_classes.js"></script>
-<script src="/static/javascript/turnover_classes.js"></script>
-<script src="/static/javascript/pump_classes.js"></script>
+<script src="/static/javascript/physical/turnover_classes.js"></script>
+<script src="/static/javascript/physical/pump_classes.js"></script>
 <script src="/static/javascript/grafiti.js"></script>
 <script src="/static/javascript/bs_grafiti.js"></script>
-<script src="/static/javascript/BS_classes.js"></script>
-<script src="/static/javascript/TSN.js"></script>
+<script src="/static/javascript/physical/BS_classes.js"></script>
+<script src="/static/javascript/physical/TSN.js"></script>
+<script src="/static/javascript/physical/physical1.js"></script>
 <script src="/static/javascript/game/game_function.js"></script>
-<script src="/static/javascript/reactor.js"></script>
+<script src="/static/javascript/physical/reactor.js"></script>
 <script src="/static/javascript/game/teacher_class.js"></script>
 <script src="/static/javascript/game/ui_teach.js"></script>
 <script src="/static/javascript/game/game_class.js"></script>

@@ -31,6 +31,22 @@ function display_viyb_info(){
 }
 
 
+function display_viyt_info(){
+    window.location.hash = "#viyt";
+    document.getElementById("teach_alert").innerHTML = `<p>Теперь мы переместились на пульт ВИУТ (Ведущего инженера
+    по управлению Турбинами). Его задача контролировать турбины и электроснабжение блока.</p>
+    <button class="btn btn-game btn-warning" onclick="game.teacher.next()">Дальше</button>
+    `;
+}
+
+function display_end(){
+    window.location.hash = "#viyb";
+    document.getElementById("teach_alert").innerHTML = `<p>Поздравляем! Вы прошли обучение!</p>
+    <button class="btn btn-game btn-warning" onclick="game.teacher.next()">закрыть</button>
+    `;
+}
+
+
 function display_gcn_info(){
     document.getElementById("teach_alert").innerHTML = `<p>Реактор охлаждается водой (теплоносителем). Её подают в реактор Главные
     циркуляционные насосы (ГЦН). Чтобы увеличить подачу воды, нужно нажать кнопку Б (больше)  напротив насоса. Чтобы уменьшить подачу воды, нужно нажать кнопку М (меньше) напротив насоса. </p>

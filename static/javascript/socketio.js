@@ -19,6 +19,12 @@ socket.on('chosen_delete', (data) => {
     }
 });
 
+socket.on('set_speed_SYZ', (data) => {
+    if (!rc.copy){
+            re.set_speed_SYZ(data["speed"]);
+    }
+});
+
 
 socket.on('connect_other_room', (data) => {
     if (!rc.copy){
@@ -115,9 +121,6 @@ socket.on('method_send', (data) => {
         }
         if (data["function"] == "turn_on_or_down_pump"){
             re.gcn[data["id_pump"]].turn_on_or_down();
-        }
-        if (data["function"] == "set_speed_SYZ"){
-            re.set_speed_SYZ(data["speed"]);
         }
         if (data["function"] == "set_power_source"){
             re.gcn[data["id_pump"]].set_power_source(data["source"]);
