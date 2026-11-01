@@ -499,6 +499,13 @@ class Modal2 {
 
 
     update(ozr_pct, m_left, m_right, T_left, T_right){
+        let ozr2 = [];
+        for(let i = 0; i < ozr_pct.length; i++){
+            for(let j = 0; j < ozr_pct[i].length; j++){
+                ozr2.push(ozr_pct[i][j]);
+        }
+        }
+        ozr_pct = ozr2;
         let m = coolant_arrays(m_left, m_right, T_m_left, T_m_left);
         this.m_cell = m[0];
         this.T_in_cells = m[0];

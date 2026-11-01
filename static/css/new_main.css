@@ -17,6 +17,10 @@
     position:absolute;
 }
 
+.flex-div{
+    display:flex;
+}
+
 .flex-on-desktop{
     display: flex;
 }
@@ -175,6 +179,43 @@
     min-height: 120vh;
     overflow-x:auto;
     background-image: url('/static/img/bg_full.png');
+}
+
+
+.part-color{
+   text-decoration: none;
+    color: #aadefe;
+   max-width: 200px;
+   text-align: center;
+}
+
+.global-cont-partners{
+margin-top: 20px;
+        margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    width: fit-content;
+
+}
+
+
+.partners-cont{
+    background: #052a4c;
+    border-radius: 10px;
+    margin-left: 20px;
+    width: fit-content;
+    border: 1px solid #10509f;
+}
+
+.about{
+    margin-left: 20px;
+    background: #011224;
+    padding: 10px;
+}
+
+.partners{
+    display: block;
+    height: 160px;
 }
 
 .ch-on-desktop{

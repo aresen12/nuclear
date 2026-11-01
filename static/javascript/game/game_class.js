@@ -75,7 +75,7 @@ class Game{
                 if (this.time_work >= this.tasks[this.id_task]["time_work"] && !this.win){
                     send_win();
                 reactor.pause = true;
-                alert("Вы выйграли");
+                game_win("", this.tasks[this.id_task]["points"], (this.time_work / 60).toFixed(0));
                 }
 
             }
@@ -86,7 +86,6 @@ class Game{
     }
 
     teach_start(){
-
         if (this.type == 2 ){
             this.teacher.next();
         } else {
@@ -98,7 +97,7 @@ class Game{
     }
 
     check_end_game(reactor){
-        if (reactor.thermal_power /1e6 >= 3300){
+        if (reactor.physical.thermal_power /1e6 >= 3300){
             return true;
         }
         if (this.global_time > this.tasks[this.id_task]["time"]){
@@ -164,7 +163,7 @@ function send_win(){
 
 function check_win1(reactor){
     console.log(reactor.thermal_power / 1e6 )
-    if (reactor.thermal_power / 1e6 >= 10 && reactor.thermal_power / 1e6 < 11){
+    if (reactor.physical.thermal_power / 1e6 >= 10 && reactor.physical.thermal_power / 1e6 < 11){
 
         return true;
     }
@@ -173,7 +172,7 @@ function check_win1(reactor){
 
 function check_win2(reactor){
     console.log(reactor.thermal_power / 1e6 )
-    if (reactor.thermal_power / 1e6 >= 10 && reactor.thermal_power / 1e6 < 11){
+    if (reactor.physical.thermal_power / 1e6 >= 10 && reactor.physical.thermal_power / 1e6 < 11){
         return true;
     }
     return false;
@@ -182,7 +181,7 @@ function check_win2(reactor){
 
 function check_win3(reactor){
     console.log(reactor.thermal_power / 1e6 )
-    if (reactor.thermal_power / 1e6 >= 3170 && reactor.thermal_power / 1e6 < 3300){
+    if (reactor.physical.thermal_power / 1e6 >= 3170 && reactor.physical.thermal_power / 1e6 < 3300){
         return true;
     }
     return false;
@@ -198,7 +197,7 @@ function check_win4(reactor){
 
 
 function check_win5(reactor){
-    if (reactor.thermal_power / 1e6 >= 98  && reactor.thermal_power / 1e6 < 103){
+    if (reactor.physical.thermal_power / 1e6 >= 98  && reactor.physical.thermal_power / 1e6 < 103){
         flag = true;
         var k = Object.keys(reactor.gcn);
         for (i = 0; i < k.length; i++){
@@ -213,7 +212,7 @@ function check_win5(reactor){
 
 
 function check_win6(reactor){
-    if (reactor.thermal_power / 1e6 >= 20  && reactor.thermal_power / 1e6 < 21){
+    if (reactor.physical.thermal_power / 1e6 >= 20  && reactor.physical.thermal_power / 1e6 < 21){
         return true;
     }
     return false;

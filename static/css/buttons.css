@@ -12,6 +12,21 @@
 }
 
 
+.global-error-btn {
+margin-left:auto;
+    margin-right:auto;
+    position: relative;
+    top: 200px;
+    left: 300px;
+    color: white;
+    background: #a91510;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+
+}
+
+
 .exit-btn{
 position:absolute;
 right: 10px;

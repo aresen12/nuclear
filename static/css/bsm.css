@@ -15,21 +15,58 @@ background-image: url('/static/img/bg.png');
     border-radius: 5px;
 }
 
+.pause-div{
+    background:#581816;
+    color: white;
+    margin-left:auto;
+    margin-right:auto;
+    width: 160px;
+    border-radius: 6px;
+    margin-top: 20px;
+    height: 50px;
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.btn-pause-base{
+    display: block;
+    margin-top: 3px;
+    max-height: 30px;
+    min-height: 30px;
+    min-width: 200px;
+    max-width: 200px;
+    font-size: 15px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.black-btn-pause{
+background: #2a302d;
+color: #a6a39c;
+}
+
+.center-div{
+    margin-left:auto;
+    margin-right:auto;
+    width: fit-content;
+
+}
+
+
 .global-menu{
     padding:10px;
     position:relative;
-    min-width:40vw;
-    max-width: 70vw;
-    min-height:30vh;
-    max-height: 80vh;
-    border-radius:30px;
-    border: 1px solid gray;
-    background:white;
+    width: 580px;
+    height: 360px;
+    background:none;
     top:10px;
     margin-left:auto;
     margin-right:auto;
     overflow:hidden;
     overflow-y:auto;
+    background-image: url('/static/img/menu.svg');
+    background-size: 100% 100%;
     }
 
 .z-d {
@@ -324,6 +361,76 @@ width: 28px;
     text-align:center;
 }
 
+.large-item-my{
+    position: relative;
+    width: 400px;
+    height: 60px;
+    margin-left:100px;
+    margin-right:auto;
+    font-size: 17px;
+    border-radius: 5px;
+
+}
+.left-img{
+    float: left;
+    border-right: 2px solid gray;
+    padding-right: 5px;
+}
+
+.error-text{
+    color: #f4b5a9;
+    position: relative;
+    left: 170px;
+    top: 100px;
+    width: 400px;
+
+}
+
+
+.error-img{
+    width:660px;
+    height:330px;
+    background-image: url('/static/img/error.svg');
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.points{
+    position: relative;
+    top: 265px;
+    left: 120px;
+    color: white;
+    font-size: 20px;
+}
+
+.time-svg{
+    position: relative;
+    top: 220px;
+    left: 395px;
+    font-size: 20px;
+    color: white;
+}
+
+.btn-win{
+    position: relative;
+    top: 240px;
+    width: 300px;
+    height: 40px;
+    background: none;
+    color: white;
+    left: 120px;
+    text-align: center;
+    border: none;
+}
+
+
+.win-img{
+    width:536px;
+    height:410px;
+    background-image: url('/static/img/win.svg');
+    margin-left:auto;
+    margin-right:auto;
+}
 
 .up-btn {
     text-decoration: none;

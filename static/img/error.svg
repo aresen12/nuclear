@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="660" height="330" viewBox="0 0 660 330">
+
+  <defs>
+    <!-- Потёртый тёмно-красный металл -->
+    <linearGradient id="panelMetal" x1="0" y1="0" x2="0.15" y2="1">
+      <stop offset="0" stop-color="#512b27"/>
+      <stop offset=".18" stop-color="#38201e"/>
+      <stop offset=".55" stop-color="#241b1a"/>
+      <stop offset="1" stop-color="#3b211e"/>
+    </linearGradient>
+
+    <linearGradient id="redFrame" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff9a83"/>
+      <stop offset=".15" stop-color="#b95042"/>
+      <stop offset=".5" stop-color="#5e2825"/>
+      <stop offset=".85" stop-color="#b14a3c"/>
+      <stop offset="1" stop-color="#321b19"/>
+    </linearGradient>
+
+    <linearGradient id="buttonRed" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d83d30"/>
+      <stop offset=".45" stop-color="#a91510"/>
+      <stop offset="1" stop-color="#590b09"/>
+    </linearGradient>
+
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff7767" stop-opacity=".18"/>
+      <stop offset="1" stop-color="#ff2118" stop-opacity=".02"/>
+    </linearGradient>
+
+    <pattern id="hazardStripes" width="24" height="24"
+             patternUnits="userSpaceOnUse"
+             patternTransform="skewX(-28)">
+      <rect width="24" height="24" fill="#391c1a"/>
+      <rect width="10" height="24" fill="#a9382d"/>
+    </pattern>
+    <pattern id="wear" width="71" height="47"
+             patternUnits="userSpaceOnUse">
+      <circle cx="20" cy="13" r=".8" fill="#e8c1ae" opacity=".3"/>
+      <circle cx="49" cy="40" r="1" fill="#080909" opacity=".5"/>
+        </pattern>
+    <filter id="shadow" x="-15%" y="-15%" width="130%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="7"/>
+      <feOffset dy="5"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope=".7"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="redGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4"/>
+    </filter>
+
+    <g id="screw">
+      <circle r="7" fill="#151513" stroke="#b9a397" stroke-width="1.5"/>
+      <circle r="4.5" fill="#66554c" stroke="#2a201d" stroke-width="1"/>
+      <path d="M-2.5-2.5L2.5 2.5 M2.5-2.5L-2.5 2.5"
+            stroke="#d0b7a5" stroke-width="1"/>
+      <circle cx="-1.5" cy="-1.5" r="1" fill="#f0d8c4"/>
+    </g>
+  </defs>
+
+  <!-- Красное свечение за корпусом -->
+  <rect x="10" y="10" width="640" height="310" rx="9"
+        fill="#f52c20" opacity=".15" filter="url(#redGlow)"/>
+
+  <!-- Наружная металлическая рама -->
+  <g filter="url(#shadow)">
+    <rect x="8" y="8" width="644" height="314" rx="8"
+          fill="url(#redFrame)" stroke="#1a1715" stroke-width="3"/>
+
+    <rect x="15" y="15" width="630" height="300" rx="5"
+          fill="url(#panelMetal)" stroke="#e47c67" stroke-width="1.5"/>
+
+    <rect x="21" y="21" width="618" height="288" rx="3"
+          fill="none" stroke="#120f0e" stroke-width="2"/>
+
+    <!-- Верхняя аварийная полоса -->
+    <rect x="25" y="25" width="610" height="22"
+          fill="url(#hazardStripes)" opacity=".95"/>
+
+
+    <!-- Нижние металлические грани -->
+    <path d="M25 302H635" stroke="#100f0e" stroke-width="2"/>
+    <path d="M28 306H632" stroke="#b05b4c" stroke-width="1" opacity=".8"/>
+ <!-- Лёгкое отражение поверхности -->
+    <rect x="23" y="49" width="614" height="252"
+          fill="url(#glass)"/>
+  </g>
+
+  <!-- Крепёжные винты -->
+  <use href="#screw" x="29" y="29"/>
+  <use href="#screw" x="631" y="29"/>
+  <use href="#screw" x="29" y="301"/>
+  <use href="#screw" x="631" y="301"/>
+
+  <!-- Предупреждающий треугольник -->
+  <g transform="translate(100 133)">
+    <path d="M0-47L51 42H-51Z"
+          fill="#ff382d" opacity=".2" filter="url(#redGlow)"/>
+
+    <path d="M0-43L48 39Q51 44 44 44H-44Q-51 44-48 39Z"
+          fill="#321c19" stroke="#ff6554" stroke-width="4"
+          stroke-linejoin="round"/>
+
+    <path d="M0-32L37 34H-37Z"
+          fill="none" stroke="#b93f34" stroke-width="1.5"/>
+
+    <rect x="-4.5" y="-20" width="9" height="34" rx="4"
+          fill="#ff9c89"/>
+    <circle cx="0" cy="25" r="5" fill="#ff9c89"/>
+    <path d="M-2-19Q0-22 3-18"
+          fill="none" stroke="#ffe0d1" stroke-width="1.5"/>
+  </g>
+
+  <text x="160" y="91"
+        font-family="Arial, sans-serif"
+        font-size="24" font-weight="bold"
+        letter-spacing=".8"
+        fill="#ff6254">
+    КРИТИЧЕСКАЯ АВАРИЯ
+  </text>
+  <!-- Разделительная линия -->
+  <path d="M160 178H610"
+        stroke="#b9473b" stroke-width="1.5"/>
+  <path d="M160 180H610"
+        stroke="#ff8a78" stroke-width=".5" opacity=".6"/>
+
+   <text x="160" y="202"
+        font-family=""
+        font-size="14" fill="#e2d7cf">
+    <tspan x="160" dy="20">Работа энергоблока прекращена.</tspan>
+  </text>
+</svg>

@@ -75,220 +75,12 @@ const errors2 = {
 function global_error(text){
 let div = document.getElementById("global_error_d");
 div.style.display = "block";
-    div.innerHTML = `<div style="margin-left:auto;margin-right:auto; width: fit-content;"><svg xmlns="http://www.w3.org/2000/svg"
-     width="660" height="330" viewBox="0 0 660 330">
-
-  <defs>
-    <!-- Основной металл -->
-    <linearGradient id="panelMetal" x1="0" y1="0" x2=".15" y2="1">
-      <stop offset="0" stop-color="#512b27"/>
-      <stop offset=".18" stop-color="#38201e"/>
-      <stop offset=".55" stop-color="#241b1a"/>
-      <stop offset="1" stop-color="#3b211e"/>
-    </linearGradient>
-
-    <!-- Металлическая рамка -->
-    <linearGradient id="redFrame" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#d1a095"/>
-      <stop offset=".16" stop-color="#8c443a"/>
-      <stop offset=".48" stop-color="#4b2925"/>
-      <stop offset=".8" stop-color="#a84a3e"/>
-      <stop offset="1" stop-color="#35201d"/>
-    </linearGradient>
-
-    <!-- Красная кнопка -->
-    <linearGradient id="buttonRed" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#d83d30"/>
-      <stop offset=".45" stop-color="#a91510"/>
-      <stop offset="1" stop-color="#590b09"/>
-    </linearGradient>
-
-    <!-- Диагональные аварийные полосы -->
-    <pattern id="hazardStripes" width="24" height="24"
-             patternUnits="userSpaceOnUse"
-             patternTransform="skewX(-28)">
-      <rect width="24" height="24" fill="#391c1a"/>
-      <rect width="10" height="24" fill="#a9382d"/>
-    </pattern>
-
-    <!-- Потёртости металла -->
-    <pattern id="wear" width="71" height="47"
-             patternUnits="userSpaceOnUse">
-      <path d="M4 9l9-1 M31 21l13-2 M52 6l5 1
-               M15 39l7-1 M58 34l8-2"
-            stroke="#d5a095" stroke-width=".7" opacity=".22"/>
-      <circle cx="20" cy="13" r=".8"
-              fill="#e8c1ae" opacity=".3"/>
-      <circle cx="49" cy="40" r="1"
-              fill="#080909" opacity=".5"/>
-      <path d="M35 3l-2 4 M7 29l3-2"
-            stroke="#0c0c0b" stroke-width="1" opacity=".55"/>
-    </pattern>
-
-    <!-- Только умеренная тень, без свечения контура -->
-    <filter id="shadow"
-            x="-5%" y="-5%" width="110%" height="115%"
-            color-interpolation-filters="sRGB">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
-      <feOffset dy="2"/>
-      <feComponentTransfer>
-        <feFuncA type="linear" slope=".45"/>
-      </feComponentTransfer>
-      <feMerge>
-        <feMergeNode/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-
-    <!-- Винт -->
-    <g id="screw">
-      <circle r="7" fill="#151513"
-              stroke="#b9a397" stroke-width="1.5"/>
-      <circle r="4.5" fill="#66554c"
-              stroke="#2a201d" stroke-width="1"/>
-      <path d="M-2.5-2.5L2.5 2.5 M2.5-2.5L-2.5 2.5"
-            stroke="#d0b7a5" stroke-width="1"/>
-      <circle cx="-1.5" cy="-1.5" r="1" fill="#f0d8c4"/>
-    </g>
-  </defs>
-
-  <!-- Внешняя рамка с чёткими границами -->
-  <rect x="8.5" y="8.5" width="643" height="313"
-        rx="5" fill="#292321"
-        stroke="#171715" stroke-width="2"/>
-
-  <rect x="13.5" y="13.5" width="633" height="303"
-        rx="3" fill="url(#panelMetal)"
-        stroke="#b65a4b" stroke-width="1.5"/>
-
-  <rect x="18.5" y="18.5" width="623" height="293"
-        rx="2" fill="none"
-        stroke="#e17a68" stroke-width="1"/>
-
-  <rect x="22" y="22" width="616" height="286"
-        rx="1" fill="none"
-        stroke="#171513" stroke-width="1"/>
-
-  <!-- Основная поверхность -->
-  <rect x="23" y="23" width="614" height="283"
-        fill="url(#panelMetal)"/>
-
-  <!-- Верхняя аварийная полоса -->
-  <rect x="25" y="25" width="610" height="22"
-        fill="url(#hazardStripes)"/>
-
-  <path d="M26 49H634"
-        stroke="#ff7765" stroke-width="1.5"/>
-
-  <!-- Нижние металлические грани -->
-  <path d="M25 302H635"
-        stroke="#100f0e" stroke-width="2"/>
-  <path d="M28 306H632"
-        stroke="#b05b4c" stroke-width="1" opacity=".8"/>
-
-  <!-- Поверхностные потёртости -->
-  <rect x="22" y="23" width="616" height="283"
-        fill="url(#wear)" opacity=".8"/>
-
-  <!-- Винты по углам -->
-  <use href="#screw" x="29" y="29"/>
-  <use href="#screw" x="631" y="29"/>
-  <use href="#screw" x="29" y="301"/>
-  <use href="#screw" x="631" y="301"/>
-
-  <!-- Предупреждающий символ -->
-  <g transform="translate(100 133)">
-    <path d="M0-43L48 39Q51 44 44 44H-44Q-51 44-48 39Z"
-          fill="#321c19"
-          stroke="#ff6554" stroke-width="4"
-          stroke-linejoin="round"/>
-
-    <path d="M0-32L37 34H-37Z"
-          fill="none"
-          stroke="#b93f34" stroke-width="1.5"/>
-
-    <rect x="-4.5" y="-20" width="9" height="34"
-          rx="4" fill="#ff9c89"/>
-
-    <circle cx="0" cy="25" r="5" fill="#ff9c89"/>
-
-    <path d="M-2-19Q0-22 3-18"
-          fill="none"
-          stroke="#ffe0d1" stroke-width="1.5"/>
-  </g>
-
-  <!-- ЗАГОЛОВОК -->
-  <text x="160" y="91"
-        font-family="Arial, Helvetica, sans-serif"
-        font-size="24" font-weight="bold"
-        letter-spacing=".8"
-        fill="#ff6254">
-    КРИТИЧЕСКАЯ АВАРИЯ
-  </text>
-
-  <!-- ОСНОВНОЕ СООБЩЕНИЕ -->
-  <text x="160" y="132"
-        font-family="Arial, Helvetica, sans-serif"
-        font-size="24" font-weight="bold"
-        fill="#f3d9d2">
-    ПЕРЕГРЕВ РЕАКТОРА!
-  </text>
-
-  <!-- СТАТУС АВАРИИ -->
-  <text x="160" y="161"
-        font-family="Arial, Helvetica, sans-serif"
-        font-size="17" font-weight="bold"
-        letter-spacing=".4"
-        fill="#f4b5a9">
-    РЕАКТОР УНИЧТОЖЕН
-  </text>
-
-  <!-- Разделитель -->
-  <path d="M160 178H610"
-        stroke="#b9473b" stroke-width="1.5"/>
-  <path d="M160 180H610"
-        stroke="#ff8a78" stroke-width=".5" opacity=".6"/>
-
-  <!-- ОПИСАНИЕ АВАРИИ -->
-  <text x="160" y="202"
-        font-family="Arial, Helvetica, sans-serif"
-        font-size="14" fill="#e2d7cf">
-    <tspan x="160" dy="0">
-      Температура превысила допустимый предел.
-    </tspan>
-    <tspan x="160" dy="20">
-      Работа энергоблока прекращена.
-    </tspan>
-  </text>
-
-  <!-- КНОПКА ПОДТВЕРЖДЕНИЯ -->
-  <g>
-    <rect x="347" y="253" width="205" height="40" onclick="alert('test')"
-          rx="4" fill="#090909"
-          stroke="#160e0d" stroke-width="2"/>
-
-    <rect x="350" y="250" width="199" height="40"
-          rx="4" fill="url(#redFrame)"
-          stroke="#e87967" stroke-width="1.5"/>
-
-    <rect x="356" y="255" width="187" height="30"
-          rx="2" fill="url(#buttonRed)"
-          stroke="#48100d" stroke-width="1.5"/>
-
-    <path d="M362 258H537"
-          stroke="#ff9c88" stroke-width="1" opacity=".8"/>
-  </g>
-
-    <text x="449" y="275"
-        text-anchor="middle"
-        font-family="Arial, sans-serif"
-        font-size="14" fill="#fff0e9">
-    ПРИНЯТЬ
-  </text>
-
-</svg></div>`;
+    div.innerHTML = `<div class="error-img">
+    <p class="error-text">${text}</p>
+    <button id="button_ok" class="global-error-btn">Играть заново</button>
+    </div>`;
 document.getElementById("button_ok").addEventListener("click", e => {
-    alert("test");
+    load_game_from_db();
 
 })
 }
@@ -322,6 +114,22 @@ function show_mnemo_i_j(value, i, j){
     }catch(error){
     }
 }
+
+function game_win(text, points, time){
+    let div = document.getElementById('global_error_d');
+    div.style.display = "block";
+    div.innerHTML = `
+    <div class="win-img">
+    <p class="points">${points}</p>
+    <p class="time-svg">${time} мин</p>
+    <button class="btn-win">Продолжить
+        </button>
+
+</div>
+    `
+
+}
+
 
 
 function my_alert(id_error, text){
@@ -809,7 +617,7 @@ function set_direction_ui(flag, id_div){
 function turn(id_div, flag, text=""){
     if (flag){
         document.getElementById(id_div).innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg"  height="55" viewBox="8 6 752 435">
+       <svg xmlns="http://www.w3.org/2000/svg"  height="55" viewBox="8 6 752 435">
   <defs>
     <linearGradient id="plate" x1="0" y1="0" x2=".9" y2="1">
       <stop offset="0" stop-color="#a6a499"/>
@@ -845,7 +653,9 @@ function turn(id_div, flag, text=""){
       <stop offset="0" stop-color="#242520"/>
       <stop offset="1" stop-color="#11120f"/>
     </linearGradient>
-
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%">
+      <feGaussianBlur stdDeviation="7"/>
+    </filter>
     <filter id="softShadow" x="-30%" y="-30%" width="160%" height="170%">
       <feGaussianBlur stdDeviation="3"/>
     </filter>
@@ -859,9 +669,9 @@ function turn(id_div, flag, text=""){
 
   <!-- Панель без лишних полей -->
   <rect x="8" y="6" width="752" height="500" rx="21"
-        fill="none" stroke="#55568e" stroke-width="3"/>
+        fill="none" stroke="#55564e" stroke-width="3"/>
   <rect x="17" y="15" width="734" height="482" rx="17"
-        fill="none" stroke="#c3c0ae" stroke-width="3"/>
+        fill="none" stroke="#4d4e47" stroke-width="3"/>
   <rect x="28" y="25" width="712" height="462" rx="13"
         fill="none" stroke="#d0cdbb" stroke-width="3" opacity=".75"/>
   <rect x="34" y="31" width="700" height="450" rx="10"
@@ -877,7 +687,7 @@ function turn(id_div, flag, text=""){
      font-weight="bold" fill="#24251f" text-anchor="middle">
     <text x="156" y="231" font-size="84">ВКЛ</text>
   </g>
-    <g transform="translate(200, 580)">
+ <g transform="translate(200, 580)">
  <g transform="rotate(-90)">
   <!-- Круглое основание -->
   <ellipse cx="384" cy="180" rx="119" ry="123"
@@ -920,8 +730,7 @@ function turn(id_div, flag, text=""){
   <circle cx="384" cy="194" r="4.5"
           fill="#e1ddcc" stroke="#66675d" stroke-width="1.5"/>
   <circle cx="382" cy="192" r="1.5" fill="#fff" opacity=".8"/>
- </g>
-    </g>
+ </g></g>
   <!-- Табличка АЗ-5 -->
   <rect x="225" y="330" width="322" height="108" rx="10"
         fill="#33342e" opacity=".65"/>

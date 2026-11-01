@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg"  height="55" viewBox="8 6 752 435">
+  <defs>
+    <linearGradient id="plate" x1="0" y1="0" x2=".9" y2="1">
+      <stop offset="0" stop-color="#a6a499"/>
+      <stop offset=".48" stop-color="#89887e"/>
+      <stop offset="1" stop-color="#77776e"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#53544d"/>
+      <stop offset=".25" stop-color="#b1b09f"/>
+      <stop offset=".75" stop-color="#77776b"/>
+      <stop offset="1" stop-color="#44463f"/>
+    </linearGradient>
+    <linearGradient id="steel" x1="0" y1="0" x2="1" y2=".8">
+      <stop offset="0" stop-color="#34352f"/>
+      <stop offset=".2" stop-color="#a6a494"/>
+      <stop offset=".43" stop-color="#77766b"/>
+      <stop offset=".7" stop-color="#b8b5a4"/>
+      <stop offset="1" stop-color="#34352f"/>
+    </linearGradient>
+    <radialGradient id="disc" cx=".38" cy=".32" r=".75">
+      <stop offset="0" stop-color="#aaa797"/>
+      <stop offset=".65" stop-color="#77766c"/>
+      <stop offset="1" stop-color="#44453f"/>
+    </radialGradient>
+    <linearGradient id="handle" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#111210"/>
+      <stop offset=".18" stop-color="#343530"/>
+      <stop offset=".45" stop-color="#1d1e1b"/>
+      <stop offset=".8" stop-color="#10110f"/>
+      <stop offset="1" stop-color="#050605"/>
+    </linearGradient>
+    <linearGradient id="label" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#242520"/>
+      <stop offset="1" stop-color="#11120f"/>
+    </linearGradient>
+
+    <filter id="softShadow" x="-30%" y="-30%" width="160%" height="170%">
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
+    <g id="screw">
+      <circle r="12" fill="#44453f" stroke="#c7c4b3" stroke-width="3"/>
+      <circle r="8" fill="#20211e" stroke="#77776b" stroke-width="1.5"/>
+      <circle r="4.5" fill="#090a08"/>
+      <path d="M-3-3L3 3" stroke="#77786d" stroke-width="1.5"/>
+    </g>
+  </defs>
+
+  <!-- Панель без лишних полей -->
+<!--  <rect x="8" y="6" width="752" height="500" rx="21"-->
+<!--        fill="none" stroke="#55568e" stroke-width="3"/>-->
+  <rect x="17" y="15" width="734" height="482" rx="17"
+        fill="none" stroke="#c3c0ae" stroke-width="3"/>
+  <rect x="28" y="25" width="712" height="462" rx="13"
+        fill="none" stroke="#d0cdbb" stroke-width="3" opacity=".75"/>
+  <rect x="34" y="31" width="700" height="450" rx="10"
+        fill="none" stroke="#65665d" stroke-width="1.5"/>
+
+  <use href="#screw" x="34" y="33"/>
+  <use href="#screw" x="734" y="33"/>
+  <use href="#screw" x="34" y="479"/>
+  <use href="#screw" x="734" y="479"/>
+
+  <!-- Подписи -->
+  <g font-family="Arial, Helvetica, sans-serif"
+     font-weight="bold" fill="#24251f" text-anchor="middle">
+    <text x="156" y="231" font-size="84">ВКЛ</text>
+  </g>
+    <g transform="translate(200, 580)">
+ <g transform="rotate(-90)">
+  <!-- Круглое основание -->
+  <ellipse cx="384" cy="180" rx="119" ry="123"
+           fill="#141511" opacity=".4" filter="url(#shadow)"/>
+  <circle cx="384" cy="196" r="113"
+          fill="#282923" stroke="#42433c" stroke-width="5"/>
+  <circle cx="384" cy="196" r="106"
+          fill="url(#steel)" stroke="#292a25" stroke-width="3"/>
+  <circle cx="384" cy="196" r="94"
+          fill="url(#disc)" stroke="#c1beac" stroke-width="3"/>
+  <circle cx="384" cy="196" r="89"
+          fill="none" stroke="#56574f" stroke-width="2"/>
+  <circle cx="384" cy="206" r="101"
+          fill="none" stroke="#dedbca" stroke-width="1.5" opacity=".6"/>
+
+  <!-- Рукоятка -->
+  <rect x="353" y="60" width="67" height="260" rx="29"
+        fill="#080908" opacity=".7" filter="url(#softShadow)"/>
+  <rect x="354" y="62" width="60" height="254" rx="27"
+        fill="#080908" stroke="#252621" stroke-width="4"/>
+  <rect x="359" y="67" width="50" height="244" rx="23"
+        fill="url(#handle)" stroke="#090a08" stroke-width="2"/>
+  <rect x="363" y="72" width="4" height="232" rx="2"
+        fill="#77786e" opacity=".6"/>
+  <path d="M370 119Q374 111 386 112"
+        fill="none" stroke="#9b9a8d" stroke-width="2"
+        stroke-linecap="round" opacity=".8"/>
+  <path d="M402 120V335"
+        fill="none" stroke="#050605" stroke-width="2"/>
+
+  <!-- Стрелка -->
+  <path d="M384 89L370 127H379V159H389V127H398Z"
+        fill="#e5e0cb" stroke="#c8c3b1" stroke-width="1.5"/>
+
+  <!-- Центральный фиксатор -->
+  <circle cx="384" cy="194" r="17"
+          fill="#10110f" stroke="#4c4d45" stroke-width="3"/>
+  <circle cx="384" cy="194" r="11"
+          fill="url(#steel)" stroke="#191a17" stroke-width="2"/>
+  <circle cx="384" cy="194" r="4.5"
+          fill="#e1ddcc" stroke="#66675d" stroke-width="1.5"/>
+  <circle cx="382" cy="192" r="1.5" fill="#fff" opacity=".8"/>
+ </g>
+    </g>
+  <!-- Табличка АЗ-5 -->
+  <rect x="225" y="330" width="322" height="108" rx="10"
+        fill="#33342e" opacity=".65"/>
+  <rect x="226" y="331" width="316" height="108" rx="10"
+        fill="url(#edge)" stroke="#41423b" stroke-width="2"/>
+  <rect x="231" y="336" width="306" height="98" rx="7"
+        fill="url(#label)" stroke="#d0cbb8" stroke-width="2.5"/>
+  <rect x="227" y="332" width="314" height="96" rx="4"
+        fill="none" stroke="#55564c" stroke-width="1"/>
+
+  <text x="384" y="410" text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="100" font-weight="bold"
+        letter-spacing="2" fill="#e0dac5">${text}</text>
+
+</svg>

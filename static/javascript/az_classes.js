@@ -103,7 +103,7 @@ class Az{
         this.current_errors = [[], [], []];
         this.temporary_alert = [];
         this.period_power = 0;
-        this.last_power = this.reactor.thermal_power;
+        this.last_power = this.reactor.physical.thermal_power;
         this.last_bs1_level = this.reactor.bs1.v_inBS;
         this.last_bs2_level = this.reactor.bs2.v_inBS;
         this.ozr_ar = 0;
@@ -245,10 +245,10 @@ class Az{
     update_ar(){
         if (this.ar && this.power_SYZ){
             if (this.reactor.physical.thermal_power / 1e6 > 2850 && this.power_ar / 1e6 == 3200){
-                let r = (this.physical.thermal_power - this.power_ar) / 1e6;
+                let r = (this.reactor.physical.thermal_power - this.power_ar) / 1e6;
                 if (r < 0){
                     if (this.period_power < 0){
-                        set_pos_ar_d_h_p(1, 1);
+                        this.set_pos_ar_d_h_p(1, 1);
                     } else {
                         if (this.period_power > 4){
                             this.set_pos_ar_on_h_p(2, 1);
@@ -257,7 +257,7 @@ class Az{
                         }
                     }
                 } else {
-                    if (this.reactor.thermal_power / 1e6 > 3200){
+                    if (this.reactor.physical.thermal_power / 1e6 > 3200){
                         if (this.period_power > 0.7){
                             this.set_pos_ar_on_h_p(1, 4);
                         } else if (this.period_power >= -2){
@@ -268,9 +268,9 @@ class Az{
                     }
                 }
             } else {
-                if (this.reactor.rho_total > 0.0005){
-                    this.set_position_ar(-1, calculate_speed_ar_rho(this.reactor.rho_total));
-                } else if (this.period_power > 7 && this.reactor.rho_total > 0) {
+                if (this.reactor.physical.rho_total > 0.0005){
+                    this.set_position_ar(-1, calculate_speed_ar_rho(this.reactor.physical.rho_total));
+                } else if (this.period_power > 7 && this.reactor.physical.rho_total > 0) {
                     this.set_position_ar(-1, calculate_speed_ar_power_speed(this.period_power));
                 } else if (this.reactor.physical.thermal_power > this.power_ar && this.period_power > 0){
                     let r = (this.reactor.physical.thermal_power - this.power_ar) / 1e6;

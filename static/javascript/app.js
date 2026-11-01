@@ -139,6 +139,7 @@ function save_game(){
 
 function load_data_DB(json){
     load_data(json);
+    re.az.last_power = re.physical.thermal_power;
     re.physical.precursors = json["precursors"];
     re.physical.void_fraction = json["void_fraction"];
     re.physical.coolant_temp = json["coolant_temp"];
@@ -156,6 +157,7 @@ function load_data_DB(json){
 
 function load_game_from_db(){
     if (room_id == "not_auth"){
+        re.constructor();
         return;
     }
     $.ajax({
@@ -167,6 +169,7 @@ function load_game_from_db(){
         console.log(json);
         if (json){
             load_data_DB(json);
+
             setup_UI(re);
             show_mnemo(re);
         } else {
@@ -209,7 +212,7 @@ function load_data(data){
     re.direction = data["direction"];
     re.physical.fuel_temp = data["fuel_temp"];
     re.physical.outlet_temp = data["outlet_temp"];
-    re.T_2_H2O = data["T_2_H2O"];
+    re.physical.T_2_H2O = data["T_2_H2O"];
     re.sterg = data["sterg"];
     re.physical.ozr = data["ozr"];
     re.physical.graphite_temp = data["graphite_temp"];
@@ -248,4 +251,5 @@ function load_data(data){
     re.rdg2.work = data["rdg2"]["work"];
     re.rdg2.direction = data["rdg2"]["direction"];
     re.rdg2.power_e = data["rdg2"]["power_e"];
+    console.log(re.physical.thermal_power)
 }

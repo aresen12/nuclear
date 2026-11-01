@@ -1,0 +1,202 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="536" viewBox="423 242 692 531">
+  <defs>
+    <!-- Металл корпуса -->
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#77786d"/>
+      <stop offset=".25" stop-color="#424740"/>
+      <stop offset=".55" stop-color="#303630"/>
+      <stop offset=".8" stop-color="#55594f"/>
+      <stop offset="1" stop-color="#252a25"/>
+    </linearGradient>
+
+    <linearGradient id="edge" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e0ddc9"/>
+      <stop offset=".3" stop-color="#77796e"/>
+      <stop offset=".7" stop-color="#3d423c"/>
+      <stop offset="1" stop-color="#aaa995"/>
+    </linearGradient>
+
+    <!-- Зелёная табличка -->
+    <linearGradient id="greenPlate" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#245f3d"/>
+      <stop offset=".45" stop-color="#104b2d"/>
+      <stop offset="1" stop-color="#07321f"/>
+    </linearGradient>
+
+    <!-- Кнопка -->
+    <linearGradient id="button" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#267e4c"/>
+      <stop offset=".5" stop-color="#126139"/>
+      <stop offset="1" stop-color="#07351f"/>
+    </linearGradient>
+
+    <radialGradient id="successLight">
+      <stop offset="0" stop-color="#66ff91"/>
+      <stop offset=".65" stop-color="#18b950"/>
+      <stop offset="1" stop-color="#075324"/>
+    </radialGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
+
+    <filter id="greenGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="9" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <g id="screw">
+      <circle r="12" fill="#161a16" stroke="#b5b19e" stroke-width="3"/>
+      <circle r="7" fill="#858477" stroke="#30342e" stroke-width="1.5"/>
+      <path d="M-4-4L4 4M4-4L-4 4"
+            stroke="#292d27" stroke-width="2.5"/>
+      <circle cx="-3" cy="-3" r="1.5" fill="#e2ddc9"/>
+    </g>
+
+    <g id="smallScrew">
+      <circle r="7" fill="#171b16" stroke="#aaa895" stroke-width="2"/>
+      <path d="M-3-3L3 3M3-3L-3 3"
+            stroke="#242923" stroke-width="1.5"/>
+    </g>
+  </defs>
+  <!-- Внешний корпус -->
+  <rect x="423" y="242" width="692" height="531" rx="14"
+        fill="#111511" stroke="#151a15" stroke-width="7"/>
+
+  <rect x="428" y="246" width="682" height="523" rx="11"
+        fill="url(#edge)" stroke="#b5b19d" stroke-width="2"/>
+
+  <rect x="437" y="255" width="664" height="505" rx="7"
+        fill="url(#metal)" stroke="#222820" stroke-width="3"/>
+
+  <rect x="437" y="255" width="664" height="505" rx="7"
+        fill="url(#scratches)" opacity=".85"/>
+
+  <!-- Внутренняя рамка -->
+  <rect x="451" y="269" width="636" height="477" rx="5"
+        fill="none" stroke="#aaa996" stroke-width="2"/>
+  <rect x="457" y="275" width="624" height="465" rx="4"
+        fill="none" stroke="#242a24" stroke-width="2"/>
+
+  <!-- Винты корпуса -->
+  <use href="#screw" x="449" y="265"/>
+  <use href="#screw" x="1087" y="265"/>
+  <use href="#screw" x="449" y="748"/>
+  <use href="#screw" x="1087" y="748"/>
+  <!-- Зелёная верхняя табличка -->
+  <rect x="458" y="270" width="620" height="83" rx="8"
+        fill="#06180e" stroke="#111b12" stroke-width="4"/>
+  <rect x="463" y="275" width="610" height="73" rx="5"
+        fill="url(#greenPlate)" stroke="#a8b89d" stroke-width="2"/>
+  <!-- Диагональная предупреждающая разметка -->
+  <g clip-path="url(#headerClip)">
+  </g>
+  <path d="M475 342L520 276H541L496 342Z
+           M525 342L570 276H591L546 342Z
+           M1015 342L1060 276H1070V290L1035 342Z"
+        fill="#65a56c" opacity=".12"/>
+  <rect x="463" y="275" width="610" height="73" rx="5"
+        fill="url(#scratches)" opacity=".6"/>
+  <text x="768" y="326"
+        font-family="Arial, sans-serif"
+        font-size="39"
+        font-weight="bold"
+        letter-spacing="2"
+        text-anchor="middle"
+        fill="#d8e8d5"
+        stroke="#244b2d"
+        stroke-width="1">ЗАДАЧА ВЫПОЛНЕНА</text>
+
+  <use href="#smallScrew" x="475" y="287"/>
+  <use href="#smallScrew" x="1061" y="287"/>
+  <use href="#smallScrew" x="475" y="336"/>
+  <use href="#smallScrew" x="1061" y="336"/>
+
+  <!-- Основной информационный блок -->
+  <rect x="470" y="373" width="594" height="159" rx="5"
+        fill="#151c17" fill-opacity=".65"
+        stroke="#969985" stroke-width="1.5"/>
+
+  <!-- Круглый индикатор успеха -->
+  <circle cx="546" cy="444" r="65"
+          fill="#06150c" stroke="#101c12" stroke-width="5"/>
+
+  <circle cx="546" cy="444" r="56"
+          fill="url(#successLight)"
+          stroke="#8da991" stroke-width="4"
+          filter="url(#greenGlow)"/>
+
+  <circle cx="546" cy="444" r="47"
+          fill="none" stroke="#b9e5bd"
+          stroke-width="2" opacity=".8"/>
+
+  <!-- Галочка -->
+  <path d="M515 443L537 464L577 421"
+        fill="none" stroke="#d8ffe0"
+        stroke-width="13"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+
+  <path d="M515 443L537 464L577 421"
+        fill="none" stroke="#40d86b"
+        stroke-width="6"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+  <text x="644" y="463"
+        font-family="Arial, sans-serif"
+        font-size="19"
+        fill="#eeeeea">Задача успешно выполнена.</text>
+
+  <text x="644" y="491"
+        font-family="Arial, sans-serif"
+        font-size="19"
+        fill="#eeeeea">Реактор работает в заданном режиме.</text>
+
+  <!-- Разделитель -->
+  <path d="M473 527H1062" stroke="#7c9b79" stroke-width="1.5"/>
+
+  <!-- Блок статистики -->
+  <rect x="470" y="528" width="594" height="104" rx="3"
+        fill="#111a14" fill-opacity=".55"
+        stroke="#687b65" stroke-width="1"/>
+
+  <!-- Звезда -->
+  <path d="M520 553
+           L529 570 L548 573
+           L534 587 L537 606
+           L520 597 L503 606
+           L506 587 L492 573
+           L511 570 Z"
+        fill="#f5c84b" stroke="#ffe49a" stroke-width="2"/>
+
+  <text x="566" y="568"
+        font-family="Arial, sans-serif"
+        font-size="14"
+        fill="#deded3">ПОЛУЧЕНО ОЧКОВ</text>
+
+  <!-- Вертикальный разделитель -->
+  <path d="M768 550V606" stroke="#66846c" stroke-width="2"/>
+
+  <!-- Часы -->
+  <circle cx="836" cy="579" r="20"
+          fill="none" stroke="#e6bd55" stroke-width="5"/>
+  <path d="M836 566V580L847 586"
+        fill="none" stroke="#f3d47e"
+        stroke-width="3" stroke-linecap="round"/>
+
+  <text x="882" y="568"
+        font-family="Arial, sans-serif"
+        font-size="14"
+        fill="#deded3">ВРЕМЯ ВЫПОЛНЕНИЯ</text>
+
+  <!-- Кнопка продолжения -->
+  <rect x="600" y="661" width="336" height="78" rx="7"
+        fill="#07130b" stroke="#050a06" stroke-width="5"/>
+
+  <rect x="605" y="666" width="326" height="68" rx="5"
+        fill="url(#button)" stroke="#a2d3a6" stroke-width="2"
+        filter="url(#greenGlow)"/>
+
+</svg>
