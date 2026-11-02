@@ -81,7 +81,7 @@ div.style.display = "block";
     </div>`;
 document.getElementById("button_ok").addEventListener("click", e => {
     load_game_from_db();
-
+    document.getElementById("global_error_d").style.display = "none";
 })
 }
 
@@ -127,9 +127,20 @@ function game_win(text, points, time){
 
 </div>
     `
-
 }
 
+
+function game_over(text, points, time){
+    let div = document.getElementById('global_error_d');
+    div.style.display = "block";
+    div.innerHTML = `
+    <div class="game-over">
+
+        </button>
+
+</div>
+    `
+    }
 
 
 function my_alert(id_error, text){
@@ -916,19 +927,21 @@ function select_game_menu(){
 
 function gener_select_task_menu(tasks){
     let cont = document.getElementById("select_task");
+    document.getElementById("cont_task_mode").style.display = "block";
+    document.getElementById("select").style.display = "none";
     var k = Object.keys(tasks);
     k.sort();
     for (i = 0; i < k.length; i++){
-        cont.innerHTML += `<div onclick="game.set_task(${k[i]})" class="card" style="width: 18rem;">
+        cont.innerHTML += `<div onclick="game.view_task(${k[i]})" class="card" style="width: 18rem;">
   <div class="card-body">
-    <h5 class="card-title">Задания</h5>
-    <h6 class="card-subtitle mb-2 text-body-secondary">За выполнение ${tasks[k[i]]["points"]} очков</h6>
+  <!--  <h6 class="card-subtitle mb-2 text-body-secondary">За выполнение ${tasks[k[i]]["points"]} очков</h6> --!>
     <p class="card-text">${tasks[k[i]]["text"]}</p>
-    <p class="card-text">Время на выполнение ${tasks[k[i]]["time"]}с.</p>
+   <!-- <p class="card-text">Время на выполнение ${tasks[k[i]]["time"]}с.</p>--!>
 
   </div>
 </div>`;
     }
+
 }
 
 

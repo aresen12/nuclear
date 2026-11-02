@@ -2,13 +2,15 @@ class Game{
     constructor(type=0, inaccuracy=0.01){
     this.win = false;
             this.tasks = {
-  "1": {
-    "text": "Вывести реактор на проектную мощность 3200 мвт тепловых.",
-    "points": 80,
-    "time": 900,
-    "time_work": 30, "condition": "w1600"
+    "1": {
+        "title": "Вывод на мощность",
+        "text": "Вывести реактор на проектную мощность 3200 мвт тепловых.",
+        "points": 80,
+        "time": 900,
+        "time_work": 30, "condition": "w1600"
   },
   "2": {
+    "title": "Вывод на мощность",
     "text": "вывести реактор на мощность 1600 мвт и подключить тг1",
     "points": 75,
     "time": 900,
@@ -16,6 +18,7 @@ class Game{
     , "condition": "w0"
   },
   "3": {
+    "title": "Стабилизация мощности",
     "text": "Удержать реактор на мощности 3200 Мвт",
     "points": 80,
     "time": 600,
@@ -23,20 +26,23 @@ class Game{
     "condition": "w3200"
   },
   "4": {
-    "text": "Уменшить мощность реактора с 3200 мвт до 1600. У удержать реактор в стабильном состоянии 2 мин",
-    "points": 75,
+      "title": "1600 МВт",
+      "text": "Уменьшить мощность реактора с 3200 мвт до 1600. У удержать реактор в стабильном состоянии 2 мин",
+      "points": 75,
     "time": 600,
     "time_work": 60,
     "condition": "w3200"
   },
   "5": {
-    "text": "Перевести реактор в аварийное состояние: снизить мощность до 100мвт и перевести питание на генераторы",
+    "title": "Авария",
+    "text": "Перевести реактор в аварийное состояние: снизить мощность до 200мвт и перевести питание на генераторы",
     "points": 90,
     "time": 600,
     "time_work": 60,
     "condition": "w1600"
   },
   "6": {
+    "title": "Вывод на МКУ",
     "text": "Вывести реактор на Минимально контролируемую мощность(МКУ = 20 МВт) и удерживать 1 мин",
     "points": 10,
     "time": 600,
@@ -66,7 +72,7 @@ class Game{
         if (this.type != 3 && !reactor.pause && this.id_task != 0){
             this.global_time++;
             if (this.check_end_game(reactor)){
-                alert("Проиграли")
+                game_over("Проиграли");
                 reactor.pause = true;
                 return;
             }
@@ -96,8 +102,18 @@ class Game{
 
     }
 
+
+    view_task(id_task){
+        document.getElementById("points_view").textContent = this.tasks[id_task]["points"];
+        document.getElementById("text_view_task").textContent = this.tasks[id_task]["text"];
+        document.getElementById("title_view").textContent = this.tasks[id_task]["title"];
+        document.getElementById("time_view").textContent = this.tasks[id_task]["time"];
+        document.getElementById("start_task").setAttribute("onclick", `game.set_task(${id_task})`);
+}
+
     check_end_game(reactor){
-        if (reactor.physical.thermal_power /1e6 >= 3300){
+
+        if (reactor.physical.thermal_power /1e6 >= 3300 || reactor.az.az_5 || reactor.az.az_b){
             return true;
         }
         if (this.global_time > this.tasks[this.id_task]["time"]){
@@ -162,16 +178,13 @@ function send_win(){
 
 
 function check_win1(reactor){
-    console.log(reactor.thermal_power / 1e6 )
     if (reactor.physical.thermal_power / 1e6 >= 10 && reactor.physical.thermal_power / 1e6 < 11){
-
         return true;
     }
     return false;
 }
 
 function check_win2(reactor){
-    console.log(reactor.thermal_power / 1e6 )
     if (reactor.physical.thermal_power / 1e6 >= 10 && reactor.physical.thermal_power / 1e6 < 11){
         return true;
     }
@@ -180,7 +193,6 @@ function check_win2(reactor){
 
 
 function check_win3(reactor){
-    console.log(reactor.thermal_power / 1e6 )
     if (reactor.physical.thermal_power / 1e6 >= 3170 && reactor.physical.thermal_power / 1e6 < 3300){
         return true;
     }
@@ -197,7 +209,7 @@ function check_win4(reactor){
 
 
 function check_win5(reactor){
-    if (reactor.physical.thermal_power / 1e6 >= 98  && reactor.physical.thermal_power / 1e6 < 103){
+    if (reactor.physical.thermal_power / 1e6 >= 198  && reactor.physical.thermal_power / 1e6 < 203){
         flag = true;
         var k = Object.keys(reactor.gcn);
         for (i = 0; i < k.length; i++){

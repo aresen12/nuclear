@@ -452,7 +452,7 @@ class Az{
                 this.az5();
                 this.azs_start();
             }
-            if (this.physical.thermal_power > 700){
+            if (this.reactor.physical.thermal_power > 700){
 //                this.azs_start();
             }
         }

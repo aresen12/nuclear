@@ -27,7 +27,7 @@ class Teacher{
              "p_syz_toolip");
              this.toolip.push("p_syz_toolip");
             }
-            if (this.reactor.rho_total > 0 || this.reactor.thermal_power / 1e6 > 5){
+            if (this.reactor.physical.rho_total > 0 || this.reactor.physical.thermal_power / 1e6 > 5){
                 this.next();
             }
         }

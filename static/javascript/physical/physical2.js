@@ -499,6 +499,7 @@ class Modal2 {
 
 
     update(ozr_pct, m_left, m_right, T_left, T_right){
+//        m_left = this.m_left
         let ozr2 = [];
         for(let i = 0; i < ozr_pct.length; i++){
             for(let j = 0; j < ozr_pct[i].length; j++){

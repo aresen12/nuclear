@@ -137,9 +137,18 @@ function save_game(){
 });
 }
 
+
+function go_scale(){
+    window.open(`/skala/${room_id}`, '_blank', 'location=yes,scrollbars=yes,status=yes');
+}
+
+
 function load_data_DB(json){
     load_data(json);
     re.az.last_power = re.physical.thermal_power;
+    re.az.period_power = 0;
+    re.az.az_5 = false;
+    re.az.az_b = false;
     re.physical.precursors = json["precursors"];
     re.physical.void_fraction = json["void_fraction"];
     re.physical.coolant_temp = json["coolant_temp"];
