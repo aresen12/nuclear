@@ -930,17 +930,14 @@ function select_game_menu(){
 
 function gener_select_task_menu(tasks){
     let cont = document.getElementById("select_task");
-    document.getElementById("cont_task_mode").style.display = "block";
+    document.getElementById("cont_task_mode").style.display = "flex";
     document.getElementById("select").style.display = "none";
     var k = Object.keys(tasks);
     k.sort();
     for (i = 0; i < k.length; i++){
         cont.innerHTML += `<div onclick="game.view_task(${k[i]})" class="card" style="width: 18rem;">
   <div class="card-body">
-  <!--  <h6 class="card-subtitle mb-2 text-body-secondary">За выполнение ${tasks[k[i]]["points"]} очков</h6> --!>
     <p class="card-text">${tasks[k[i]]["text"]}</p>
-   <!-- <p class="card-text">Время на выполнение ${tasks[k[i]]["time"]}с.</p>--!>
-
   </div>
 </div>`;
     }

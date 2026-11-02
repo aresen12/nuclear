@@ -367,21 +367,6 @@ width: 28px;
     padding: 10px;
 }
 
-.btn-warning{
-    background:#ffc107;
-}
-.btn-danger {
-    background:#dc3545;
-}
-
-.btn-success{
-    background: #198754;
-}
-
-.btn-primary{
-    background:#0d6efd;
-    color:white;
-}
 
 .tooltip {
   color: #fff;
