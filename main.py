@@ -12,6 +12,7 @@ from reactor import rs
 from wiki import wiki
 from forum import forum
 from events_io import socketio
+from config import port, db_name, host, debug
 
 application = Flask(__name__)
 application.config['SECRET_KEY'] = 'certificate'
@@ -34,7 +35,7 @@ def logout():
     return redirect("/")
 
 
-db_session.global_init('db/master.db')
+db_session.global_init(db_name)
 application.register_blueprint(rs)
 application.register_blueprint(wiki)
 application.register_blueprint(forum)
@@ -243,4 +244,4 @@ def page_not_found(e):
 
 
 if __name__ == "__main__":
-    socketio.run(application, host='0.0.0.0', debug=True, allow_unsafe_werkzeug=True, port=8000)
+    socketio.run(application, host=host, debug=debug, allow_unsafe_werkzeug=True, port=port)
