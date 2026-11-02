@@ -382,6 +382,7 @@ function start_UI(reactor){
     }
     var k = Object.keys(reactor.gcn);
     for (i = 0; i < k.length; i++){
+        turn(`${k[i]}_btn`, reactor.gcn[k[i]].work, reactor.gcn[k[i]].name);
         ui_power_source(reactor.gcn[k[i]].source_power, k[i]);
         if (!reactor.gcn[k[i]].work){
             start_alert(`${reactor.gcn[k[i]].id_pump}_turn_down`);
@@ -389,6 +390,8 @@ function start_UI(reactor){
             stop_alert(`${reactor.gcn[k[i]].id_pump}_turn_down`);
         }
     }
+     turn(`t1_t_btn`, reactor.t1.work, "");
+     turn(`t2_t_btn`, reactor.t2.work, "");
     if(!reactor.rdg1.work){
         start_alert(`turn_down_${reactor.rdg1.id_rdg}`);
     } else {
