@@ -912,20 +912,6 @@ function turn(id_div, flag, text=""){
 }
 
 
-function ui_direction(direction){
-    if (direction == 1){
-        ui_power("up_direction", true);
-        ui_power("down_direction", false);
-    } else if (direction == -1){
-        ui_power("up_direction", false);
-        ui_power("down_direction", true);
-    } else {
-        ui_power("up_direction", false);
-        ui_power("down_direction", false);
-    }
-}
-
-
 function ui_power_source(number, id_pump){
     for (let i = 1; i < 6; i++){
         if (number == i){
@@ -944,7 +930,7 @@ function select_game_menu(){
 
 function gener_select_task_menu(tasks){
     let cont = document.getElementById("select_task");
-    document.getElementById("cont_task_mode").style.display = "flex";
+    document.getElementById("cont_task_mode").style.display = "block";
     document.getElementById("select").style.display = "none";
     var k = Object.keys(tasks);
     k.sort();
