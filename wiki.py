@@ -58,6 +58,7 @@ def page_wiki(name_page):
     db_sess = db_session.create_session()
     page = db_sess.query(Page).filter(Page.name_english == name_page).first()
     if page is None:
+        db_sess.close()
         return abort(404)
     page.cnt_read += 1
     name = page.name

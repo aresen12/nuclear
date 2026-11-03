@@ -44,8 +44,6 @@ def on_join(data):
 @socketio.on('room_message')
 def room_message(data):
     db_sess = db_session.create_session()
-    chat = db_sess.query(Chat).filter(Chat.id == data["room"]).first()
-    chat: Chat
     if current_user.is_authenticated:
         my_sess = SessionDB(f"db/chats/chat{data['room'][4:]}.db")
         mess = new_mess(data['message'], current_user.id, current_user.name, data["html"])
@@ -58,9 +56,6 @@ def room_message(data):
                          "type": mess.type.value}, to=data['room'])
     db_sess.close()
 
-
-# @socketio.on("join_main_player")
-# def join_main_player():
 
 @socketio.on("emoji")
 def send_emoji(data):
@@ -79,13 +74,11 @@ def on_leave(data):
     leave_room(room)
     db_sess = db_session.create_session()
     r = db_sess.query(Reactor).filter(Reactor.id == room).first()
-    print("leave", r.cnt_player)
     if r.cnt_player - 1 > 0:
         r.cnt_player -= 1
     else:
         r.cnt_player = 0
         r.activiti = False
-    print("leave2", r.cnt_player)
     db_sess.commit()
     db_sess.close()
     if current_user.is_authenticated:
@@ -134,8 +127,6 @@ def handle_disconnect():
             print("leave2", r.cnt_player)
             db_sess.commit()
         db_sess.close()
-        # if request.namespace and room in socketio.server.rooms[request.namespace]:
-        print("test")
 
 
 @socketio.on("chosen_current")
