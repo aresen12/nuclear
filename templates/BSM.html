@@ -906,11 +906,139 @@
             <div class="up-panel">
 
                 <div style="display:flex;">
-                    <canvas class="bs-graf" id="bs1" width="290px" height="100px"></canvas>
-                    <canvas class="bs-graf" id="bs2" width="290px" height="100px"></canvas>
+                    <canvas class="bs-graf" id="bs1" width="644px" height="90px"></canvas>
+                    <canvas class="bs-graf" id="bs2" width="644px" height="100px"></canvas>
 
                 </div>
                 <div id="canvas_cont"></div>
+                <div class="errors-table flex-div">
+                    <div>
+                        <div id="h_lower_water_level_BS1" onclick="show_hints(this.id)" class="alert-error max-class">H
+                            БС1
+                            <svg height="14" viewBox="8 7 8 10" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                   stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path d="M12 16L12 8" stroke="#323232" stroke-width="2"
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round"></path>
+                                    <path d="M9 13L11.913 15.913V15.913C11.961 15.961 12.039 15.961 12.087 15.913V15.913L15 13"
+                                          stroke="#323232"
+                                          stroke-width="2" stroke-linecap="round"
+                                          stroke-linejoin="round"></path>
+                                </g>
+                            </svg>
+                            0.75
+                        </div>
+                        <div id="h_lower_water_level_BS2" onclick="show_hints(this.id)" class="alert-error max-class">H
+                            БС2
+                            <svg height="14" viewBox="8 7 8 10" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                   stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path d="M12 16L12 8" stroke="#323232" stroke-width="2"
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round"></path>
+                                    <path d="M9 13L11.913 15.913V15.913C11.961 15.961 12.039 15.961 12.087 15.913V15.913L15 13"
+                                          stroke="#323232"
+                                          stroke-width="2" stroke-linecap="round"
+                                          stroke-linejoin="round"></path>
+                                </g>
+                            </svg>
+                            0.75
+                        </div>
+
+                    </div>
+                    <div>
+                        <div id="level_down1" class="alert-error" onclick="show_hints(this.id)">Cброс БС1</div>
+                        <div id="level_down2" class="alert-error" onclick="show_hints(this.id)">Cброс БС2</div>
+                    </div>
+                    <div>
+                        <div id="3_n_error" class="alert-error " onclick="show_hints(this.id)">ПЭН1 неиспр</div>
+                        <div id="4_n_error" class="alert-error " onclick="show_hints(this.id)">ПЭН2 неиспр</div>
+
+
+                    </div>
+                    <div>
+                        <div id="3_a_error" class="alert-error" onclick="show_hints(this.id)">АПЭН1 неиспр</div>
+                        <div id="4_a_error" class="alert-error max-class" onclick="show_hints(this.id)">АПЭН2 неиспр
+                        </div>
+                    </div>
+                    <div>
+                        <div id="alert_high_temperatureBS2" onclick="show_hints(this.id)" class="alert-error">Т БС2
+                            <svg height="14" viewBox="8 7 8 10" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg" transform="matrix(-1, 0, 0, -1, 0, 0)">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path d="M12 16L12 8" stroke="#323232" stroke-width="2"
+                                          stroke-linecap="round" stroke-linejoin="round">
+                                    </path>
+                                    <path d="M9 13L11.913 15.913V15.913C11.961 15.961 12.039 15.961 12.087 15.913V15.913L15 13"
+                                          stroke="#323232"
+                                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </g>
+                            </svg>
+                        </div>
+                        <div id="1_n_turn_down" class="alert-error" onclick="show_hints(this.id)">ГНЦ1 ОТКЛ</div>
+
+                    </div>
+                    <div>
+                        <div id="4_n_turn_down" class="alert-error" onclick="show_hints(this.id)">ПЭН2 ОТКЛ</div>
+                        <div id="1_a_turn_down" class="alert-error" onclick="show_hints(this.id)"
+                             style="width:max-content;">АГНЦ1 ОТКЛ
+                        </div>
+                    </div>
+                    <div>
+                        <div id="4_a_turn_down" class="alert-error max-class" onclick="show_hints(this.id)">АПЭН2 ОТКЛ
+                        </div>
+
+                        <div id="mpa" class="alert-error" onclick="show_hints(this.id)">МПА</div>
+
+                    </div>
+                    <div>
+                        <div id="bs1_level_up" onclick="show_hints(this.id)" class="alert-error max-class">H БС1
+                            <svg height="14" viewBox="8 7 8 10" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg" transform="matrix(-1, 0, 0, -1, 0, 0)">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path d="M12 16L12 8" stroke="#323232" stroke-width="2"
+                                          stroke-linecap="round" stroke-linejoin="round">
+                                    </path>
+                                    <path d="M9 13L11.913 15.913V15.913C11.961 15.961 12.039 15.961 12.087 15.913V15.913L15 13"
+                                          stroke="#323232"
+                                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </g>
+                            </svg>
+                        </div>
+                        <div id="bs2_level_up" onclick="show_hints(this.id)" class="alert-error">H БС2
+                            <svg height="14" viewBox="8 7 8 10" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg" transform="matrix(-1, 0, 0, -1, 0, 0)">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path d="M12 16L12 8" stroke="#323232" stroke-width="2"
+                                          stroke-linecap="round" stroke-linejoin="round">
+                                    </path>
+                                    <path d="M9 13L11.913 15.913V15.913C11.961 15.961 12.039 15.961 12.087 15.913V15.913L15 13"
+                                          stroke="#323232"
+                                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                    <div>
+                        <div id="3_a_turn_down" class="alert-error max-class" onclick="show_hints(this.id)">АПЭН1 ОТКЛ
+                        </div>
+                        <div id="2_a_error" class="alert-error max-class" onclick="show_hints(this.id)">АГНЦ2 неиспр
+                        </div>
+                    </div>
+                </div>
                 <div style="display:flex;">
                     <div class="sector">
                         <div class="title-s">БС1</div>
@@ -1095,134 +1223,7 @@
 
                     </div>
                 </div>
-                <div class="errors-table flex-div">
-                    <div>
-                        <div id="h_lower_water_level_BS1" onclick="show_hints(this.id)" class="alert-error max-class">H
-                            БС1
-                            <svg height="14" viewBox="8 7 8 10" fill="none"
-                                 xmlns="http://www.w3.org/2000/svg">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                   stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <path d="M12 16L12 8" stroke="#323232" stroke-width="2"
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round"></path>
-                                    <path d="M9 13L11.913 15.913V15.913C11.961 15.961 12.039 15.961 12.087 15.913V15.913L15 13"
-                                          stroke="#323232"
-                                          stroke-width="2" stroke-linecap="round"
-                                          stroke-linejoin="round"></path>
-                                </g>
-                            </svg>
-                            0.75
-                        </div>
-                        <div id="h_lower_water_level_BS2" onclick="show_hints(this.id)" class="alert-error max-class">H
-                            БС2
-                            <svg height="14" viewBox="8 7 8 10" fill="none"
-                                 xmlns="http://www.w3.org/2000/svg">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                   stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <path d="M12 16L12 8" stroke="#323232" stroke-width="2"
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round"></path>
-                                    <path d="M9 13L11.913 15.913V15.913C11.961 15.961 12.039 15.961 12.087 15.913V15.913L15 13"
-                                          stroke="#323232"
-                                          stroke-width="2" stroke-linecap="round"
-                                          stroke-linejoin="round"></path>
-                                </g>
-                            </svg>
-                            0.75
-                        </div>
 
-                    </div>
-                    <div>
-                        <div id="level_down1" class="alert-error" onclick="show_hints(this.id)">Cброс БС1</div>
-                        <div id="level_down2" class="alert-error" onclick="show_hints(this.id)">Cброс БС2</div>
-                    </div>
-                    <div>
-                        <div id="3_n_error" class="alert-error " onclick="show_hints(this.id)">ПЭН1 неиспр</div>
-                        <div id="4_n_error" class="alert-error " onclick="show_hints(this.id)">ПЭН2 неиспр</div>
-
-
-                    </div>
-                    <div>
-                        <div id="3_a_error" class="alert-error" onclick="show_hints(this.id)">АПЭН1 неиспр</div>
-                        <div id="4_a_error" class="alert-error max-class" onclick="show_hints(this.id)">АПЭН2 неиспр
-                        </div>
-                    </div>
-                    <div>
-                        <div id="alert_high_temperatureBS2" onclick="show_hints(this.id)" class="alert-error">Т БС2
-                            <svg height="14" viewBox="8 7 8 10" fill="none"
-                                 xmlns="http://www.w3.org/2000/svg" transform="matrix(-1, 0, 0, -1, 0, 0)">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <path d="M12 16L12 8" stroke="#323232" stroke-width="2"
-                                          stroke-linecap="round" stroke-linejoin="round">
-                                    </path>
-                                    <path d="M9 13L11.913 15.913V15.913C11.961 15.961 12.039 15.961 12.087 15.913V15.913L15 13"
-                                          stroke="#323232"
-                                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                </g>
-                            </svg>
-                        </div>
-                        <div id="1_n_turn_down" class="alert-error" onclick="show_hints(this.id)">ГНЦ1 ОТКЛ</div>
-
-                    </div>
-                    <div>
-                        <div id="4_n_turn_down" class="alert-error" onclick="show_hints(this.id)">ПЭН2 ОТКЛ</div>
-                        <div id="1_a_turn_down" class="alert-error" onclick="show_hints(this.id)"
-                             style="width:max-content;">АГНЦ1 ОТКЛ
-                        </div>
-                    </div>
-                    <div>
-                        <div id="4_a_turn_down" class="alert-error max-class" onclick="show_hints(this.id)">АПЭН2 ОТКЛ
-                        </div>
-
-                        <div id="mpa" class="alert-error" onclick="show_hints(this.id)">МПА</div>
-
-                    </div>
-                    <div>
-                        <div id="bs1_level_up" onclick="show_hints(this.id)" class="alert-error max-class">H БС1
-                            <svg height="14" viewBox="8 7 8 10" fill="none"
-                                 xmlns="http://www.w3.org/2000/svg" transform="matrix(-1, 0, 0, -1, 0, 0)">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <path d="M12 16L12 8" stroke="#323232" stroke-width="2"
-                                          stroke-linecap="round" stroke-linejoin="round">
-                                    </path>
-                                    <path d="M9 13L11.913 15.913V15.913C11.961 15.961 12.039 15.961 12.087 15.913V15.913L15 13"
-                                          stroke="#323232"
-                                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                </g>
-                            </svg>
-                        </div>
-                        <div id="bs2_level_up" onclick="show_hints(this.id)" class="alert-error">H БС2
-                            <svg height="14" viewBox="8 7 8 10" fill="none"
-                                 xmlns="http://www.w3.org/2000/svg" transform="matrix(-1, 0, 0, -1, 0, 0)">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <path d="M12 16L12 8" stroke="#323232" stroke-width="2"
-                                          stroke-linecap="round" stroke-linejoin="round">
-                                    </path>
-                                    <path d="M9 13L11.913 15.913V15.913C11.961 15.961 12.039 15.961 12.087 15.913V15.913L15 13"
-                                          stroke="#323232"
-                                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                </g>
-                            </svg>
-                        </div>
-                    </div>
-                    <div>
-                        <div id="3_a_turn_down" class="alert-error max-class" onclick="show_hints(this.id)">АПЭН1 ОТКЛ
-                        </div>
-                        <div id="2_a_error" class="alert-error max-class" onclick="show_hints(this.id)">АГНЦ2 неиспр
-                        </div>
-                    </div>
-                </div>
             </div>
             <div class="down-panel flex-div">
                 <div class="panel-item">
@@ -1381,20 +1382,16 @@
 
                         </div>
                         <div>
-
                             <div id="turn_down_rdg2" class="alert-error" onclick="show_hints(this.id)">РДГ2 откл</div>
                             <div id="turn_down_rdg1" class="alert-error" onclick="show_hints(this.id)">РДГ1 откл</div>
                             <div id="turn_down_t2" class="alert-error" onclick="show_hints(this.id)">ТГ2 откл</div>
                             <div id="turn_down_t1" class="alert-error" onclick="show_hints(this.id)">ТГ1 откл</div>
-
                         </div>
                         <div>
                             <div id="rdg1_broken" class="alert-error" onclick="show_hints(this.id)">РДГ1 неиспр</div>
                             <div id="rdg2_broken" class="alert-error" onclick="show_hints(this.id)">РДГ2 неиспр</div>
                             <div id="lep1_broken" class="alert-error" onclick="show_hints(this.id)">ЛЭП1 неиспр</div>
                             <div id="lep2_broken" class="alert-error" onclick="show_hints(this.id)">ЛЭП2 неиспр</div>
-                            <div id="tsn_broken" class="alert-error" onclick="show_hints(this.id)">ТСН неиспр</div>
-
                         </div>
                         <div>
                             <div id="error_t1" class="alert-error" onclick="show_hints(this.id)">ТГ1 неиспр</div>
@@ -1402,8 +1399,12 @@
                             <div id="e_h" class="alert-error" onclick="show_hints(this.id)">Превыш Нагрузки</div>
                             <div id="m_down_t1" class="alert-error" onclick="show_hints(this.id)">ТГ1 потеря момента
                             </div>
+
+                        </div>
+                        <div>
                             <div id="m_down_t2" class="alert-error" onclick="show_hints(this.id)">ТГ2 потеря момента
                             </div>
+                                                   <div id="tsn_broken" class="alert-error" onclick="show_hints(this.id)">ТСН неиспр</div>
                         </div>
                     </div>
                 </div>

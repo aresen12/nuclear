@@ -166,7 +166,8 @@ function load_data_DB(json){
 
 function load_game_from_db(){
     if (room_id == "not_auth"){
-        re.constructor();
+        location.reload()
+        document.getElementById("global_error_d").style.display = "none";
         return;
     }
     $.ajax({
