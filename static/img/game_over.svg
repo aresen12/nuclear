@@ -170,29 +170,9 @@
   <path d="M65 370H835" stroke="#a43a2e" stroke-width="2"/>
   <path d="M65 373H835" stroke="#e16b55" stroke-width=".7" opacity=".6"/>
 
-
-   <!-- Кнопка -->
-  <rect x="275" y="415" width="350" height="71" rx="5"
-        fill="#101410" stroke="#090d09" stroke-width="3"/>
-  <rect x="280" y="419" width="340" height="63" rx="3"
-        fill="url(#redButton)" stroke="#b79b80" stroke-width="1.5"/>
-  <rect x="287" y="425" width="326" height="51" rx="2"
-        fill="none" stroke="#8b5548" stroke-width="1"/>
-
-  <text x="450" y="458" text-anchor="middle"
-        font-family="Arial, sans-serif" font-size="19"
-        font-weight="bold" letter-spacing=".5"
-        fill="#eee4d2">ПОПРОБОВАТЬ СНОВА</text>
-
   <!-- Винты -->
   <use href="#screw" x="43" y="43"/>
   <use href="#screw" x="857" y="43"/>
   <use href="#screw" x="43" y="557"/>
   <use href="#screw" x="857" y="557"/>
-
-  <!-- Потёртости -->
-  <g stroke="#ded4bd" stroke-width="1" opacity=".3">
-    <path d="M23 140l12-3 M24 155l8-2 M858 155l10-2
-             M850 320l14-3 M25 330l10-2 M835 550l18-3"/>
-  </g>
-</svg>
+ </svg>

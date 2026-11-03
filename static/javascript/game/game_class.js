@@ -63,9 +63,13 @@ class Game{
             this.teacher = new Teacher(re);
             this.teacher.update_step();
         } else if (this.type == 4){
-            select_game_menu();
-            gener_select_task_menu(this.tasks)
+            this.mode4_init();
         }
+    }
+
+    reload_task(){
+        document.getElementById("global_error_d").style.display = "none";
+        this.set_task(this.id_task);
     }
 
     update(reactor){
@@ -112,7 +116,6 @@ class Game{
 }
 
     check_end_game(reactor){
-
         if (reactor.physical.thermal_power /1e6 >= 3300 || reactor.az.az_5 || reactor.az.az_b){
             return true;
         }
@@ -149,6 +152,12 @@ class Game{
         }
     }
 
+    mode4_init(){
+        select_game_menu();
+        gener_select_task_menu(this.tasks)
+        document.getElementById("global_error_d").style.display = "none";
+    }
+
     set_task(id_task){
         get_data_start_task(this.tasks[id_task]['condition']);
         this.win = false;
@@ -156,7 +165,7 @@ class Game{
         this.time_work = 0;
         this.global_time = 0;
         showdivFlex("game_process");
-        clear_and_write_text_task(this.tasks[id_task]["text"])
+//        clear_and_write_text_task(this.tasks[id_task]["text"])
     }
 }
 

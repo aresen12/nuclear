@@ -26,8 +26,9 @@ function get_data_start_task(condition){
         success: function(json){
             load_data_DB(json);
             start_UI(re);
-            showdiv1("game_select_d");
-            },
+            document.getElementById('global_error_d').style.display = "none";
+            document.getElementById('game_select_d').style.display = "none";
+        },
         error: function(err) {
             console.error(err);
         }

@@ -149,6 +149,8 @@ function load_data_DB(json){
     re.az.period_power = 0;
     re.az.az_5 = false;
     re.az.az_b = false;
+    re.az.az_run = false;
+    re.pause = false;
     re.physical.precursors = json["precursors"];
     re.physical.void_fraction = json["void_fraction"];
     re.physical.coolant_temp = json["coolant_temp"];
@@ -179,7 +181,6 @@ function load_game_from_db(){
         console.log(json);
         if (json){
             load_data_DB(json);
-
             setup_UI(re);
             show_mnemo(re);
         } else {

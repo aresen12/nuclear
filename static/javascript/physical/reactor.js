@@ -151,23 +151,19 @@ class Reactor {
         }
         if (this.direction == 1){
             this.direction = 0;
-            stop_alert("up_direction")
         } else {
             this.direction = 1;
-            my_alert("up_direction")
         }
+        ui_direction_SYZ(this.direction);
     }
 
-    // Переключает движение СУЗ вниз.
     set_unset_down_direction() {
         if (this.direction == -1){
             this.direction = 0;
-            stop_alert("down_direction");
         } else {
             this.direction = -1;
-            my_alert("down_direction");
         }
-//        ui_direction(this.direction);
+        ui_direction_SYZ(this.direction);
     }
 
 
@@ -315,6 +311,7 @@ class Reactor {
         this.check_broke();
         setup_UI(this);
         rc.update();
+
     }
 }
 

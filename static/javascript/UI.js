@@ -122,11 +122,25 @@ function game_win(text, points, time){
     <div class="win-img">
     <p class="points">${points}</p>
     <p class="time-svg">${time} мин</p>
-    <button class="btn-win">Продолжить
+    <button onclick="game.mode4_init()" class="btn-win">Продолжить
         </button>
 
 </div>
     `
+}
+
+
+function ui_direction_SYZ(direction){
+    if (direction == 1){
+        start_alert("up_direction");
+        stop_alert("down_direction");
+    } else if (direction == -1){
+        start_alert("down_direction");
+        stop_alert("up_direction");
+    } else{
+        stop_alert("up_direction");
+        stop_alert("down_direction");
+    }
 }
 
 
@@ -135,7 +149,7 @@ function game_over(text, points, time){
     div.style.display = "block";
     div.innerHTML = `
     <div class="game-over">
-
+<button class="set-task_game-over" onclick="game.reload_task()">Попробовать ещё раз
         </button>
 
 </div>
@@ -682,19 +696,19 @@ function turn(id_div, flag, text=""){
   </defs>
 
   <!-- Панель без лишних полей -->
-  <rect x="8" y="6" width="752" height="500" rx="21"
+  <rect x="8" y="6" width="752" height="435" rx="21"
         fill="none" stroke="#55564e" stroke-width="3"/>
-  <rect x="17" y="15" width="734" height="482" rx="17"
+  <rect x="17" y="15" width="734" height="420" rx="17"
         fill="none" stroke="#4d4e47" stroke-width="3"/>
-  <rect x="28" y="25" width="712" height="462" rx="13"
+  <rect x="28" y="25" width="712" height="400" rx="13"
         fill="none" stroke="#d0cdbb" stroke-width="3" opacity=".75"/>
-  <rect x="34" y="31" width="700" height="450" rx="10"
+  <rect x="34" y="31" width="700" height="430" rx="10"
         fill="none" stroke="#65665d" stroke-width="1.5"/>
 
   <use href="#screw" x="34" y="33"/>
   <use href="#screw" x="734" y="33"/>
-  <use href="#screw" x="34" y="479"/>
-  <use href="#screw" x="734" y="479"/>
+  <use href="#screw" x="34" y="420"/>
+  <use href="#screw" x="734" y="420"/>
 
   <!-- Подписи -->
   <g font-family="Arial, Helvetica, sans-serif"
@@ -745,17 +759,17 @@ function turn(id_div, flag, text=""){
           fill="#e1ddcc" stroke="#66675d" stroke-width="1.5"/>
   <circle cx="382" cy="192" r="1.5" fill="#fff" opacity=".8"/>
  </g></g>
-  <!-- Табличка АЗ-5 -->
-  <rect x="225" y="330" width="322" height="108" rx="10"
+
+  <rect x="225" y="318" width="322" height="108" rx="10"
         fill="#33342e" opacity=".65"/>
-  <rect x="226" y="331" width="316" height="108" rx="10"
+  <rect x="226" y="321" width="316" height="108" rx="10"
         fill="url(#edge)" stroke="#41423b" stroke-width="2"/>
-  <rect x="231" y="336" width="306" height="98" rx="7"
+  <rect x="231" y="326" width="306" height="98" rx="7"
         fill="url(#label)" stroke="#d0cbb8" stroke-width="2.5"/>
-  <rect x="227" y="332" width="314" height="96" rx="4"
+  <rect x="227" y="322" width="314" height="96" rx="4"
         fill="none" stroke="#55564c" stroke-width="1"/>
 
-  <text x="384" y="410" text-anchor="middle"
+  <text x="384" y="405" text-anchor="middle"
         font-family="Arial, Helvetica, sans-serif"
         font-size="100" font-weight="bold"
         letter-spacing="2" fill="#e0dac5">${text}</text>
@@ -815,26 +829,27 @@ function turn(id_div, flag, text=""){
   </defs>
 
   <!-- Панель без лишних полей -->
-  <rect x="8" y="6" width="752" height="500" rx="21"
+  <rect x="8" y="6" width="752" height="435" rx="21"
         fill="none" stroke="#55564e" stroke-width="3"/>
-  <rect x="17" y="15" width="734" height="482" rx="17"
+  <rect x="17" y="15" width="734" height="420" rx="17"
         fill="none" stroke="#4d4e47" stroke-width="3"/>
-  <rect x="28" y="25" width="712" height="462" rx="13"
+  <rect x="28" y="25" width="712" height="400" rx="13"
         fill="none" stroke="#d0cdbb" stroke-width="3" opacity=".75"/>
-  <rect x="34" y="31" width="700" height="450" rx="10"
+  <rect x="34" y="31" width="700" height="430" rx="10"
         fill="none" stroke="#65665d" stroke-width="1.5"/>
 
   <use href="#screw" x="34" y="33"/>
   <use href="#screw" x="734" y="33"/>
-  <use href="#screw" x="34" y="479"/>
-  <use href="#screw" x="734" y="479"/>
+  <use href="#screw" x="34" y="420"/>
+  <use href="#screw" x="734" y="420"/>
 
   <!-- Подписи -->
   <g font-family="Arial, Helvetica, sans-serif"
      font-weight="bold" fill="#24251f" text-anchor="middle">
     <text x="156" y="231" font-size="84">ВКЛ</text>
   </g>
-
+ <g >
+ <g>
   <!-- Круглое основание -->
   <ellipse cx="384" cy="180" rx="119" ry="123"
            fill="#141511" opacity=".4" filter="url(#shadow)"/>
@@ -876,24 +891,23 @@ function turn(id_div, flag, text=""){
   <circle cx="384" cy="194" r="4.5"
           fill="#e1ddcc" stroke="#66675d" stroke-width="1.5"/>
   <circle cx="382" cy="192" r="1.5" fill="#fff" opacity=".8"/>
+ </g></g>
 
-  <!-- Табличка АЗ-5 -->
-  <rect x="225" y="330" width="322" height="108" rx="10"
+  <rect x="225" y="318" width="322" height="108" rx="10"
         fill="#33342e" opacity=".65"/>
-  <rect x="226" y="331" width="316" height="108" rx="10"
+  <rect x="226" y="321" width="316" height="108" rx="10"
         fill="url(#edge)" stroke="#41423b" stroke-width="2"/>
-  <rect x="231" y="336" width="306" height="98" rx="7"
+  <rect x="231" y="326" width="306" height="98" rx="7"
         fill="url(#label)" stroke="#d0cbb8" stroke-width="2.5"/>
-  <rect x="227" y="332" width="314" height="96" rx="4"
+  <rect x="227" y="322" width="314" height="96" rx="4"
         fill="none" stroke="#55564c" stroke-width="1"/>
 
-  <text x="384" y="410" text-anchor="middle"
+  <text x="384" y="405" text-anchor="middle"
         font-family="Arial, Helvetica, sans-serif"
         font-size="100" font-weight="bold"
         letter-spacing="2" fill="#e0dac5">${text}</text>
 
-</svg>
-                             `;
+</svg>`;
     }
 }
 
