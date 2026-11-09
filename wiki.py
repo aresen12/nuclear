@@ -143,7 +143,7 @@ def bad_info_post():
     db_sess.commit()
     db_sess.close()
     return redirect("/wiki")
-
+#
 
 @wiki.route("/search", methods=["POST"])
 def search_def():
