@@ -110,6 +110,7 @@ class Reactor {
             "3_a": new Pump("3_a", 100, "АПЭН1"),
             "4_a": new Pump("4_a", 100, "АПЭН2")
         };
+        
         // Дизель-генераторы.
         this.rdg1 = new Rdg("rdg1");
         this.rdg2 = new Rdg("rdg2");
