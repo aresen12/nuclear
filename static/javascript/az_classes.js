@@ -172,7 +172,9 @@ class Az{
         if (this.reactor.sterg[LAZ_K[coord][0]][LAZ_K[coord][1]] + direction * speed >= 0 & this.reactor.sterg[LAZ_K[coord][0]][LAZ_K[coord][1]] + direction * speed <= 100){
             this.reactor.sterg[LAZ_K[coord][0]][LAZ_K[coord][1]] += direction * speed;
             if (direction > 0){
-                my_alert(`alert_az`);
+                this.current_errors.push('alert_az')
+            } else{
+            // дописать удаление
             }
         }
     }
@@ -442,7 +444,6 @@ class Az{
         this.period_power = (this.reactor.physical.thermal_power - this.last_power) / 1e6;
         this.last_power = this.reactor.physical.thermal_power;
         if (this.period_power > 10 && this.mode == 1){
-            my_alert("high_speed_power");
             this.current_errors.push("high_speed_power");
             if (!this.sound){
                 this.sound = true;
@@ -536,8 +537,6 @@ class Az{
             viyb.push("h_high_water_level_BS2");
         }
         if(this.az_5){
-            my_alert("alert_az_5");
-            flag = true;
             viyr.push("alert_az_5");
         }
          if(this.az_b){

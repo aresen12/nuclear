@@ -9,6 +9,7 @@ class BS{
         this.T_H2O = 270;
         this.m_sep = 0;
         this.work = false;
+        this.l_v = this.v_inBS;
         this.grafiti = new BSGrafiti(`bs${this.number}`, this.number, left);
         this.condition = {"1": false, "2": false, "3": false, "4": false};
 //        this.fill = clamp(this.v_inBS / BS_INITIAL_VOLUME, 0.0, 1.0);
@@ -16,6 +17,7 @@ class BS{
     }
 
     update(g_gnc, g_pen, pr, T_2_H2O, T_PVS, max_g1, a_gcn, a_pen, time){
+        this.l_v = this.v_inBS;
         this.v_inBS -= (g_gnc + a_gcn) / 3600; // m3
         let m_bs = this.v_inBS * 1000; // кг
         this.m_sep = (g_gnc + a_gcn) * pr; // т / ч

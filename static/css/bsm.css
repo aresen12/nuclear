@@ -150,6 +150,19 @@ color: #a6a39c;
     border-bottom: 1px solid green;
 }
 
+
+.settings-block{
+    background: #151919;
+    width: 400px;
+    padding-left: 10px;
+    margin-left: 20px;
+    color: white;
+}
+
+.item-setting {
+    border-bottom: 2px solid green;
+}
+
 .mnemo-sell{
     width: 22px;
     height:22px;

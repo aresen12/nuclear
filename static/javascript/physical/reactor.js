@@ -98,6 +98,7 @@ class Reactor {
         this.physical = new Modal1();
         this.direction = 0; // Направление перемещения стержней.
         this.chosen = []; // Выбранные стержни.
+        this.viyb = new Viyb(this);
         // ГЦН.
         this.gcn = {
             "1_n": new Pump("1_n", 400, "ГЦН1"),
@@ -304,6 +305,7 @@ class Reactor {
             this.t1.g_max, this.gcn["1_a"].g, this.gcn["3_a"].g, this.time);
         this.bs2.update(this.gcn["2_n"].g, this.gcn["4_n"].g, this.physical.void_fraction, this.physical.T_2_H2O, this.physical.outlet_temp,
             this.t2.g_max, this.gcn["2_a"].g, this.gcn["4_a"].g, this.time);
+        this.viyb.check();
         this.t1.update(this.bs1.m_sep, this.physical.p_in_reactor);
         this.t2.update(this.bs2.m_sep, this.physical.p_in_reactor);
         this.tsn.update(this.t1.w_e * 1e3, this.t2.w_e * 1e3, this.t1.obr, this.t2.obr);

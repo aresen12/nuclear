@@ -111,9 +111,9 @@ function show_mnemo_i_j(value, i, j){
             m.style.background = "";
         }
     m.textContent = value;
-    }catch(error){
-    }
+    } catch(error) {}
 }
+
 
 function game_win(text, points, time){
     let div = document.getElementById('global_error_d');
@@ -124,7 +124,6 @@ function game_win(text, points, time){
     <p class="time-svg">${time} мин</p>
     <button onclick="game.mode4_init()" class="btn-win">Продолжить
         </button>
-
 </div>
     `
 }
@@ -151,81 +150,8 @@ function game_over(text, points, time){
     <div class="game-over">
 <button class="set-task_game-over" onclick="game.reload_task()">Попробовать ещё раз
         </button>
-
-</div>
-    `
+</div>`
     }
-
-
-function my_alert(id_error, text){
-    var div = document.getElementById(id_error);
-    if (div.style.background == ""){
-            div.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="36" viewBox="0 0 220 56">
-  <defs>
-    <linearGradient id="fy-on" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#d1d0c5"/>
-      <stop offset=".3" stop-color="#8a8c80"/>
-      <stop offset=".6" stop-color="#b0afa3"/>
-      <stop offset="1" stop-color="#4a4c44"/>
-    </linearGradient>
-    <radialGradient id="ly-on" cx=".35" cy=".3" r=".85">
-      <stop offset="0" stop-color="#fffbe0"/>
-      <stop offset=".3" stop-color="#fff176"/>
-      <stop offset=".7" stop-color="#ffd21f"/>
-      <stop offset="1" stop-color="#c79200"/>
-    </radialGradient>
-    <filter id="gy-on" x="-40%" y="-80%" width="180%" height="260%">
-      <feGaussianBlur stdDeviation="4"/>
-    </filter>
-  </defs>
-  <rect x="2" y="2" width="216" height="52" rx="4" fill="#55574f" stroke="#292b26" stroke-width="1.5"/>
-  <rect x="12" y="7" width="196" height="42" rx="6" fill="url(#fy-on)" stroke="#33352f" stroke-width="1.2"/>
-  <rect x="15" y="10" width="190" height="36" rx="5" fill="#191b17"/>
-  <rect x="18" y="13" width="184" height="30" rx="4" fill="#ffd600" opacity=".6" filter="url(#gy-on)"/>
-  <rect x="18" y="13" width="184" height="30" rx="4" fill="url(#ly-on)" stroke="#8a5f00" stroke-width=".8"/>
-  <rect x="20" y="14" width="180" height="11" rx="3" fill="#ffffff" opacity=".4"/>
-  <text x="110" y="25" text-anchor="middle" dominant-baseline="central" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="bold" fill="#5c3d00" letter-spacing=".5">${errors2[id_error]}</text>
-  <g fill="#45473f" stroke="#c2c0b1" stroke-width=".7">
-    <circle cx="6" cy="6" r="1.6"/>
-    <circle cx="214" cy="6" r="1.6"/>
-    <circle cx="6" cy="50" r="1.6"/>
-    <circle cx="214" cy="50" r="1.6"/>
-  </g>
-</svg>`;
-        div.style.background = "#fcf172";
-        console.log("test_update");
-    } else {
-        div.style.background = "";
-    div.innerHTML =`<svg xmlns="http://www.w3.org/2000/svg" height="36" viewBox="0 0 220 56">
-  <defs>
-    <linearGradient id="fg-off" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#d1d0c5"/>
-      <stop offset=".3" stop-color="#8a8c80"/>
-      <stop offset=".6" stop-color="#b0afa3"/>
-      <stop offset="1" stop-color="#4a4c44"/>
-    </linearGradient>
-    <radialGradient id="lg-off" cx=".35" cy=".3" r=".85">
-      <stop offset="0" stop-color="#5c6b5e"/>
-      <stop offset=".4" stop-color="#34403a"/>
-      <stop offset=".8" stop-color="#1e261f"/>
-      <stop offset="1" stop-color="#141a15"/>
-    </radialGradient>
-  </defs>
-  <rect x="2" y="2" width="216" height="52" rx="4" fill="#55574f" stroke="#292b26" stroke-width="1.5"/>
-  <rect x="12" y="7" width="196" height="42" rx="6" fill="url(#fg-off)" stroke="#33352f" stroke-width="1.2"/>
-  <rect x="15" y="10" width="190" height="36" rx="5" fill="#191b17"/>
-  <rect x="18" y="13" width="184" height="30" rx="4" fill="url(#lg-off)" stroke="#0e130f" stroke-width=".8"/>
-  <rect x="20" y="14" width="180" height="11" rx="3" fill="#ffffff" opacity=".08"/>
-   <text x="110" y="25" text-anchor="middle" dominant-baseline="central" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="bold" fill="#6e7669" letter-spacing=".5">${errors2[id_error]}</text>
-  <g fill="#45473f" stroke="#c2c0b1" stroke-width=".7">
-    <circle cx="6" cy="6" r="1.6"/>
-    <circle cx="214" cy="6" r="1.6"/>
-    <circle cx="6" cy="50" r="1.6"/>
-    <circle cx="214" cy="50" r="1.6"/>
-  </g>
-</svg>`
-    }
-}
 
 
 function start_alert(id_error){
@@ -318,10 +244,9 @@ function stop_alert_background(id_error){
     var div = document.getElementById(id_error);
     try{
         div.style.background = "";
-     } catch(e){
-        console.log("error id", id_error);
-    }
+     } catch(e){}
 }
+
 
 function stop_alert(id_error){
     var div = document.getElementById(id_error);
@@ -392,7 +317,6 @@ function start_UI(reactor){
     <circle cx="214" cy="50" r="1.6"/>
   </g>
 </svg>`;
-
     }
     var k = Object.keys(reactor.gcn);
     for (i = 0; i < k.length; i++){
@@ -452,7 +376,6 @@ function ui_thermal_power_mnemo(sek){
                 ui_thermal_power_laz(i, j, sek[get_sektor_number(i, j)])
             }
     }
-
 }
 
 // type  1 - danger 2 - 3 - green
@@ -466,9 +389,7 @@ function ui_thermal_power_laz(i, j, type){
         } else {
             div.style.background = "green";
         }
-    } catch(e){
-     console.log(`m2${i}_${j}`)
-    }
+    } catch(e){}
 }
 
 
@@ -694,8 +615,6 @@ function turn(id_div, flag, text=""){
       <path d="M-3-3L3 3" stroke="#77786d" stroke-width="1.5"/>
     </g>
   </defs>
-
-  <!-- Панель без лишних полей -->
   <rect x="8" y="6" width="752" height="435" rx="21"
         fill="none" stroke="#55564e" stroke-width="3"/>
   <rect x="17" y="15" width="734" height="420" rx="17"
@@ -704,20 +623,16 @@ function turn(id_div, flag, text=""){
         fill="none" stroke="#d0cdbb" stroke-width="3" opacity=".75"/>
   <rect x="34" y="31" width="700" height="430" rx="10"
         fill="none" stroke="#65665d" stroke-width="1.5"/>
-
   <use href="#screw" x="34" y="33"/>
   <use href="#screw" x="734" y="33"/>
   <use href="#screw" x="34" y="420"/>
   <use href="#screw" x="734" y="420"/>
-
-  <!-- Подписи -->
   <g font-family="Arial, Helvetica, sans-serif"
      font-weight="bold" fill="#24251f" text-anchor="middle">
     <text x="156" y="231" font-size="84">ВКЛ</text>
   </g>
  <g transform="translate(200, 580)">
  <g transform="rotate(-90)">
-  <!-- Круглое основание -->
   <ellipse cx="384" cy="180" rx="119" ry="123"
            fill="#141511" opacity=".4" filter="url(#shadow)"/>
   <circle cx="384" cy="196" r="113"
@@ -730,8 +645,6 @@ function turn(id_div, flag, text=""){
           fill="none" stroke="#56574f" stroke-width="2"/>
   <circle cx="384" cy="206" r="101"
           fill="none" stroke="#dedbca" stroke-width="1.5" opacity=".6"/>
-
-  <!-- Рукоятка -->
   <rect x="353" y="60" width="67" height="260" rx="29"
         fill="#080908" opacity=".7" filter="url(#softShadow)"/>
   <rect x="354" y="62" width="60" height="254" rx="27"
@@ -745,12 +658,8 @@ function turn(id_div, flag, text=""){
         stroke-linecap="round" opacity=".8"/>
   <path d="M402 120V335"
         fill="none" stroke="#050605" stroke-width="2"/>
-
-  <!-- Стрелка -->
   <path d="M384 89L370 127H379V159H389V127H398Z"
         fill="#e5e0cb" stroke="#c8c3b1" stroke-width="1.5"/>
-
-  <!-- Центральный фиксатор -->
   <circle cx="384" cy="194" r="17"
           fill="#10110f" stroke="#4c4d45" stroke-width="3"/>
   <circle cx="384" cy="194" r="11"
@@ -759,7 +668,6 @@ function turn(id_div, flag, text=""){
           fill="#e1ddcc" stroke="#66675d" stroke-width="1.5"/>
   <circle cx="382" cy="192" r="1.5" fill="#fff" opacity=".8"/>
  </g></g>
-
   <rect x="225" y="318" width="322" height="108" rx="10"
         fill="#33342e" opacity=".65"/>
   <rect x="226" y="321" width="316" height="108" rx="10"
@@ -768,7 +676,6 @@ function turn(id_div, flag, text=""){
         fill="url(#label)" stroke="#d0cbb8" stroke-width="2.5"/>
   <rect x="227" y="322" width="314" height="96" rx="4"
         fill="none" stroke="#55564c" stroke-width="1"/>
-
   <text x="384" y="405" text-anchor="middle"
         font-family="Arial, Helvetica, sans-serif"
         font-size="100" font-weight="bold"
@@ -827,8 +734,6 @@ function turn(id_div, flag, text=""){
       <path d="M-3-3L3 3" stroke="#77786d" stroke-width="1.5"/>
     </g>
   </defs>
-
-  <!-- Панель без лишних полей -->
   <rect x="8" y="6" width="752" height="435" rx="21"
         fill="none" stroke="#55564e" stroke-width="3"/>
   <rect x="17" y="15" width="734" height="420" rx="17"
@@ -837,20 +742,16 @@ function turn(id_div, flag, text=""){
         fill="none" stroke="#d0cdbb" stroke-width="3" opacity=".75"/>
   <rect x="34" y="31" width="700" height="430" rx="10"
         fill="none" stroke="#65665d" stroke-width="1.5"/>
-
   <use href="#screw" x="34" y="33"/>
   <use href="#screw" x="734" y="33"/>
   <use href="#screw" x="34" y="420"/>
   <use href="#screw" x="734" y="420"/>
-
-  <!-- Подписи -->
   <g font-family="Arial, Helvetica, sans-serif"
      font-weight="bold" fill="#24251f" text-anchor="middle">
     <text x="156" y="231" font-size="84">ВКЛ</text>
   </g>
  <g >
  <g>
-  <!-- Круглое основание -->
   <ellipse cx="384" cy="180" rx="119" ry="123"
            fill="#141511" opacity=".4" filter="url(#shadow)"/>
   <circle cx="384" cy="196" r="113"
@@ -863,9 +764,7 @@ function turn(id_div, flag, text=""){
           fill="none" stroke="#56574f" stroke-width="2"/>
   <circle cx="384" cy="206" r="101"
           fill="none" stroke="#dedbca" stroke-width="1.5" opacity=".6"/>
-
-  <!-- Рукоятка -->
-  <rect x="353" y="60" width="67" height="260" rx="29"
+<rect x="353" y="60" width="67" height="260" rx="29"
         fill="#080908" opacity=".7" filter="url(#softShadow)"/>
   <rect x="354" y="62" width="60" height="254" rx="27"
         fill="#080908" stroke="#252621" stroke-width="4"/>
@@ -878,12 +777,8 @@ function turn(id_div, flag, text=""){
         stroke-linecap="round" opacity=".8"/>
   <path d="M402 120V335"
         fill="none" stroke="#050605" stroke-width="2"/>
-
-  <!-- Стрелка -->
   <path d="M384 89L370 127H379V159H389V127H398Z"
         fill="#e5e0cb" stroke="#c8c3b1" stroke-width="1.5"/>
-
-  <!-- Центральный фиксатор -->
   <circle cx="384" cy="194" r="17"
           fill="#10110f" stroke="#4c4d45" stroke-width="3"/>
   <circle cx="384" cy="194" r="11"
@@ -892,21 +787,16 @@ function turn(id_div, flag, text=""){
           fill="#e1ddcc" stroke="#66675d" stroke-width="1.5"/>
   <circle cx="382" cy="192" r="1.5" fill="#fff" opacity=".8"/>
  </g></g>
-
-  <rect x="225" y="318" width="322" height="108" rx="10"
-        fill="#33342e" opacity=".65"/>
-  <rect x="226" y="321" width="316" height="108" rx="10"
-        fill="url(#edge)" stroke="#41423b" stroke-width="2"/>
+  <rect x="225" y="318" width="322" height="108" rx="10" fill="#33342e" opacity=".65"/>
+  <rect x="226" y="321" width="316" height="108" rx="10" fill="url(#edge)" stroke="#41423b" stroke-width="2"/>
   <rect x="231" y="326" width="306" height="98" rx="7"
         fill="url(#label)" stroke="#d0cbb8" stroke-width="2.5"/>
   <rect x="227" y="322" width="314" height="96" rx="4"
         fill="none" stroke="#55564c" stroke-width="1"/>
-
   <text x="384" y="405" text-anchor="middle"
         font-family="Arial, Helvetica, sans-serif"
         font-size="100" font-weight="bold"
         letter-spacing="2" fill="#e0dac5">${text}</text>
-
 </svg>`;
     }
 }
@@ -928,6 +818,11 @@ function select_game_menu(){
 }
 
 
+function show_settings(){
+    document.getElementById("settings_d").style.display = "block";
+}
+
+
 function gener_select_task_menu(tasks){
     let cont = document.getElementById("select_task");
     document.getElementById("cont_task_mode").style.display = "block";
@@ -941,7 +836,6 @@ function gener_select_task_menu(tasks){
   </div>
 </div>`;
     }
-
 }
 
 
@@ -953,5 +847,4 @@ function clear_and_write_text_task(text){
 //document.addEventListener('mousemove', e => {
 //	const x = (e.clientX / window.screen.availWidth) * 360;
 //	const x2 = (e.clientX / window.screen.availWidth) * 180;
-//	document.getElementById("viyr").style.background = `linear-gradient(90deg, hsl(${x}, 100%, 50%), hsl(${x2}, 50%, 50%)`;
 //});

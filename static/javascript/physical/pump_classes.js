@@ -31,9 +31,10 @@ class Pump{
             this.w_e = 0;
         } else if (!this.broken){
             this.work = true
+            this.direction = 0;
             turn(`${this.id_pump}_btn`, true, this.name);
             ui_power(`${this.id_pump}_s`, true);
-            my_alert(`${this.id_pump}_turn_down`);
+            start_alert(`${this.id_pump}_turn_down`);
         }
     }
 

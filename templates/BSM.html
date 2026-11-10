@@ -44,7 +44,7 @@
             </svg>
 
         </button>
-        <button class="up-btn">
+        <button class="up-btn" onclick="show_settings()">
             <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -130,8 +130,8 @@
                             </div>
                             <div class="flex-div">
                                 <div id="alert_power_q" class="alert-error" onclick="show_hints(this.id)"></div>
-                                <div id="alert_az" class="alert-error" onclick="show_hints(this.id)">ПК-АЗ</div>
-                                <div id="alert_az_1" class="alert-error" onclick="show_hints(this.id)">АЗ-1</div>
+                                <div id="alert_az" class="alert-error" onclick="show_hints(this.id)"></div>
+                                <div id="alert_az_1" class="alert-error" onclick="show_hints(this.id)"></div>
                             </div>
                             <div class="flex-div">
                                 <div id="ar_broken" class="alert-error" onclick="show_hints(this.id)"></div>
@@ -548,7 +548,6 @@
                                         {% if s[i][j] == 1 %}
                                         <button id="s{{i}}_{{j}}" class="mnemo-rr "
                                                 onclick="sterg({{i}}, {{j}})"></button>
-
                                         {% elif s[i][j] == 2 %}
                                         <button id="s{{i}}_{{j}}" class="mnemo-ysp "
                                                 onclick="sterg({{i}}, {{j}})"></button>
@@ -563,7 +562,6 @@
                                                 onclick="sterg({{i}}, {{j}})"></button>
                                         {% else %}
                                         <button class="mnemo-sell2 ">
-
                                         </button>
                                         {% endif%}
                                         {% endfor %}
@@ -999,10 +997,10 @@
                         </div>
                     </div>
                 </div>
-                <div style="display:flex;">
+                <div class="flex-div">
                     <div class="sector">
                         <div class="title-s">БС1</div>
-                        <div style="display:flex;">
+                        <div class="flex-div">
                             <div class="bs-zone  zone">
                                 Т воды<br>
                                 <input id="T_H2O1" class="input-big margin-input" readonly>
@@ -1604,7 +1602,7 @@
                 Выполнение заданий
             </button>
         </div>
-        <div  style="display:none;" id="cont_task_mode">
+        <div style="display:none;" id="cont_task_mode">
             <h1 class="center-div title-select-task">Выбор задания</h1>
             <div class="flex-div">
                 <div id="select_task" class="card-cont">
@@ -1650,7 +1648,31 @@
 <div class="z-d" style="display:none;" id="global_error_d">
 
 </div>
-
+<div class="z-d" style="display:none;" id="settings_d">
+    <div class="global-menu">
+        <div>
+            <h1 class="title-select-task center-div">Системы помощи</h1>
+            <button onclick="showdiv1('settings_d')">close</button>
+            <div class="settings-block">
+<!--                <div class="item-setting">-->
+<!--                    <input type="checkbox" onclick="re.viyr.active()">-->
+<!--                    Виртуалный ВИУР-->
+<!--                    <p>Полностью управляет реактором</p>-->
+<!--                </div>-->
+                <div class="item-setting">
+                    <input type="checkbox" onclick="re.viyb.active()">
+                    Автоматическое управление пит. водой
+                    <p>Следить за уровнем воды в БС.</p>
+                </div>
+<!--                <div class="item-setting">-->
+<!--                    <input type="checkbox" onclick="re.viyt.active()">-->
+<!--                    Виртуалный ВИУТ-->
+<!--                    <p>Следит за турбиными и электропитанием</p>-->
+<!--                </div>-->
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
@@ -1666,6 +1688,7 @@
 <script src="/static/javascript/physical/TSN.js"></script>
 <script src="/static/javascript/physical/physical1.js"></script>
 <script src="/static/javascript/game/game_function.js"></script>
+<script src="/static/javascript/game/help.js"></script>
 <script src="/static/javascript/physical/reactor.js"></script>
 <script src="/static/javascript/game/teacher_class.js"></script>
 <script src="/static/javascript/game/ui_teach.js"></script>
@@ -1701,9 +1724,7 @@
         load_game_from_db();
     }
 setInterval(() => {
-    const start = performance.now();
     re.update();
-console.log(`Время выполнения: ${performance.now() - start} мс`);
     game.update(re);
 }, 1000);
 </script>
