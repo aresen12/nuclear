@@ -50,11 +50,11 @@ class Pump{
 
     set_unset_down_direction() {
         if (this.work){
-        if (this.direction == -1){
-            this.direction = 0;
-        } else {
-            this.direction = -1;
-        }
+            if (this.direction == -1){
+                this.direction = 0;
+            } else {
+                this.direction = -1;
+            }
         }
     }
 

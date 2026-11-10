@@ -1,6 +1,6 @@
 const socket = io.connect();
 socket.emit('join', {room: room_id});
-console.log(room_id)
+
 
 function send_chosen_delete(i2){
     socket.emit("chosen_delete", {"i2": i2, "room": room_id});
@@ -18,6 +18,7 @@ socket.on('chosen_delete', (data) => {
         re.chosen_delete(data["i2"])
     }
 });
+
 
 socket.on('set_speed_SYZ', (data) => {
     if (!rc.copy){
@@ -125,6 +126,15 @@ socket.on('method_send', (data) => {
         if (data["function"] == "set_power_source"){
             re.gcn[data["id_pump"]].set_power_source(data["source"]);
         }
+        if (data["function"] == "azs_start"){
+            re.az.azs_start();
+        }
+        if (data["function"] == "azsr_start"){
+            re.az.azsr_start();
+        }
+        if (data["function"] == "unset_chosen"){
+            re.unset_chosen();
+        }
     } else {
          if (data["function"] == "ui_power"){
             ui_power(data["id_div"], data["flag"]);
@@ -172,7 +182,7 @@ socket.on('server_sid_response', (data) => {
 
 socket.on('connect_rc_user', (data) => {
         rc.connect_flag = true;
-        alert("Вы успешно подключились");
+//        alert("Вы успешно подключились");
 });
 
 

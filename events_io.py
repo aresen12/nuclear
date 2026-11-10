@@ -28,7 +28,6 @@ def send_connect(data):
 def on_join(data):
     room = data['room']
     if not (room in rooms()):
-        join_room(room)
         db_sess = db_session.create_session()
         r = db_sess.query(Reactor).filter(Reactor.id == room).first()
         if not (r is None):
@@ -39,6 +38,7 @@ def on_join(data):
             if not (r is None) and r.main_player == current_user.id:
                 emit("join_main_player", to=room)
         db_sess.close()
+    join_room(room)
 
 
 @socketio.on('room_message')
@@ -148,6 +148,10 @@ def set_unset_up_direction(data):
 def connect_other_room(data):
     data["id_device"] = request.sid
     emit("connect_other_room", data, to=data['room'])
+
+@socketio.on("set_speed_SYZ")
+def set_speed_SYZ(data):
+    emit("set_speed_SYZ", data, to=data['room'])
 
 
 @socketio.on("method_send")

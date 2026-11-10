@@ -374,4 +374,8 @@ class RemoteControl extends Reactor{
             this.direction = 0;
          }
     }
+
+    unset_chosen(){
+        socket.emit("method_send", {"room": room_id, "function": "unset_chosen"});
+    }
 }

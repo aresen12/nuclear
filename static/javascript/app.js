@@ -56,7 +56,7 @@ function gener_json(){
             "T_H2O": re.bs2.T_H2O,
             "m_sep": re.bs2.m_sep
         },
-        "fuel_temp":re.fuel_temp,
+        "fuel_temp":re.physical.fuel_temp,
         "p_in_reactor":re.physical.p_in_reactor,
         "thermal_power":re.physical.thermal_power,
         "rho_total":re.physical.rho_total,
@@ -213,9 +213,11 @@ function load_data(data){
     re.bs1.v_inBS = data["bs1"]["v_inBS"];
     re.bs1.h_braban_s = data["bs1"]["h_braban_s"];
     re.bs1.T_H2O = data["bs1"]["T_H2O"];
+    re.bs1.m_sep = data["bs1"]["m_sep"];
     re.bs2.v_inBS = data["bs2"]["v_inBS"];
     re.bs2.h_braban_s = data["bs2"]["h_braban_s"];
     re.bs2.T_H2O = data["bs2"]["T_H2O"];
+    re.bs2.m_sep = data["bs2"]["m_sep"];
     re.physical.p_in_reactor = data["p_in_reactor"];
     re.physical.thermal_power = data["thermal_power"];
     re.chosen = data["chosen"];
@@ -262,5 +264,4 @@ function load_data(data){
     re.rdg2.work = data["rdg2"]["work"];
     re.rdg2.direction = data["rdg2"]["direction"];
     re.rdg2.power_e = data["rdg2"]["power_e"];
-    console.log(re.physical.thermal_power)
 }

@@ -714,6 +714,22 @@ class DAz extends Az{
     stop_az(){
         socket.emit("method_send", {"room": room_id, "function": "stop_az"});
     }
+
+    update_ar(){}
+
+    check_azsr(){}
+
+    check_azs(){}
+
+    azs_start(){
+        socket.emit("method_send", {"room": room_id, "function": "azs_start"});
+    }
+
+    azsr_start(){
+        socket.emit("method_send", {"room": room_id, "function": "azsr_start"});
+    }
+
+
 }
 
 
