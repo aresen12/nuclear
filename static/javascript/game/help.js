@@ -94,6 +94,14 @@ console.log(bs1_s);
     }
 }
 
+
+class DViyb extends Viyb{
+
+    active() {
+               socket.emit("active_viyb", {"room": room_id});
+    }
+}
+
 class Viyt extends Helper{
     update(){
 

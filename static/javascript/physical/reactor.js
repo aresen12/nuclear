@@ -328,15 +328,16 @@ class RemoteControl extends Reactor{
         this.rdg1 = new DRdg("rdg1");
         this.rdg2 = new DRdg("rdg2");
         this.gcn = {
-            "1_n": new DPump("1_n"),
-            "2_n": new DPump("2_n"),
-            "3_n": new DPump("3_n"),
-            "4_n": new DPump("4_n"),
-            "1_a": new DPump("1_a"),
-            "2_a": new DPump("2_a"),
-            "3_a": new DPump("3_a"),
-            "4_a": new DPump("4_a"),
+                   "1_n": new DPump("1_n", 400, "ГЦН1"),
+            "2_n": new DPump("2_n", 400, "ГЦН2"),
+            "3_n": new DPump("3_n", 100, "ПЭН1"),
+            "4_n": new DPump("4_n", 100, "ПЭН2"),
+            "1_a": new DPump("1_a", 400, "НОАП"),
+            "2_a": new DPump("2_a", 400, "НОНП"),
+            "3_a": new DPump("3_a", 100, "АПЭН1"),
+            "4_a": new DPump("4_a", 100, "АПЭН2")
         }
+        this.viyb = new DViyb(this);
     }
     chosen_delete(i2){
         send_chosen_delete(i2);
@@ -361,7 +362,7 @@ class RemoteControl extends Reactor{
 
     update(){
         this.time++;
-        if (!rc.connect_flag && this.time - rc.start_connect_time >= 3 && rc.wait){
+        if (!rc.connect_flag && this.time - rc.start_connect_time >= 10 && rc.wait){
             rc.wait = false;
             alert("Возможно тут никого нет. Делаем вас организатором этой комнаты.")
             window.location.href = `/b/${room_id}`;
@@ -376,6 +377,11 @@ class RemoteControl extends Reactor{
     }
 
     unset_chosen(){
+          let b_chosen = this.chosen.length;
+        for (let i = 0; i < b_chosen; i++){
+            chosen(this.chosen[0][0], this.chosen[0][1], false);
+        this.chosen.splice(0, 1);
+        }
         socket.emit("method_send", {"room": room_id, "function": "unset_chosen"});
     }
 }

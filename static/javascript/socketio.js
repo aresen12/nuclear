@@ -26,6 +26,12 @@ socket.on('set_speed_SYZ', (data) => {
     }
 });
 
+socket.on('active_viyb', (data) => {
+    if (!rc.copy){
+            re.viyb.active();
+    }
+});
+
 
 socket.on('connect_other_room', (data) => {
     if (!rc.copy){

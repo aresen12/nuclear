@@ -90,6 +90,7 @@ class DPump extends Pump {
     }
 
     turn_on_or_down(){
+        turn(`${this.id_pump}_btn`, !this.work, this.name);
         socket.emit("method_send", {"room": room_id, "function": "turn_on_or_down_pump", "id_pump": this.id_pump});
     }
 

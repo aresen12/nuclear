@@ -1,8 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg"
      viewBox="0 0 700 440">
-
   <defs>
-    <!-- Основная металлическая поверхность -->
     <linearGradient id="metalFrame" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#c1c0b5"/>
       <stop offset="0.12" stop-color="#777970"/>
@@ -11,19 +9,14 @@
       <stop offset="0.8" stop-color="#6e7067"/>
       <stop offset="1" stop-color="#4b4d46"/>
     </linearGradient>
-
-    <!-- Внутренняя тёмная область -->
     <linearGradient id="innerPanel" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#55574f"/>
       <stop offset="0.5" stop-color="#777970"/>
       <stop offset="1" stop-color="#62645b"/>
     </linearGradient>
-    <!-- Тень -->
     <filter id="frameShadow" x="-15%" y="-15%" width="130%" height="140%">
       <feGaussianBlur stdDeviation="5"/>
     </filter>
-
-    <!-- Крепёж -->
     <g id="screw">
       <circle r="7" fill="#41433c" stroke="#c8c5b5" stroke-width="1.5"/>
       <circle r="4.5" fill="#85867b" stroke="#30322c" stroke-width="1"/>
@@ -32,33 +25,21 @@
       <circle cx="-2" cy="-2" r="1" fill="#e0ddcf"/>
     </g>
   </defs>
-
-  <!-- Внешняя тень -->
   <rect x="12" y="13" width="676" height="416"
         rx="5" fill="#000" opacity=".45"
         />
-
-  <!-- Внешний корпус -->
   <rect x="5" y="5" width="690" height="430"
         rx="5"
         stroke="#30322d" stroke-width="3"/>
-
-  <!-- Основная металлическая рамка -->
   <rect x="11" y="11" width="678" height="418"
         rx="3" fill="url(#metalFrame)"
         stroke="#d0cec0" stroke-width="1.5"/>
-
-  <!-- Внутренний контур -->
   <rect x="23" y="23" width="654" height="394"
         rx="2" fill="#41433c"
         stroke="#343630" stroke-width="2"/>
-
-  <!-- Рабочая поверхность -->
   <rect x="30" y="30" width="640" height="380"
         rx="1" fill="url(#innerPanel)"
         stroke="#c0beb0" stroke-width="1.5"/>
-
-  <!-- Внутренний декоративный контур -->
   <rect x="35" y="35" width="630" height="370"
         fill="none" stroke="#d0cebf"
         stroke-opacity=".3" stroke-width="1"/>

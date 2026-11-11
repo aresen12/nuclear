@@ -145,13 +145,19 @@ def set_unset_up_direction(data):
 
 
 @socketio.on("connect_other_room_server")
-def connect_other_room(data):
+def connect_other_room_a(data):
     data["id_device"] = request.sid
     emit("connect_other_room", data, to=data['room'])
+    print("test")
+
 
 @socketio.on("set_speed_SYZ")
 def set_speed_SYZ(data):
     emit("set_speed_SYZ", data, to=data['room'])
+
+@socketio.on("active_viyb")
+def set_speed_SYZ(data):
+    emit("active_viyb", data, to=data['room'])
 
 
 @socketio.on("method_send")

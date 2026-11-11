@@ -33,7 +33,10 @@ class RC{
             this.wait = true;
             console.log(this.sid)
             socket.emit("connect_other_room_server", {"id_device": this.sid, "room": room_id});
-            } catch(e){}
+            } catch(e){
+
+            console.log("error")
+        }
     }
 
     connect_skala()   {

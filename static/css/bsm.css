@@ -16,8 +16,8 @@
 .pause-div{
     background:#581816;
     color: white;
-    margin-left:auto;
-    margin-right:auto;
+    margin-left: auto;
+    margin-right: auto;
     width: 160px;
     border-radius: 6px;
     margin-top: 20px;
@@ -25,6 +25,7 @@
     font-size: 30px;
     text-align: center;
     margin-bottom: 20px;
+    font-family: "Arial", Serif, serif;
 }
 
 .btn-pause-base{
@@ -57,7 +58,6 @@ color: #a6a39c;
     position:relative;
     width: 580px;
     height: 360px;
-    background:none;
     top:10px;
     margin-left:auto;
     margin-right:auto;
@@ -70,7 +70,7 @@ color: #a6a39c;
 .z-d {
     position: absolute;
     top:0px;
-    left: 0px
+    left: 0px;
     display:none;
     background-color: rgba(0, 0, 0, 0.4);
     width:99vw;
@@ -272,7 +272,7 @@ width: 28px;
 
 
 .alert-error {
-    overflow:hide;
+    overflow:hidden;
     border: 1px solid black;
     font-size: 15px;
     max-height:32px;
@@ -440,6 +440,7 @@ width: 28px;
     margin-right:auto;
     font-size: 17px;
     border-radius: 5px;
+    font-family: "Arial", Serif, serif;
 
 }
 .left-img{
@@ -536,7 +537,6 @@ width: 28px;
 
 .cont-tooltip-bottom{
    position:absolute;
-   margin-top:
      margin-right: auto;
   margin-left: auto;
 }
