@@ -1,433 +1,233 @@
-const D_core = 11.8;  // Диаметр зоны
-const H_core = 7.0;  // Высота зоны
-const N_grid = 9;  // Сетка
-const R2_cut = 20;  // Отсечка углов
-const N_cells = 69;  // Число ячеек
-const a_cell = D_core / N_grid;  // Шаг ячейки
-const V_cell = a_cell ** 2 * H_core;  // Объем ячейки
 
-var f_fuel = 0.024;  // Доля топлива
-var f_gr = 0.750;  // Доля графита
-var f_w = 0.226;  // Доля теплоносителя
 
-const N_A = 6.022e23;  // Число Авогадро
-const k_B = 8.617e-5;  // Постоянная Больцмана
-const E_f = 200e6 * 1.602e-19;  // Энергия деления
-var nu_f = 2.43;  // Нейтронов на деление
-var Lambda_n = 2.5e-4;  // Время жизни
-var power_nom = 3200e6;  // Номинальная мощность
-
-groups = [
-    {"b": 0.000215, "l": 0.0124},
-    {"b": 0.001424, "l": 0.0305},
-    {"b": 0.001274, "l": 0.111},
-    {"b": 0.002568, "l": 0.301},
-    {"b": 0.000748, "l": 1.14},
-    {"b": 0.000273, "l": 3.01},
+// стержни СУЗ для расчета матриц не трогать
+let suz = [
+    [-1, -1, 15, 15, 0, 15, 15, -1, -1],
+    [-1, 15, 15, 15, 15, 15, 15, 15, -1],
+    [15, 15, 15, 15, 15, 15, 15, 15, 15],
+    [15, 15, 15, 15, 15, 15, 15, 15, 15],
+    [0, 15, 15, 15, 100, 15, 15, 15, 0],
+    [15, 15, 15, 15, 15, 15, 15, 15, 15],
+    [15, 15, 15, 15, 15, 15, 15, 15, 15],
+    [-1, 15, 15, 15, 15, 15, 15, 15, -1],
+    [-1, -1, 15, 15, 0, 15, 15, -1, -1]
 ];
-const T0 = 293.15;  // Опорная температура
-const sigma_f_u5 = 585e-28;  // Деление U-235
-const sigma_a_u5 = 681e-28;  // Поглощение U-235
-const rho_UO2 = 10.4e3;  // Плотность UO2
-const M_UO2 = 0.270;  // Молярная масса UO2
-const enrich = 0.02;  // Обогащение
-const M_C = 12e-3;  // Молярная масса C
-const rho_gr = 1650.0;  // Плотность графита
-const sigma_s_C = 4.75e-28;  // Рассеяние C
-const sigma_a_C = 0.0035e-28;  // Поглощение C
-const mu_C = 0.209;  // Косинус рассеяния C
-const M_H2O = 18e-3;  // Молярная масса воды
-const sigma_b_H = 80.26e-28;  // Рассеяние H
-const sigma_a_H = 0.332e-28;  // Поглощение H
-const mu_H = 2.0 / 3.0;  // Косинус рассеяния H
-const f_rod_vol = 0.02;  // Доля СУЗ
-const Sigma_rod_full = 20.0;  // Сечение СУЗ
-
-const E0_U8 = 6.674;  // Энергия резонанса
-const Gamma_U8 = 0.0273;  // Ширина резонанса
-const sigma0_U8 = 2.5e-24;  // Пик резонанса
-const A_U8 = 238.0;  // Масса U-238
-const sigma_b_U8 = 10e-28;  // Фоновое сечение
-const A_res = 8.0;  // Параметр резонанса
-const xi_gr = 0.158;  // Замедление графит
-const xi_w = 0.92  // Замедление вода
-const f_homog = 0.1756;  // Гомогенизация
-const E_lo = 6.0;
-const  E_hi = 7.4;  // Окно энергии
-const N_E_grid = 401;  // Точек по энергии
-
-const alpha_void = 0.0098;  // Паровой коэффициент
-const alpha_D = -1.2e-5;  // Доплер коэффициент
-
-const T_nass = 285.8 + 273.15;  // Насыщение
-const T_in = 270.0 + 273.15;  // Вход воды
-const T_ref_h = 270.0 + 273.15;  // Опора энтальпии
-const h_in_ref = 1190e3;  // Энтальпия входа
-const h_f_sat = 1267e3;  // Энтальпия воды
-const h_g_sat = 2772e3;  // Энтальпия пара
-const l_v = h_g_sat - h_f_sat;  // Теплота парообразования
-const cp_w = 4.9e3;  // Теплоемкость воды
-const cp_s = 2.4e3;  // Теплоемкость пара
-const rho_w = 740.0;  // Плотность воды
-const rho_s = 36.5;  // Плотность пара
-const slip_S = 1.5;  // Скольжение пара
-const m_total_default = 10400.0;  // Расход полный
-
-mu_w = 9.0e-5;  // Вязкость воды
-k_w = 0.5;  // Теплопроводность воды
-D_ch = 0.08;  // Диаметр канала
-A_flow_cell = 0.38;  // Сечение потока
-A_surf_fc = 30.0;  // Поверхность топливо
-A_surf_gc = 12.0;  // Поверхность графит
-
-const cp_UO2 = 330.0;  // Теплоемкость UO2
-const cp_gr = 1700.0;  // Теплоемкость графита
-const c_f = rho_UO2 * f_fuel * V_cell * cp_UO2;  // Емкость топлива
-const c_g = rho_gr * f_gr * V_cell * cp_gr;  // Емкость графита
-const k_gr = 40.0; //  Теплопроводность графита
-const G_gg = k_gr * f_gr * H_core;  // Проводимость соседей
-const tau_w = 1.5;  // Время прохода
-const n_fuel = 0.934;  # Доля в топливе
-const n = 0.055;  // Доля в графите
-const n_w = 0.011;  // Доля в воде
-
-const dt_sim = 0.05;  // Шаг модели
-const ROD_INIT_PCT = 20.0;  // СУЗ начальное
-
-
-function lin_space(a, b, n){
-    if (n == 1){
-        return [a];
+for(let i = 0; i<suz.length;i++){
+ for(let j = 0; j<suz[i].length;j++){
+    if(suz[i][j] !== -1){
+      suz[i][j] = 15
     }
-    let st = (b - a) / (n - 1);
-    let mass = [];
-    for (let i = 0; i < n; i++){
-        mass.push(a + st * i);
+  }
+}
+
+
+let left_water  = 5124.6;  // расход через левую половину (34 ячейки), кг/с (10400*34/69)
+let right_water = 5275.4;  // расход через правую половину (35 ячеек), кг/с (10400*35/69)
+let T_left_water  = 543.15; // температура воды на ВХОДЕ в левую половину, К
+let T_right_water = 543.15; // температура воды на ВХОДЕ в правую половину, К
+let P_left  = 6.5;          // давление левой половины, МПа
+let P_right = 6.5;          // давление правой половины, МПа
+
+// N[y][x] = {m, b, c:[c1..c6]} ---> m - медленные, b - быстрые нейтроны (шт. в ячейке),
+//                                c - ядра-предшественники запаздывающих нейтронов 6 групп (шт.)
+// T[y][x] = {t_u, t_g, ental, t_w, t_out}
+//   t_u - топливо, К; t_g - графит, К; ental - средняя энтальпия воды, Дж/кг;
+//   t_w - температура воды в ячейке, К; t_out - температура воды на выходе ячейки, К
+
+let N, T;
+
+
+
+
+//  КОНСТАНТЫ!!!!!!!!!!!
+
+const PI = Math.PI;
+
+// ВРЕМЯ
+const DT = 0.001;              // шаг внутреннего подшага, с
+const STEPS = 1000;            // подшагов за один вызов
+const CALL_TIME = DT * STEPS;  // время одного вызова (интервал усреднения), с
+const P_NOM = 3200e6;          // номинальная тепловая мощность, Вт
+
+//  Геометрия
+const SIZE = 9;                         // матрица 9*9
+const N_CELLS = 69;                     // активных ячеек
+const D_CORE = 11.8;                    // диаметр активной зоны, м
+const H_CORE = 7.0;                     // высота активной зоны, м
+const A_CELL = D_CORE / SIZE;           // сторона ячейки, м
+const V_CELL = A_CELL * A_CELL * H_CORE;// объём ячейки, м3
+const N_CHANNELS = 1661;                // топливных каналов в РБМК-1000
+const CH_IN_CELL = N_CHANNELS / N_CELLS;// каналов в одной ячейке модели
+const PITCH = 0.25;                     // шаг решётки графитовых колонн, м
+const D_HOLE = 0.114;                   // отверстие в графитовой колонне, м
+const RODS_IN_CH = 18;                  // твэлов в кассете
+const D_PELLET = 0.0115;                // диаметр топливной таблетки, м
+const D_CLAD = 0.0136;                  // наружный диаметр оболочки твэла, м
+const D_CLAD_IN = 0.0118;               // внутренний диаметр оболочки, м
+const D_TUBE = 0.015;                   // центральная несущая труба кассеты, м (оценка)
+const D_CH = 0.080;                     // внутренний диаметр трубы канала, м
+
+const L_RODS = CH_IN_CELL * RODS_IN_CH * H_CORE;                       // длина всех твэлов ячейки, м
+const F_FUEL = L_RODS * PI / 4 * D_PELLET ** 2 / V_CELL;               // объёмная доля топлива
+const A_FLOW = PI / 4 * (D_CH ** 2 - RODS_IN_CH * D_CLAD ** 2 - D_TUBE ** 2); // проходное сечение канала, м2
+const D_HYD = 4 * A_FLOW / (PI * (D_CH + RODS_IN_CH * D_CLAD + D_TUBE)); // гидравлический диаметр, м
+const F_WATER = CH_IN_CELL * A_FLOW * H_CORE / V_CELL;                 // объёмная доля теплоносителя
+const F_GR = 1 - PI / 4 * D_HOLE ** 2 / PITCH ** 2;                    // объёмная доля графита
+
+//  Ядерные данные(верим что правдивые)
+const N_A = 6.022e23;          // число Авогадро, 1/моль
+const BARN = 1e-28;            // барн, м2
+const V0 = 2200;               // скорость тепловых нейтронов, м/с
+const E_F = 200e6 * 1.602e-19; // энергия одного деления, Дж
+const NU = 2.43;               // нейтронов на деление U-235
+const EPS = 1.03;              // коэффициент размножения на быстрых нейтронах
+const ENRICH = 0.02;           // обогащение по U-235
+const RHO_UO2 = 10400;         // плотность UO2, кг/м3
+const M_UO2 = 0.270;           // молярная масса UO2, кг/моль
+const RHO_GR = 1650;           // плотность графита, кг/м3
+const M_C = 0.012;             // молярная масса углерода, кг/моль
+const M_H2O = 0.018;           // молярная масса воды, кг/моль
+const SF_U5 = 585;             // деление U-235 тепловыми, барн
+const SA_U5 = 681;             // поглощение U-235, барн
+const SA_U8 = 2.68;            // поглощение U-238 тепловыми, барн
+const SA_C = 0.0035;           // поглощение углерода, барн
+const SS_C = 4.75;             // рассеяние углерода, барн
+const SA_H = 0.332;            // поглощение водорода, барн
+const SA_O = 0.00019;          // поглощение кислорода, барн
+const XI_C = 0.158;            // средняя потеря логарифма энергии на углероде
+const MU_C = 2 / (3 * 12);     // средний косинус рассеяния на углероде
+
+// резонансный захват U-238 и эффект Доплера (корреляция Хелстранда)
+const DANCOFF = 0.4;                                        // затенение твэлов в 18-стержневой сборке(плюс-минус)
+const S_M = 4 / (D_PELLET * 100 * RHO_UO2 / 1000) * (1 - DANCOFF); // поверхность к массе, см2/г
+const RI_300 = 4.45 + 26.6 * Math.sqrt(S_M);                // резонансный интеграл при 300 К, барн(сам хз, в формуле надо)
+const B_DOP = 6.1e-3 + 4.7e-3 * S_M;                        // доплеровский рост интеграла, 1/К^0.5
+
+// макросечения (на объём ячейки)
+const N_UO2 = RHO_UO2 / M_UO2 * N_A * F_FUEL;  // молекул UO2 в м3 ячейки
+const N_U5 = N_UO2 * ENRICH;                    // ядер U-235, 1/м3
+const N_U8 = N_UO2 * (1 - ENRICH);              // ядер U-238, 1/м3
+const SIG_F = N_U5 * SF_U5 * BARN;              // сечение деления, 1/м
+const SIG_A_FUEL = (N_U5 * SA_U5 + N_U8 * SA_U8) * BARN; // поглощение в топливе, 1/м
+const N_CARBON = RHO_GR / M_C * N_A * F_GR;     // ядер углерода, 1/м3
+const SIG_A_GR = N_CARBON * SA_C * BARN;        // поглощение в графите, 1/м
+const SIG_S_GR = N_CARBON * SS_C * BARN;        // рассеяние в графите, 1/м
+const SLOW_POWER = XI_C * SIG_S_GR;             // замедляющая способность графита, 1/м
+const T_SLOW = 2 / (SLOW_POWER * V0);           // время замедления до тепловой энергии, с
+const D_TH = 1 / (3 * (SIG_S_GR * (1 - MU_C) + SIG_A_FUEL + SIG_A_GR)); // Коэфф. Диффузии тепловых, м
+const AGE = 0.040;                              // возраст нейтронов в решётке РБМК, м2 (оценка +- квадратный километр)
+
+// стержни СУЗ: «чёрный» поглотитель, поглощение = поток × поверхность / 4 - так умный дядя сказал, так что верим
+const R_ROD = 0.035;                            // радиус поглотителя, м (с погрешностью)
+const RODS_PER_CELL = 211 / N_CELLS;            // стержней СУЗ на ячейку модели
+const SIG_ROD = RODS_PER_CELL * (2 * PI * R_ROD * H_CORE / 4) / V_CELL; // при полном вводе, 1/м
+
+// перенос нейтронов между ячейками и утечка
+const K_FAST = AGE / (T_SLOW * A_CELL ** 2);    // обмен быстрыми с соседом, 1/с
+const K_SLOW = D_TH * V0 / A_CELL ** 2;         // обмен медленными с соседом, 1/с
+const REFL = 0.4;                               // экономия от графитового отражателя, м (оценка)
+const EXTRAP = 2.13 * D_TH + REFL;              // длина экстраполяции на границе, м
+const EDGE = A_CELL / (A_CELL / 2 + EXTRAP);    // доля утечки через свободную грань
+const BZ2 = (PI / (H_CORE + 2 * EXTRAP)) ** 2;  // осевой геометрический параметр, 1/м2
+const AX_FAST = AGE / T_SLOW * BZ2;             // осевая утечка быстрых, 1/с
+const AX_SLOW = D_TH * V0 * BZ2;                // осевая утечка медленных, 1/с
+
+//Дальше мои полномочия все...
+// Запаздывающие нейтроны U-235 (Кипин)
+const BETA   = [0.000215, 0.001424, 0.001274, 0.002568, 0.000748, 0.000273]; // доли групп
+const LAMBDA = [0.0124, 0.0305, 0.111, 0.301, 1.14, 3.01];                   // постоянные распада, 1/с
+const BETA_SUM = BETA.reduce((a, v) => a + v, 0);            // полная доля, 0.0065
+
+// источник: спонтанное деление U-238 (0.0136 нейтрона/(с·г))
+const M_U8_G = RHO_UO2 * F_FUEL * V_CELL * (238 / 270) * (1 - ENRICH) * 1000; // масса U-238 в ячейке, г
+const S_SRC = M_U8_G * 0.0136;                  // нейтронов в секунду на ячейку
+
+let SIG_EXTRA = 0; // поглощение продуктов деления, Xe, выгорания, 1/м — вычисляется в start_state()
+
+// Тепловые константы(это хоть чуть-чуть знаем)
+const SHARE_FUEL = 0.934;  // доля энергии деления в топливе
+const SHARE_GR = 0.055;    // доля в графите (гамма, замедление)
+const SHARE_W = 0.011;     // доля прямо в воде
+const CP_UO2 = 310;        // теплоёмкость UO2, Дж/(кг*К)
+const CP_GR = 1600;        // теплоёмкость графита при 500–600 C, Дж/(кг*К)
+const K_UO2 = 3.0;         // теплопроводность UO2, Вт/(м*К)
+const K_ZR = 17;           // теплопроводность циркониевой оболочки, Вт/(м*К)
+const H_GAP = 5000;        // проводимость зазора таблетка–оболочка, Вт/(м2*К)
+const K_GR = 30;           // теплопроводность облучённого графита, Вт/(м*К)
+const G_GR_LIN = 56;       // графит --- канал на метр канала, Вт/(м*К) (из T_гр~550 C на номинале)
+
+const C_FUEL = RHO_UO2 * F_FUEL * V_CELL * CP_UO2;  // теплоёмкость топлива ячейки, Дж/К
+const C_GR = RHO_GR * F_GR * V_CELL * CP_GR;        // теплоёмкость графита ячейки, Дж/К
+const R_FUEL_IN = 1 / (8 * PI * K_UO2)              // таблетка (средняя температура)
+                + 1 / (PI * D_PELLET * H_GAP)        // газовый зазор
+                + Math.log(D_CLAD / D_CLAD_IN) / (2 * PI * K_ZR); // оболочка; м*К/Вт
+const G_GW = G_GR_LIN * CH_IN_CELL * H_CORE;        // графит --- вода в ячейке, Вт/К
+const G_GG = K_GR * F_GR * H_CORE;                  // графит --- графит соседа, Вт/К
+
+//  Теплоноситель(перекочевал с моего давление)
+const MU_L = 9.0e-5;   // вязкость воды, Па*с
+const K_L = 0.57;      // теплопроводность воды, Вт/(м*К)
+const MU_S = 1.9e-5;   // вязкость пара, Па*с
+const K_S = 0.06;      // теплопроводность пара, Вт/(м*К)
+const CP_S = 3000;     // теплоёмкость перегретого пара, Дж/(кг*К)
+const H_MIN = 1000;    // теплоотдача без расхода (естественная конвекция), Вт/(м2*К)
+const SLIP = 1.5;      // скольжение пара относительно воды
+const DRHO_DT = 1.9;   // рост плотности недогретой воды, кг/(м3*К)
+const RHO_MAX_W = 1000;// предел плотности воды, кг/м3
+
+// линия насыщения IAPWS-IF97: p МПа, ts К, hf/hg Дж/кг, rf/rg кг/м3,
+// cp - средняя теплоёмкость недогретой воды вблизи насыщения, Дж/(кг*К)[так интернет сказал]
+const SAT = [
+  { p: 0.1, ts: 372.76, hf: 417.4e3,  hg: 2675.0e3, rf: 958.6, rg: 0.590, cp: 4.22e3 },
+  { p: 1,   ts: 453.03, hf: 762.5e3,  hg: 2777.1e3, rf: 887.1, rg: 5.145, cp: 4.40e3 },
+  { p: 3,   ts: 507.00, hf: 1008.3e3, hg: 2803.2e3, rf: 822.0, rg: 15.00, cp: 4.77e3 },
+  { p: 5,   ts: 537.09, hf: 1154.5e3, hg: 2794.2e3, rf: 777.4, rg: 25.35, cp: 5.00e3 },
+  { p: 6,   ts: 548.74, hf: 1213.9e3, hg: 2784.6e3, rf: 758.2, rg: 30.82, cp: 5.15e3 },
+  { p: 7,   ts: 558.98, hf: 1267.7e3, hg: 2773.5e3, rf: 740.1, rg: 36.54, cp: 5.30e3 },
+  { p: 8,   ts: 568.16, hf: 1317.3e3, hg: 2759.0e3, rf: 722.4, rg: 42.52, cp: 5.50e3 },
+  { p: 10,  ts: 584.15, hf: 1407.9e3, hg: 2725.5e3, rf: 688.6, rg: 55.46, cp: 6.00e3 }
+];
+
+// проверка устойчивости явного переноса нейтронов между ячейками
+if (DT * 4 * K_FAST > 1) throw new Error("DT слишком велик для переноса быстрых нейтронов");
+
+const LAYOUT = build_layout(suz); // карта ячеек и соседей
+
+function build_layout(suz) {
+  const cells = [], id = [];
+  for (let y = 0; y < SIZE; y++) {
+    id.push([]);
+    for (let x = 0; x < SIZE; x++) {
+      if (suz[y][x] === -1) { id[y].push(-1); continue; }
+      const left = x < 4 || (x === 4 && y < 4); // левая половина 34 ячейки
+      id[y].push(cells.length);
+      cells.push({ x, y, side: left ? 0 : 1 });
     }
-    return mass;
-}
+  }
+  if (cells.length !== N_CELLS) throw new Error("Ячеек должно быть 69, найдено " + cells.length);
+  if (cells.filter(c => c.side === 0).length !== 34) throw new Error("В левой половине должно быть 34 ячейки");
 
-
-function interp(x, xs, ys){
-    if (x <= xs[0]){
-        return ys[0];
+  const pairs = [], nb = cells.map(() => []), free = new Float64Array(N_CELLS);
+  cells.forEach((c, k) => {
+    for (const [x, y] of [[c.x + 1, c.y], [c.x - 1, c.y], [c.x, c.y + 1], [c.x, c.y - 1]]) {
+      const j = (x >= 0 && x < SIZE && y >= 0 && y < SIZE) ? id[y][x] : -1;
+      if (j === -1) { free[k]++; continue; }
+      nb[k].push(j);
+      if (j > k) pairs.push([k, j]); // каждая пара один раз
     }
-    if (x >= xs[-1]){
-        return ys[-1];
-    }
-    let lo = 0;
-    let hi = len(xs) - 1;
-    while (hi - lo > 1){
-        let mid = Number(((lo + hi) / 2).toFixed(0));
-        if (xs[mid] <= x){
-            lo = mid;
-        } else{
-            hi = mid;
-        }
-    }
-    return ys[lo] + (ys[hi] - ys[lo]) * (x - xs[lo]) / (xs[hi] - xs[lo]);
+  });
+  return { cells, pairs, nb, free };
 }
 
-
-// Учебная модель реактора: перевод расчётного ядра на JavaScript.
-// Графический интерфейс tkinter удалён; имена функций и переменных сохранены.
-// Упрощённая учебная модель, не предназначенная для управления реальным реактором.
-function mat_vec(A,v) {
-    return A.map(row=>row.reduce((s,a,i)=>s+a*v[i],0));
+// Пустая матрица 9*9 с заглушками -1
+function empty_grid(fill) {
+  return Array.from({ length: SIZE }, () => Array.from({ length: SIZE }, fill));
 }
 
-function mat_inv(A) {
-    const n=A.length,M=A.map((r,i)=>[...r,...Array.from( {
-        length:n
-    },(_,j)=>i===j?1:0)]);
-    for(let c=0;c<n;c++) {
-        let p=c;
-        for(let r=c+1;r<n;r++)if(Math.abs(M[r][c])>Math.abs(M[p][c]))p=r;
-        if(Math.abs(M[p][c])<1e-300)throw Error('Матрица вырождена');
-        [M[c],M[p]]=[M[p],M[c]];
-        const d=M[c][c],rc=M[c].map(z=>z/d);
-        M[c]=rc;
-        for(let r=0;r<n;r++)if(r!==c) {
-            const f=M[r][c];
-            if(f!==0)M[r]=M[r].map((a,j)=>a-f*rc[j]);
-        }
-    }
-    return M.map(r=>r.slice(n));
+// Сумма массива
+function total(a) {
+  let r = 0; for (const v of a) r += v; return r;
 }
-
-function eig_max(M,v0=null,tol=1e-12,it_max=5000) {
-    const n=M.length;
-    let v=v0?[...v0]:Array(n).fill(1),s=v.reduce((a,z)=>a+z,0);
-    v=v.map(z=>z/s);
-    let lam=0;
-    for(let it=0;it<it_max;it++) {
-        let w=mat_vec(M,v);
-        lam=w.reduce((a,z)=>a+z,0);
-        if(lam<=0)break;
-        w=w.map(z=>z/lam);
-        const dv=Math.max(...w.map((a,i)=>Math.abs(a-v[i])));
-        v=w;
-        if(dv<tol)break;
-    }
-    return[lam,v];
-}
-
-
-function build_geometry() {
-    const idx=[];
-    for(let iy=-4;iy<=4;iy++)for(let ix=-4;ix<=4;ix++)if(ix*ix+iy*iy<=R2_cut)idx.push([ix,iy]);
-    if(idx.length!==N_cells)throw Error('Неверное число ячеек');
-    const grid=idx,coords=grid.map(([ix,iy])=>[ix*a_cell,iy*a_cell]);
-    const R=coords.map(p=>coords.map(q=>Math.hypot(p[0]-q[0],p[1]-q[1])));
-    for(let i=0;i<N_cells;i++)R[i][i]=1;
-    const adj=R.map((row,i)=>row.map((v,j)=>i!==j&&Math.abs(v-a_cell)<1e-6?1:0));
-    return {
-        grid,R,adj
-    };
-}
-
-
-function build_doppler_table(T_points=null) {
-    if(T_points===null)T_points=lin_space(300,3000,55);
-    const E=lin_space(E_lo,E_hi,N_E_grid),dE=E[1]-E[0],g2=(Gamma_U8/2)**2,sig_raw=E.map(e=>sigma0_U8*g2/((e-E0_U8)**2+g2)),sig_tab=[];
-    for(const T of T_points) {
-        const std=Math.sqrt(E0_U8*k_B*T/A_U8),wm=Math.min(N_E_grid-1,Math.trunc(8*std/dE)+1),w=Array.from( {
-            length:wm+1
-        },(_,d)=>Math.exp(-.5*(d*dE/std)**2)),wf=[...w.slice(1).reverse(),...w],sig_D=[];
-        for(let i=0;i<N_E_grid;i++) {
-            const lo=Math.max(0,i-wm),hi=Math.min(N_E_grid-1,i+wm),ker=wf.slice(wm-(i-lo),wm+(hi-i)+1),vals=sig_raw.slice(lo,hi+1);
-            sig_D.push(ker.reduce((s,a,j)=>s+a*vals[j],0)/ker.reduce((s,a)=>s+a,0));
-        }
-        const phi=E.map((e,i)=>(1/e)/(1+sig_D[i]/sigma_b_U8)),num=sig_D.reduce((s,v,i)=>s+v*phi[i],0);
-        sig_tab.push(f_homog*num/phi.reduce((s,v)=>s+v,0));
-    }
-    return {
-        T_points,sig_tab
-    };
-}
-
-
-const  {
-    T_points:T_tab,sig_tab:sig_u8_tab
-}
-=build_doppler_table();
-function sigma_u8_eff(T) {
-    return interp(T,T_tab,sig_u8_tab);
-}
-function void_fraction(x) {
-    if(x<=0)return 0;
-    return x/(x+slip_S*(1-x)*rho_s/rho_w);
-}
-function macro_fuel(T_f,T_n) {
-    const N_UO2=rho_UO2*N_A/M_UO2*f_fuel,N_U235=N_UO2*enrich,N_U238=N_UO2*(1-enrich),ratio=Math.sqrt(T0/T_n),Sigma_f=N_U235*sigma_f_u5*ratio,Sigma_a=N_U235*sigma_a_u5*ratio+N_U238*sigma_u8_eff(T_f);
-    return[Sigma_f,Sigma_a];
-}
-function macro_water(alpha_v) {
-    const rho_mix=alpha_v*rho_s+(1-alpha_v)*rho_w,N_H2O=rho_mix/M_H2O*N_A*f_w;
-    return[N_H2O*2*sigma_b_H,N_H2O*2*sigma_a_H];
-}
-function macro_graphite() {
-    const N_C=rho_gr/M_C*N_A*f_gr;
-    return[N_C*sigma_s_C,N_C*sigma_a_C];
-}
-
-
-function macro_rods(ozr_pct) {
-    if(!Array.isArray(ozr_pct))throw Error(`ozr_pct должен быть списком из ${N_cells} чисел`);
-    const pct=ozr_pct.map(Number);
-    if(pct.length!==N_cells)throw Error(`ozr_pct должен содержать ${N_cells} значений`);
-    if(!pct.every(Number.isFinite))throw Error('Все значения ozr_pct должны быть конечными');
-    if(pct.some(v=>v<0||v>100))throw Error('Положение СУЗ должно быть в диапазоне от 0 до 100%');
-    return pct.map(v=>f_rod_vol*Sigma_rod_full*v/100);
-}
-
-
-function cell_cross_sections(T_f,T_g,x,ozr_pct) {
-    const[Sig_s_gr,Sig_a_gr]=macro_graphite(),Sig_a_rod=macro_rods(ozr_pct),Sig_f=[],Sig_a=[],Sig_tr=[];
-    for(let i=0;i<N_cells;i++) {
-        const[Sf,Sa_fuel]=macro_fuel(T_f[i],T_g[i]),[Sig_s_w,Sig_a_w]=macro_water(void_fraction(x[i])),Sa=Sa_fuel+Sig_a_w+Sig_a_gr+Sig_a_rod[i];
-        Sig_f.push(Sf);
-        Sig_a.push(Sa);
-        Sig_tr.push(Sa+Sig_s_gr*(1-mu_C)+Sig_s_w*(1-mu_H));
-    }
-    return[Sig_f,Sig_a,Sig_tr];
-}
-function transfer_matrix(Sig_a,Sig_tr,R) {
-    const n_c=Sig_a.length,D=Sig_tr.map(s=>1/(3*s)),L=D.map((v,i)=>Math.max(Math.sqrt(v/Sig_a[i]),a_cell)),esc=L.map(v=>Math.exp(-a_cell/v)),W=Array.from( {
-        length:n_c
-    },(_,i)=>Array.from( {
-        length:n_c
-    },(_,j)=>i===j?0:Sig_a[i]*Math.exp(-(R[i][j]-a_cell)/L[j])/R[i][j]**2)),W_sum=Array.from( {
-        length:n_c
-    },(_,j)=>Math.max(W.reduce((s,row)=>s+row[j],0),1e-300));
-    return Array.from( {
-        length:n_c
-    },(_,i)=>Array.from( {
-        length:n_c
-    },(_,j)=>i===j?1-esc[j]:esc[j]*W[i][j]/W_sum[j]));
-}
-function resonance_escape(x) {
-    return x.map(xi=> {
-        const rho_mix=void_fraction(xi)*rho_s+(1-void_fraction(xi))*rho_w,N_gr=rho_gr/M_C*N_A*f_gr,Sig_mod_gr=xi_gr*N_gr*sigma_s_C,Sig_mod_w=xi_w*rho_mix/M_H2O*N_A*f_w*2*sigma_b_H;return Math.exp(-A_res/(Sig_mod_gr+Sig_mod_w));
-    });
-}
-const _warm= {
-    S:null
-};
-function solve_keff(T,eta) {
-    const M=eta.map((v,i)=>eta.map((_,j)=>nu_f*v*T[i][j])),[lam,S]=eig_max(M,_warm.S);
-    _warm.S=S;
-    return[lam,S];
-}
-function kinetics_step(P,C,rho_r,dt) {
-    const e=lam_arr.map(l=>Math.exp(-l*dt)),a=1-dt*(rho_r-b)/Lambda_n-dt*beta_arr.reduce((s,v,i)=>s+v/Lambda_n*(1-e[i]),0),rhs=P+dt*lam_arr.reduce((s,v,i)=>s+v*C[i]*e[i],0),P_new=rhs/a,C_new=C.map((v,i)=>v*e[i]+beta_arr[i]*P_new/(Lambda_n*lam_arr[i])*(1-e[i]));
-    return[P_new,C_new];
-}
-function kinetics_advance(P,C,rho_r,dt) {
-    const dt_max=Math.min(dt,sub_frac*Lambda_n/Math.max(rho_r,b)),n_sub=Math.min(500,Math.max(1,Math.ceil(dt/dt_max))),dt_sub=dt/n_sub;
-    for(let i=0;i<n_sub;i++)[P,C]=kinetics_step(P,C,rho_r,dt_sub);
-    return[P,C];
-}
-function inlet_enthalpy(T_inlet) {
-    return h_in_ref+cp_w*(T_inlet-T_ref_h);
-}
-function coolant_from_enthalpy(h) {
-    const T_w=[],x=[];
-    for(const hi of h) {
-        if(hi<=h_f_sat) {
-            T_w.push(T_ref_h+(hi-h_in_ref)/cp_w);
-            x.push(0);
-        }
-        else {
-            x.push(Math.min(1,(hi-h_f_sat)/l_v));
-            T_w.push(hi<=h_g_sat?T_nass:T_nass+(hi-h_g_sat)/cp_s);
-        }
-    }
-    return[T_w,x];
-}
-function heat_transfer_coeff(x,m_cell) {
-    const Pr=mu_w*cp_w/k_w,out=[];
-    for(let i=0;i<x.length;i++) {
-        const G=m_cell[i]/A_flow_cell,Re=G*D_ch/mu_w,Nu=.023*Re**.8*Pr**.4;
-        out.push(Nu*k_w/D_ch*(1+2.5*x[i]));
-    }
-    return out;
-}
-function split_coolant_flows(grid) {
-    const left=[],right=[];
-    grid.forEach(([ix,iy],k)=> {
-        if(ix<0||(ix===0&&iy<0))left.push(k);else right.push(k);
-    });
-    if(left.length!==34||right.length!==35)throw Error(`Неверное разбиение зоны: слева ${left.length}, справа ${right.length}`);
-    return[left,right];
-}
-const  {
-    grid,R,adj
-}
-=build_geometry();
-const[left_cells,right_cells]=split_coolant_flows(grid);
-function coolant_arrays(m_left,m_right,T_left,T_right) {
-    const m_cell=Array(N_cells).fill(0),T_in_cells=Array(N_cells).fill(0);
-    for(const k of left_cells) {
-        m_cell[k]=m_left/left_cells.length;
-        T_in_cells[k]=T_left;
-    }
-    for(const k of right_cells) {
-        m_cell[k]=m_right/right_cells.length;
-        T_in_cells[k]=T_right;
-    }
-    return[m_cell,T_in_cells];
-}
-let _exchange_dt=null,_exchange_matrix=null;
-function exchange_matrix(dt) {
-    if(_exchange_dt===dt&&_exchange_matrix!==null)return _exchange_matrix;
-    const deg=adj.map(row=>row.reduce((s,v)=>s+v,0)),q=dt*G_gg/c_g,A=Array.from( {
-        length:N_cells
-    },(_,i)=>Array.from( {
-        length:N_cells
-    },(_,j)=>i===j?1+q*deg[i]:-q*adj[i][j]));
-    _exchange_matrix=mat_inv(A);
-    _exchange_dt=dt;
-    return _exchange_matrix;
-}
-
-
-function heat_exchange(T_g,dt) {
-    return mat_vec(exchange_matrix(dt),T_g);
-}
-
-
-function init_state(m_left=m_total_default/2,m_right=m_total_default/2,T_left=T_in,T_right=T_in) {
-    const P=power_nom,C=beta_arr.map((v,i)=>v*P/(Lambda_n*lam_arr[i])),P_cell=Array(N_cells).fill(P/N_cells),[m_cell,T_in_cells]=coolant_arrays(m_left,m_right,T_left,T_right),x0=Array(N_cells).fill(.14),h_conv=heat_transfer_coeff(x0,m_cell),UA_fc=h_conv.map(v=>v*A_surf_fc),UA_gc=h_conv.map(v=>v*A_surf_gc);
-    let T_w=Array(N_cells).fill(T_nass);
-    const T_f=T_w.map((v,i)=>v+n_fuel*P_cell[i]/UA_fc[i]),T_g=T_w.map((v,i)=>v+n*P_cell[i]/UA_gc[i]),Q_w=T_w.map((v,i)=>n_w*P_cell[i]+UA_fc[i]*(T_f[i]-v)+UA_gc[i]*(T_g[i]-v)),h=Q_w.map((v,i)=>inlet_enthalpy(T_in_cells[i])+v/m_cell[i]);
-    [T_w]=coolant_from_enthalpy(h);
-    const[,x]=coolant_from_enthalpy(h);
-    return {
-        P,C,T_f,T_g,T_w,h,x,t:0,T_f_ref:[...T_f],T_g_ref:[...T_g],x_ref:[...x]
-    };
-}
-
-// Кэш нейтронной части: она зависит только от СУЗ и опорного состояния
-const _neu= {
-    key:null,rho:0,share:null
-};
-
-
-function reactor_step(state,ozr_pct,m_left,m_right,T_left=T_in,T_right=T_in,dt=dt_sim) {
-    const {
-        T_f,T_g,T_w,x,h,T_f_ref,x_ref
-    }
-    =state,[m_cell,T_in_cells]=coolant_arrays(m_left,m_right,T_left,T_right),[rho_static,share]=neutron_block(state,ozr_pct),rho_void=alpha_void*x.reduce((s,v,i)=>s+share[i]*(void_fraction(v)-void_fraction(x_ref[i]),0),0),h_conv=heat_transfer_coeff(x,m_cell),UA_fc=h_conv.map(v=>v*A_surf_fc),UA_gc=h_conv.map(v=>v*A_surf_gc);
-    let P=state.P,C=[...state.C],Tf=[...T_f],t_left=dt,n_sub=0,E_tot=0,rho_r=0;
-    while(t_left>1e-12) {
-        const rho_dop=alpha_D*Tf.reduce((s,v,i)=>s+share[i]*(v-T_f_ref[i]),0);
-        rho_r=rho_static+rho_void+rho_dop;
-        let dts=Math.min(t_left,sub_frac*Lambda_n/Math.max(rho_r,b));
-        if(n_sub>=n_sub_max-1||t_left-dts<.1*dts)dts=t_left;
-        const P_old=P;
-        [P,C]=kinetics_advance(P,C,rho_r,dts);
-        const P_avg=.5*(P_old+P);
-        E_tot+=P_avg*dts;
-        for(let i=0;i<N_cells;i++)Tf[i]+=dts*(n_fuel*P_avg*share[i]-UA_fc[i]*(Tf[i]-T_w[i]))/c_f;
-        t_left-=dts;
-        n_sub++;
-    }
-    const denom=1-rho_r,k_eff=Math.abs(denom)>1e-12?1/denom:Infinity,P_mean=E_tot/dt;
-    let T_g_new=T_g.map((v,i)=>v+dt*(n*P_mean*share[i]-UA_gc[i]*(v-T_w[i]))/c_g);
-    T_g_new=heat_exchange(T_g_new,dt);
-    const Q_w=T_w.map((v,i)=>n_w*P_mean*share[i]+UA_fc[i]*(Tf[i]-v)+UA_gc[i]*(T_g_new[i]-v)),h_target=Q_w.map((v,i)=>inlet_enthalpy(T_in_cells[i])+v/m_cell[i]),h_new=h.map((v,i)=>v+dt*(h_target[i]-v)/tau_w),[T_w_new,x_new]=coolant_from_enthalpy(h_new),new_state= {
-        P,C,T_f:Tf,T_g:T_g_new,T_w:T_w_new,h:h_new,x:x_new,t:state.t+dt,T_f_ref:state.T_f_ref,T_g_ref:state.T_g_ref,x_ref:state.x_ref
-    };
-    return[new_state, {
-        k_eff,rho:rho_r
-    }];
-}
-//// Консольный пример вместо графического интерфейса.
-//const RUN_CONSOLE_DEMO=true,DEMO_T_END=40,DEMO_T_UP=5,DEMO_T_DOWN=20,DEMO_ROD_UP=10,DEMO_PRINT_EVERY=2;
-//function run_console_demo(t_end=DEMO_T_END,print_every=DEMO_PRINT_EVERY) {
-//    let state=init_state();
-//    const rods=Array(N_cells).fill(ROD_INIT_PCT),centre=grid.findIndex(([ix,iy])=>ix===0&&iy===0),m_half=m_total_default/2,n_steps=Math.round(t_end/dt_sim),every=Math.max(1,Math.round(print_every/dt_sim)),up_step=Math.round(DEMO_T_UP/dt_sim),down_step=Math.round(DEMO_T_DOWN/dt_sim),rows=[];
-//    console.log('t, с | P, % | k_eff | rho/beta | Tf max, C | Tg max, C | x max');
-//    for(let i=0;i<=n_steps;i++) {
-//        if(i===up_step)rods[centre]=DEMO_ROD_UP;
-//        if(i===down_step)rods[centre]=ROD_INIT_PCT;
-//        let diag;
-//        [state,diag]=reactor_step(state,rods,m_half,m_half);
-//        const P=state.P;
-//        if(!(Number.isFinite(P)&&P<1e30)) {
-//            console.log(`Расчет остановлен при t=${state.t.toFixed(2)} с`);
-//            break;
-//        }
-//        if(i%every===0) {
-//            const row=[state.t,P/power_nom*100,diag.k_eff,diag.rho/b,Math.max(...state.T_f)-273.15,Math.max(...state.T_g)-273.15,Math.max(...state.x)];
-//            rows.push(row);
-//            console.log(row.map(v=>Number(v).toFixed(3)).join(' | '));
-//        }
-//    }
-//    return rows;
-//}
-
 
 class Modal2 {
     constructor(){
@@ -445,131 +245,352 @@ class Modal2 {
 
     }
 
-    neutron_block(ozr_pct) {
-    const key=JSON.stringify([ozr_pct, this.T_f_ref, this.T_g_ref, this.x_ref]);
-    if(_neu.key!==key) {
-        const[Sig_f, Sig_a, Sig_tr]=cell_cross_sections(this.T_f_ref,this.T_g_ref,this.x_ref,ozr_pct),T=transfer_matrix(Sig_a,Sig_tr,R),eta=Sig_f.map((v,i)=>v / Sig_a[i]),[k_static,S]=solve_keff(T, eta), TS=mat_vec(T, S),fis=eta.map((v, i)=>v * TS[i]),fs=Math.max(fis.reduce((s, v) => s + v, 0), 1e-300);
-        _neu.rho=(k_static-1) / k_static;
-        _neu.share=fis.map(v=>v/fs);
-        _neu.key=key;
-    }
-    return[_neu.rho,_neu.share];
+    start_state(suz, lw, rw, tl, tr, pl, pr) {
+  const rods = read_rods(suz);
+  const flow = make_flow(lw, rw, tl, tr, pl, pr);
+  if (flow.m.some(v => v <= 0)) throw new Error("Для номинала нужен расход > 0");
+  const n = N_CELLS;
+  const s = {
+    b: new Float64Array(n).fill(1),
+    m: new Float64Array(n).fill(P_NOM / n / (E_F * SIG_F * V0)),
+    c: BETA.map(() => new Float64Array(n)),
+    tu: new Float64Array(n), tg: new Float64Array(n), h: new Float64Array(n),
+    ms: new Float64Array(n)
+  };
+  steady_heat(s, flow);
+  for (let it = 0; it < 40; it++) {
+    const nuc = nuclear(s, water_all(s, flow), rods);
+    const k = solve_k(nuc, s.b, s.m);
+    SIG_EXTRA += total(nuc.sig_a) / n * (k - 1); // добавочное поглощение до k = 1
+    const scale = P_NOM / (E_F * SIG_F * V0 * total(s.m));
+    for (let i = 0; i < n; i++) { s.m[i] *= scale; s.b[i] *= scale; }
+    steady_heat(s, flow);
+    if (Math.abs(k - 1) < 1e-7) break;
+  }
+  if (SIG_EXTRA < 0) throw new Error("При таких СУЗ реактор не выходит на номинал: выведите стержни");
+  for (let i = 0; i < 6; i++)
+    for (let k = 0; k < n; k++) s.c[i][k] = BETA[i] * NU * EPS * SIG_F * V0 * s.m[k] / LAMBDA[i];
+  const out = to_matrices(s, flow);
+  return { N: out.N, T: out.T };
 }
 
-    split_coolant_flows(grid) {
-        this.left_cells = [];
-        this.right_cells = [];
-        grid.forEach(([ix, iy], k) => {
-          if (ix < 0 || (ix === 0 && iy < 0)) this.left_cells.push(k);
-          else this.right_cells.push(k);
-        });
+    get_reactivity() {
+  const rods = read_rods(suz);
+
+  const flow = make_flow(
+    left_water,
+    right_water,
+    T_left_water,
+    T_right_water,
+    P_left,
+    P_right
+  );
+
+  const state = unpack(N, T);
+  const water = water_all(state, flow);
+  const properties = nuclear(state, water, rods);
+
+  // solve_k изменяет переданные массивы, поэтому используем копии
+  const k = solve_k(
+    properties,
+    Float64Array.from(state.b),
+    Float64Array.from(state.m)
+  );
+
+  return {
+    k: k,
+    rho: (k - 1) / k
+  };
+}
+
+    steady_heat(s, flow) {
+  for (let k = 0; k < N_CELLS; k++) {
+    const pw = E_F * SIG_F * V0 * s.m[k];
+    s.h[k] = flow.h_in[k] + pw / flow.m[k] / 2;  // средняя энтальпия = вход + половина нагрева
+    const w = water_state(s.h[k], flow.P[k]);
+    s.tu[k] = w.t + SHARE_FUEL * pw / fuel_cond(heat_coef(flow.m[k], w.x, w.s.cp));
+    s.tg[k] = w.t + SHARE_GR * pw / G_GW;
+  }
+}
+
+    solve_k(nuc, b, m) {
+  const src = new Float64Array(N_CELLS), born = NU * EPS * SIG_F * V0;
+  let k = 1;
+  for (let it = 0; it < 150; it++) {
+    const old = total(m);
+    for (let i = 0; i < N_CELLS; i++) src[i] = born * m[i] / k;
+    gs_solve(b, nuc.loss1, K_FAST, src);
+    for (let i = 0; i < N_CELLS; i++) src[i] = nuc.p[i] * b[i] / T_SLOW;
+    gs_solve(m, nuc.loss2, K_SLOW, src);
+    k *= total(m) / old;
+  }
+  return k;
+}
+
+    solve_k(nuc, b, m) {
+  const src = new Float64Array(N_CELLS), born = NU * EPS * SIG_F * V0;
+  let k = 1;
+  for (let it = 0; it < 150; it++) {
+    const old = total(m);
+    for (let i = 0; i < N_CELLS; i++) src[i] = born * m[i] / k;
+    gs_solve(b, nuc.loss1, K_FAST, src);
+    for (let i = 0; i < N_CELLS; i++) src[i] = nuc.p[i] * b[i] / T_SLOW;
+    gs_solve(m, nuc.loss2, K_SLOW, src);
+    k *= total(m) / old;
+  }
+  return k;
+}
+
+    make_check(s, sum) {
+  const e_fuel = C_FUEL * (total(s.tu) - sum.tu0);
+  const e_gr = C_GR * (total(s.tg) - sum.tg0);
+  const e_err = sum.e_gen - e_fuel - e_gr - sum.e_water - sum.e_out;
+  const n_now = neutrons_total(s);
+  const n_err = n_now - sum.n0 - sum.n_src - sum.n_fis + sum.n_lost;
+  return {
+    energy: { gen: sum.e_gen, fuel: e_fuel, graphite: e_gr, water: sum.e_water, out: sum.e_out,
+              error: e_err, rel: e_err / Math.max(sum.e_gen, 1) },
+    neutrons: { start: sum.n0, end: n_now, error: n_err, rel: n_err / Math.max(n_now, 1) },
+    positive: [s.b, s.m, ...s.c].every(a => a.every(v => v >= 0))
+  };
+}
+    new_sum(s, flow) {
+  for (let k = 0; k < N_CELLS; k++) s.ms[k] = steam_mass(water_state(s.h[k], flow.P[k]));
+  const n = N_CELLS;
+  return {
+    energy: new Float64Array(n), steam: new Float64Array(n), steam_rate: new Float64Array(n),
+    e_gen: 0, e_water: 0, e_out: 0,
+    tu0: total(s.tu), tg0: total(s.tg), n0: neutrons_total(s),
+    n_src: 0, n_fis: 0, n_lost: 0
+  };
+}
+
+    neutrons_total(s) {
+  return total(s.b) + total(s.m) + s.c.reduce((a, g) => a + total(g), 0);
+}
+
+    heat_step(s, w, flow, dt, sum) {
+  const q_gg = new Float64Array(N_CELLS); // тепло от соседнего графита, Вт
+  for (const [i, j] of LAYOUT.pairs) {
+    const q = G_GG * (s.tg[i] - s.tg[j]); q_gg[i] -= q; q_gg[j] += q;
+  }
+  for (let k = 0; k < N_CELLS; k++) {
+    const wk = w[k];
+    const pw = E_F * SIG_F * V0 * s.m[k];                                   // мощность деления, Вт
+    const q_fw = fuel_cond(heat_coef(flow.m[k], wk.x, wk.s.cp)) * (s.tu[k] - wk.t); // топливо -> вода, Вт
+    const q_gw = G_GW * (s.tg[k] - wk.t);                                   // графит -> вода, Вт
+    const h_out = out_h(s, flow, k);
+    const q_out = flow.m[k] * (h_out - flow.h_in[k]);                       // уносит поток, Вт
+    const m_w = F_WATER * V_CELL * wk.rho;                                  // масса воды в ячейке, кг
+    const dh = dt * (SHARE_W * pw + q_fw + q_gw - q_out) / m_w;
+
+    s.tu[k] += dt * (SHARE_FUEL * pw - q_fw) / C_FUEL;
+    s.tg[k] += dt * (SHARE_GR * pw - q_gw + q_gg[k]) / C_GR;
+    s.h[k] += dh;
+
+    // пар: скорость образования = рост массы в ячейке + унос потоком
+    const ms = steam_mass(wk);
+    const x_out = Math.min(1, Math.max(0, (h_out - wk.s.hf) / (wk.s.hg - wk.s.hf)));
+    const rate = (ms - s.ms[k]) / dt + flow.m[k] * x_out;
+    s.ms[k] = ms;
+    sum.steam_rate[k] = rate;
+    sum.steam[k] += rate * dt;
+
+    sum.energy[k] += pw * dt;
+    sum.e_gen += pw * dt;
+    sum.e_water += m_w * dh;
+    sum.e_out += q_out * dt;
+  }
+}
+
+    neutron_step(s, nuc, dt, sum, depth) {
+  const n = N_CELLS, born = NU * EPS * SIG_F * V0; // быстрых рождается на 1 медленный за 1 с
+  const e = LAMBDA.map(l => Math.exp(-l * dt));
+  let g = (1 - BETA_SUM) * dt;                     // мгновенные + запаздывающие, выпущенные в этом шаге
+  BETA.forEach((bt, i) => { g += bt * (dt - (1 - e[i]) / LAMBDA[i]); });
+  g *= born;
+  const q = dt / T_SLOW;
+
+  // если разгон быстрее шага - делим шаг пополам
+  let worst = 0;
+  for (let k = 0; k < n; k++) worst = Math.max(worst, q * nuc.p[k] * g / ((1 + dt * nuc.loss1[k]) * (1 + dt * nuc.loss2[k])));
+  if (worst > 0.9) {
+    if (depth >= 12) throw new Error("Разгон на мгновенных нейтронах быстрее минимального шага");
+    neutron_step(s, nuc, dt / 2, sum, depth + 1);
+    neutron_step(s, nuc, dt / 2, sum, depth + 1);
+    return;
+  }
+
+  // перенос к соседям: сколько ушло из одной, столько пришло в другую закон!
+  const db = new Float64Array(n), dm = new Float64Array(n);
+  for (const [i, j] of LAYOUT.pairs) {
+    const fb = K_FAST * (s.b[i] - s.b[j]), fm = K_SLOW * (s.m[i] - s.m[j]);
+    db[i] -= fb; db[j] += fb; dm[i] -= fm; dm[j] += fm;
+  }
+
+  for (let k = 0; k < n; k++) {
+    let x = s.b[k] + dt * (db[k] + S_SRC);
+    for (let i = 0; i < 6; i++) x += s.c[i][k] * (1 - e[i]); // распад старых предшественников
+    const a1 = 1 + dt * nuc.loss1[k], a2 = 1 + dt * nuc.loss2[k], qp = q * nuc.p[k];
+    const y = s.m[k] + dt * dm[k];
+    const m1 = (y + qp * x / a1) / (a2 - qp * g / a1);  // медленные
+    const b1 = (x + g * m1) / a1;                       // быстрые
+    const f1 = born * m1;                               // нейтронов деления в секунду
+    for (let i = 0; i < 6; i++) s.c[i][k] = s.c[i][k] * e[i] + BETA[i] * f1 * (1 - e[i]) / LAMBDA[i];
+    s.b[k] = b1; s.m[k] = m1;
+    sum.n_src += S_SRC * dt;
+    sum.n_fis += f1 * dt;
+    sum.n_lost += dt * ((nuc.loss1[k] - nuc.p[k] / T_SLOW) * b1 + nuc.loss2[k] * m1); // поглощены или утекли
+  }
+}
+
+   nuclear(s, w, rods) {
+  const n = N_CELLS;
+  const loss1 = new Float64Array(n), loss2 = new Float64Array(n), p = new Float64Array(n), sig_a = new Float64Array(n);
+  for (let k = 0; k < n; k++) {
+    // поглощение водой зависит от плотности смеси -> положительный паровой эффект
+    const sig_w = w[k].rho / M_H2O * N_A * F_WATER * (2 * SA_H + SA_O) * BARN;
+    sig_a[k] = SIG_A_FUEL + SIG_A_GR + sig_w + SIG_ROD * rods[k] / 100 + SIG_EXTRA;
+    // доплер: резонансный интеграл растёт с температурой топлива
+    const ri = RI_300 * (1 + B_DOP * (Math.sqrt(s.tu[k]) - Math.sqrt(300)));
+    p[k] = Math.exp(-N_U8 * ri * BARN / SLOW_POWER); // вероятность избежать резонансного захвата
+    const edge = LAYOUT.free[k] * EDGE;
+    loss1[k] = 1 / T_SLOW + AX_FAST + K_FAST * edge;          // уход быстрых: замедление + утечка, 1/с
+    loss2[k] = sig_a[k] * V0 + AX_SLOW + K_SLOW * edge;       // уход медленных: поглощение + утечка, 1/с
+  }
+  return { loss1, loss2, p, sig_a };
+}
+
+    water_all(s, flow) {
+  const w = new Array(N_CELLS);
+  for (let k = 0; k < N_CELLS; k++) w[k] = water_state(s.h[k], flow.P[k]);
+  return w;
+}
+
+    water_state(h, P) {
+  const s = sat(P);
+  if (h < s.hf) { // недогретая вода
+    const t = s.ts - (s.hf - h) / s.cp;
+    return { t, x: 0, void: 0, rho: Math.min(RHO_MAX_W, s.rf + DRHO_DT * (s.ts - t)), s };
+  }
+  if (h <= s.hg) { // пароводяная смесь
+    const x = (h - s.hf) / (s.hg - s.hf);                       // массовое паросодержание
+    const v = x / (x + SLIP * (1 - x) * s.rg / s.rf);            // объёмное паросодержание
+    return { t: s.ts, x, void: v, rho: v * s.rg + (1 - v) * s.rf, s };
+  }
+  const t = s.ts + (h - s.hg) / CP_S; // перегретый пар
+  return { t, x: 1, void: 1, rho: s.rg * s.ts / t, s };
+}
+
+    sat(P) {
+  if (P <= SAT[0].p) return SAT[0];
+  if (P >= SAT[SAT.length - 1].p) return SAT[SAT.length - 1];
+  let i = 0; while (SAT[i + 1].p < P) i++;
+  const a = SAT[i], b = SAT[i + 1], f = (P - a.p) / (b.p - a.p), r = {};
+  for (const key in a) r[key] = a[key] + f * (b[key] - a[key]);
+  return r;
+}
+
+    sub_step(s, rods, flow, sum) {
+  const w = water_all(s, flow);
+  const nuc = nuclear(s, w, rods);
+  neutron_step(s, nuc, DT, sum, 0);
+  heat_step(s, w, flow, DT, sum);
+}
+
+     out_h(s, flow, k) {
+  return flow.m[k] > 0 ? 2 * s.h[k] - flow.h_in[k] : s.h[k];
+}
+
+// Масса пара в ячейке, кг
+ steam_mass(w) {
+  return (w.x >= 1 ? w.rho : w.s.rg * w.void) * F_WATER * V_CELL;
+}
+
+// Массивы -> матрицы N, T, Void и масса пара
+ to_matrices(s, flow) {
+  const N = empty_grid(() => ({ m: -1, b: -1, c: [-1, -1, -1, -1, -1, -1] }));
+  const T = empty_grid(() => ({ t_u: -1, t_g: -1, ental: -1, t_w: -1, t_out: -1 }));
+  const Void = empty_grid(() => -1);
+  const ms = new Float64Array(N_CELLS);
+  LAYOUT.cells.forEach((c, k) => {
+    const w = water_state(s.h[k], flow.P[k]);
+    N[c.y][c.x] = { m: s.m[k], b: s.b[k], c: s.c.map(g => g[k]) };
+    T[c.y][c.x] = { t_u: s.tu[k], t_g: s.tg[k], ental: s.h[k], t_w: w.t,
+                    t_out: water_state(out_h(s, flow, k), flow.P[k]).t };
+    Void[c.y][c.x] = w.void;
+    ms[k] = steam_mass(w);
+  });
+  return { N, T, Void, ms };
+}
+
+// Температура смешанной воды на выходе левой и правой половины, К
+ outlet_temps(s, flow) {
+  const mh = [0, 0], m = [0, 0], hs = [0, 0], cnt = [0, 0];
+  LAYOUT.cells.forEach((c, k) => {
+    const h = out_h(s, flow, k);
+    mh[c.side] += flow.m[k] * h; m[c.side] += flow.m[k]; hs[c.side] += h; cnt[c.side]++;
+  });
+  return [0, 1].map(i => water_state(m[i] > 0 ? mh[i] / m[i] : hs[i] / cnt[i], flow.P_side[i]).t);
+}
+
+    make_flow(lw, rw, tl, tr, pl, pr) {
+  if (!(lw >= 0 && rw >= 0)) throw new Error("Расход не может быть отрицательным");
+  const count = [34, 35];
+  const mass = [lw / count[0], rw / count[1]];
+  const h_side = [inlet_h(tl, pl), inlet_h(tr, pr)];
+  const pres = [pl, pr];
+  return {
+    m: Float64Array.from(LAYOUT.cells, c => mass[c.side]),     // кг/с через ячейку
+    h_in: Float64Array.from(LAYOUT.cells, c => h_side[c.side]),// Дж/кг на входе
+    P: Float64Array.from(LAYOUT.cells, c => pres[c.side]),     // МПа
+    P_side: pres
+  };
+}
+
+    read_rods(suz) {
+  return Float64Array.from(LAYOUT.cells, c => {
+    const v = suz[c.y][c.x];
+    if (!(v >= 0 && v <= 100)) throw new Error(`СУЗ [${c.y}][${c.x}] = ${v}, допустимо 0..100`);
+    return v;
+  });
+}
+
+    update(suz, left_water, right_water, T_left_water, T_right_water,){
+        const rods = this.read_rods(suz);
+        const flow = make_flow(left_water, right_water, T_left_water, T_right_water, this.P_left, this.P_right);
+        const s = unpack(N, T);
+        const sum = new_sum(s, flow);
+        for (let k = 0; k < STEPS; k++) this.sub_step(s, rods, flow, sum);
     }
-//
-//
-//    build_geometry(){
-//        this.grid = [];
-//        for (let iy = -4; iy <= 4; iy++){
-//            for (let ix = -4; ix <= 4; ix++){
-//                 if (ix * ix + iy * iy <= R2_cut) {
-//                    grid.push([ix, iy]);
-//                 }
-//            }
-//        }
-//        const N = grid.length, R = Array.from({ length: N }, () => Array(N).fill(0));
-//        const adj = Array.from({ length: N }, () => Array(N).fill(0));
-//        for (let i = 0; i < N; i++) {
-//            for (let j = 0; j < N; j++) {
-//                const dx = (grid[i][0] - grid[j][0]) * a_cell;
-//                const dy = (grid[i][1] - grid[j][1]) * a_cell;
-//                R[i][j] = i === j ? 1.0 : Math.sqrt(dx * dx + dy * dy);
-//                if (i !== j && Math.abs(R[i][j] - a_cell) < 1e-6){
-//                    adj[i][j] = 1;
-//                }
-//            }
-//        }
-//        return { grid, R, adj };
-//    }
-//
-//     coolant_arrays(m_left, m_right, T_left, T_right) {
-//        const m_cell = Array(N_cells).fill(0), T_in_cells = Array(N_cells).fill(0);
-//        this.left_cells.forEach(i => { m_cell[i] = m_left / this.left_cells.length; T_in_cells[i] = T_left; });
-//        this.right_cells.forEach(i => { m_cell[i] = m_right / this.right_cells.length; T_in_cells[i] = T_right; });
-//        return [m_cell, T_in_cells];
-//  }
+}
+
+function fuel_cond(hc) {
+  return L_RODS / (R_FUEL_IN + 1 / (PI * D_CLAD * hc));
+}
+
+function inlet_h(T_in, P) {
+  const s = sat(P);
+  return T_in >= s.ts ? s.hf : s.hf - s.cp * (s.ts - T_in);
+}
 
 
-    update(ozr_pct, m_left, m_right, T_left, T_right){
-//        m_left = this.m_left
-        let ozr2 = [];
-        for(let i = 0; i < ozr_pct.length; i++){
-            for(let j = 0; j < ozr_pct[i].length; j++){
-                ozr2.push(ozr_pct[i][j]);
-        }
-        }
-        ozr_pct = ozr2;
-        let m = coolant_arrays(m_left, m_right, T_m_left, T_m_left);
-        this.m_cell = m[0];
-        this.T_in_cells = m[0];
-        let m = this.neutron_block(ozr_pct);
-        let rho_static = m[0];
-        let share = m[1];
-        let summ = 0;
-        for (let 1 = 0; i < N_cells; i++){
-            summ += share[i] * (void_fraction(x[i]) - void_fraction(x_ref[i]))
-        }
-        rho_void = alpha_void * summ;
+function heat_coef(m_cell, x, cp_l) {
+  const g = m_cell / CH_IN_CELL / A_FLOW; // массовая скорость, кг/(м2·с)
+  const h_l = 0.023 * Math.pow(g * D_HYD / MU_L, 0.8) * Math.pow(MU_L * cp_l / K_L, 0.4) * K_L / D_HYD;
+  const h_s = 0.023 * Math.pow(g * D_HYD / MU_S, 0.8) * Math.pow(MU_S * CP_S / K_S, 0.4) * K_S / D_HYD;
+  return Math.max(H_MIN, (1 - x) * h_l + x * h_s);
+}
 
-    let h_conv = heat_transfer_coeff(this.x, this.m_cell);
-    let UA_fc = [];
-    let UA_gc = [];
-    for (let i = 0; i < h_conv.length; i++){
-        UA_fc.push(h_conv[i] * A_surf_fc);
-        UA_gc.push(h_conv[i] * A_surf_gc);
-    }
-    let t_left = dt;
-    let n_sub = 0;
-    let E_tot = 0.0;
-    while (t_left > 1e-12){
-        let summ = 0;
-        for (let i = 0; i < N_cells; i++){
-            summ += share[i] * (this.Tf[i] - this.T_f_ref[i])
-        }
-        let rho_dop = alpha_D * summ;
-        let rho_r = rho_static + rho_void + rho_dop;
-        let dts = Math.min(t_left, sub_frac * Lambda_n / Math.max(rho_r, b));
-        if (n_sub >= n_sub_max - 1 || t_left - dts < 0.1 * dts){
-            dts = t_left;
-        }
-        this.P_old = this.P;
-        let m = kinetics_advance(this.P, this.C, rho_r, dts);
-        this.P = m[0];
-        this.C = m[1];
-        let Tf = [...this.T_f];
-        let P_avg = 0.5 * (this.P_old + this.P);  // средняя мощность подшага
-        E_tot += P_avg * dts;
-        for (let i = 0; i < N_cells; i++){
-            this.Tf[i] += dts * (n_fuel * P_avg * share[i] - UA_fc[i] * (Tf[i] - this.T_w[i])) / c_f;
-        }
-        t_left -= dts;
-        n_sub += 1;
-        }
-         let denom = 1.0 - rho_r;
-        let k_eff = 1.0 / Math.abs(denom);
-        let P_mean = E_tot / dt;
-        let T_g_new = [];
-        let Q_w = [];
-        let h_new = [];
-        let h_target = [];
-        for (let i = 0; i < N_cells; i++){
-            T_g_new.push(this.T_g[i] + dt * (n * P_mean * share[i] - UA_gc[i] * (this.T_g[i] - this.T_w[i])) / c_g);
-            Q_w.push(n_w * P_mean * share[i] + UA_fc[i] * (Tf[i] - this.T_w[i]) + UA_gc[i] * (T_g_new[i] - this.T_w[i]));
-            h_new.push(h[i] + dt * (h_target[i] - h[i]) / tau_w);
-            h_target.push(inlet_enthalpy(this.T_in_cells[i]) + this.Q_w[i] / this.m_cell[i]);
-        }
-        this.T_g = heat_exchange(T_g_new, dt);
-        let m = coolant_from_enthalpy(h_new);
-        this.T_w = m[0];
-        this.x = m[1];
 
-    }
+function unpack(N, T) {
+  const get = f => Float64Array.from(LAYOUT.cells, c => f(N[c.y][c.x], T[c.y][c.x]));
+  const s = {
+    b: get(n => n.b), m: get(n => n.m),
+    c: BETA.map((_, i) => get(n => n.c[i])),
+    tu: get((n, t) => t.t_u), tg: get((n, t) => t.t_g), h: get((n, t) => t.ental),
+    ms: new Float64Array(N_CELLS) // масса пара на прошлом подшаге, кг
+  };
+  for (const a of [s.b, s.m, ...s.c]) if (a.some(v => !(v >= 0))) throw new Error("Отрицательное число нейтронов на входе");
+  return s;
 }
