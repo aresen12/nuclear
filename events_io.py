@@ -160,9 +160,15 @@ def set_speed_SYZ(data):
 def turn_btn(data):
     emit("turn_btn", data, to=data['room'])
 
+
 @socketio.on("active_viyb")
-def set_speed_SYZ(data):
+def active_viyb(data):
     emit("active_viyb", data, to=data['room'])
+
+
+@socketio.on("m_p")
+def m_p(data):
+    emit("m_p", data, to=data['room'])
 
 
 @socketio.on("method_send")

@@ -145,6 +145,15 @@ color: #a6a39c;
 
 }
 
+
+.cursor{
+    position: absolute;
+    background: none;
+    width: fit-content;
+    height: fit-content;
+}
+
+
 .bs-graf{
     background:black;
     border-bottom: 1px solid green;

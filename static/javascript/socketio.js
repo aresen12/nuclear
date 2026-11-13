@@ -33,6 +33,14 @@ socket.on('active_viyb', (data) => {
 });
 
 
+socket.on('m_p', (data) => {
+    if (rc.sid != data["sid"]){
+        console.log(data["x"], data["y"])
+        set_pos_mouse(data["sid"], data["x"], data["y"]);
+    }
+});
+
+
 socket.on('connect_other_room', (data) => {
     if (!rc.copy){
         rc.connect(data["id_device"]);

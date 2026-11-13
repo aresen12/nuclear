@@ -18,6 +18,7 @@ class RC{
         if (!this.copy){
             this.connect_device.push(id_device);
             socket.emit("connect_rc", {"sid": id_device, "room": room_id});
+            init_cursor(0,0, id_device);
             console.log("connect_device")
         }
 
@@ -30,8 +31,13 @@ class RC{
     turn_send(id_btn, bool_, text){
         if (!this.copy && this.connect_device.length != 0){
             socket.emit("turn_btn", {id: id_btn, flag: bool_, text: text, room: room_id});
-            console.log("test_send")
          }
+    }
+
+    send_mouse_pos(x, y){
+        if (this.connect_device.length != 0 || this.copy){
+            socket.emit("m_p", {sid: this.sid, x: x, y: y, room: room_id});
+        }
     }
 
     connect_other_room(){
