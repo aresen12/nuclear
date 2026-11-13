@@ -564,6 +564,7 @@ function set_direction_ui(flag, id_div){
 }
 
 function turn(id_div, flag, text=""){
+    rc.turn_send(id_div, flag, text);
     if (flag){
         document.getElementById(id_div).innerHTML = `
        <svg xmlns="http://www.w3.org/2000/svg"  height="55" viewBox="8 6 752 435">

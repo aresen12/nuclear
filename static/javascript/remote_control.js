@@ -27,6 +27,13 @@ class RC{
         this.connect_device;
     }
 
+    turn_send(id_btn, bool_, text){
+        if (!this.copy && this.connect_device.length != 0){
+            socket.emit("turn_btn", {id: id_btn, flag: bool_, text: text, room: room_id});
+            console.log("test_send")
+         }
+    }
+
     connect_other_room(){
         try{
             this.start_connect_time = re.time;

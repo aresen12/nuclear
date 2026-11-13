@@ -155,6 +155,11 @@ def connect_other_room_a(data):
 def set_speed_SYZ(data):
     emit("set_speed_SYZ", data, to=data['room'])
 
+
+@socketio.on("turn_btn")
+def turn_btn(data):
+    emit("turn_btn", data, to=data['room'])
+
 @socketio.on("active_viyb")
 def set_speed_SYZ(data):
     emit("active_viyb", data, to=data['room'])

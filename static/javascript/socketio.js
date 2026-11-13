@@ -55,6 +55,13 @@ socket.on('set_unset_down_direction', (data) => {
 });
 
 
+socket.on('turn_btn', (data) => {
+    if (rc.copy){
+        turn(data["id"], data["flag"], data["text"]);
+    }
+});
+
+
 socket.on('join_main_player', () => {
     if (rc.copy){
         rc.connect_other_room();
