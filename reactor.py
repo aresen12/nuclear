@@ -48,6 +48,17 @@ def bsm(id_re):
 
 @rs.route("/user/<id_re>")
 def bsm_user(id_re):
+    db_sess = db_session.create_session()
+    try:
+        r = int(id_re)
+        room = db_sess.query(Reactor).filter(Reactor.id == r).first()
+        if room.private and (not current_user.is_authenticated or (current_user.id != room.main_player)):
+            db_sess.close()
+            return render_template("check_private.html", title="Блочный щит управления",
+                                   description="Приватный Блочный щит управления РБМК-1000", id_re=id_re)
+    except ValueError:
+        pass
+    db_sess.close()
     return render_template("BSM.html", s=s, id_reactor=int(id_re), copy=True,
                            title="Блочный щит управления", description="Блочный щит управления РБМК-1000")
 

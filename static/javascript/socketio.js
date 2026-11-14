@@ -7,8 +7,9 @@ function send_chosen_delete(i2){
 }
 
 
-function send_update(){
+function send_update(main_sid){
     data = gener_json();
+    data["main_sid"] = main_sid;
     socket.emit("update", data);
 }
 
@@ -35,7 +36,6 @@ socket.on('active_viyb', (data) => {
 
 socket.on('m_p', (data) => {
     if (rc.sid != data["sid"]){
-        console.log(data["x"], data["y"])
         set_pos_mouse(data["sid"], data["x"], data["y"]);
     }
 });
@@ -44,7 +44,6 @@ socket.on('m_p', (data) => {
 socket.on('connect_other_room', (data) => {
     if (!rc.copy){
         rc.connect(data["id_device"]);
-        console.log("id_device");
     }
 });
 
@@ -70,10 +69,13 @@ socket.on('turn_btn', (data) => {
 });
 
 
-socket.on('join_main_player', () => {
+socket.on('join_main_player', (data) => {
     if (rc.copy){
-        rc.connect_other_room();
-        alert("Организатор присоединился")
+        if (rc.main_sid == "" || re.time - rc.last_upd_time > 5){
+//            rc.main_sid = ;
+            rc.connect_other_room();
+            alert("Организатор присоединился")
+        }
     }
 });
 
@@ -113,7 +115,6 @@ socket.on('method_send', (data) => {
         }
         if (data["function"] == "set_steam_direction_turnover"){
             if (data["id_t"] == "t1"){
-                console.log("test");
                 re.t1.set_steam_direction();
             } else {
                 re.t2.set_steam_direction();
@@ -163,11 +164,10 @@ socket.on('method_send', (data) => {
             set_direction_ui(data["flag"], data["id_div"]);
         }
         if (data["function"] == "chosen_add_show"){
-           console.log("chosen_add_show");
            chosen(data["i"], data["j"], true);
         }
-                if (data["function"] == "chosen_delete"){
-chosen(data["i"], data["j"], false);
+        if (data["function"] == "chosen_delete"){
+            chosen(data["i"], data["j"], false);
         }
     }
 });
@@ -176,13 +176,14 @@ chosen(data["i"], data["j"], false);
 
 socket.on('chosen_current', (data) => {
     if (!rc.copy){
-    re.chosen_current(data["i"], data["j"]);
+        re.chosen_current(data["i"], data["j"]);
     }
 });
 
 
 socket.on('update', (data) => {
-    if (rc.copy){
+    if (rc.copy && rc.main_sid == data["main_sid"]){
+        rc.last_upd_time = re.time;
         load_data(data);
         setup_UI(re);
     }
@@ -203,7 +204,9 @@ socket.on('server_sid_response', (data) => {
 
 socket.on('connect_rc_user', (data) => {
         rc.connect_flag = true;
-//        alert("Вы успешно подключились");
+        if (data["main_sid"]){
+            rc.main_sid = data["main_sid"];
+        }
 });
 
 

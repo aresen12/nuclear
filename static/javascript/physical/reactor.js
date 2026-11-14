@@ -362,6 +362,9 @@ class RemoteControl extends Reactor{
 
     update(){
         this.time++;
+        if (this.time - rc.last_upd_time >= 5){
+//            alert("Потеряна связь с организатором");
+        }
         if (!rc.connect_flag && this.time - rc.start_connect_time >= 10 && rc.wait){
             rc.wait = false;
             alert("Возможно тут никого нет. Делаем вас организатором этой комнаты.")

@@ -2,26 +2,28 @@ class RC{
     constructor(is_copy){
         this.sid = "";
         this.copy = is_copy;
+        if (is_copy){
+            this.main_sid = "";
+            this.last_upd_time = 0;
+            this.start_connect_time = 0;
+            this.wait = false;
+        }
         this.connect_device = [];
         this.connect_flag = false;
-        this.start_connect_time = 0;
-        this.wait = false;
     }
 
     update(){
         if (!this.copy && this.connect_device.length != 0){
-            send_update();
+            send_update(this.sid);
         }
     }
 
     connect(id_device){
         if (!this.copy){
             this.connect_device.push(id_device);
-            socket.emit("connect_rc", {"sid": id_device, "room": room_id});
+            socket.emit("connect_rc", {"sid": id_device, "room": room_id, "main_sid": this.sid});
             init_cursor(0,0, id_device);
-            console.log("connect_device")
         }
-
     }
 
     disconnect(id_device){
@@ -42,19 +44,16 @@ class RC{
 
     connect_other_room(){
         try{
-            this.start_connect_time = re.time;
-            this.wait = true;
-            console.log(this.sid)
-            socket.emit("connect_other_room_server", {"id_device": this.sid, "room": room_id});
-            } catch(e){
-
-            console.log("error")
-        }
+            if (this.sid != ""){
+                this.start_connect_time = re.time;
+                this.wait = true;
+                socket.emit("connect_other_room_server", {"id_device": this.sid, "room": room_id});
+            }
+        } catch(e){}
     }
 
     connect_skala()   {
         socket.emit("connect_other_room_server", {"id_device": this.sid, "room": room_id});
-        console.log("skala")
     }
 
 

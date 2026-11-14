@@ -21,7 +21,7 @@ def handle_connect():
 
 @socketio.on("connect_rc")
 def send_connect(data):
-    emit("connect_rc_user", {"code": 200}, room=data["sid"])
+    emit("connect_rc_user", {"code": 200, "main_sid": data["main_sid"]}, room=data["sid"])
 
 
 @socketio.on('join')
