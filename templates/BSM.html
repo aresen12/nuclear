@@ -121,10 +121,7 @@
                     <div>
                         <div>
                             <div style="display:flex;">
-                                <div id="high_rho_total" class="alert-error" onclick="show_hints(this.id)">
-                                    реактивность
-                                    1.25
-                                </div>
+                                <div id="high_rho_total" class="alert-error" onclick="show_hints(this.id)"></div>
                                 <div id="alert_baz" class="alert-error" onclick="show_hints(this.id)"></div>
                                 <div id="alert_az_2" class="alert-error" onclick="show_hints(this.id)"></div>
                             </div>
@@ -154,9 +151,9 @@
                                 <div id="m_ozr" class="alert-error" onclick="show_hints(this.id)"></div>
                             </div>
                             <div class="flex-div">
-                                <div id="az_call" class="alert-error">АЗ набран</div>
-                                <div id="up_direction" class="alert-error" onclick="show_hints(this.id)">Извлек</div>
-                                <div id="down_direction" class="alert-error" onclick="show_hints(this.id)">Опуск</div>
+                                <div id="az_call" class="alert-error">АЗ </div>
+                                <div id="up_direction" class="alert-error" onclick="show_hints(this.id)"></div>
+                                <div id="down_direction" class="alert-error" onclick="show_hints(this.id)"></div>
                             </div>
                         </div>
                     </div>
@@ -502,8 +499,6 @@
                                                   stroke-linecap="round" opacity=".8"/>
                                             <path d="M402 120V335"
                                                   fill="none" stroke="#050605" stroke-width="2"/>
-
-                                            <!-- Стрелка -->
                                             <path d="M384 89L370 127H379V159H389V127H398Z"
                                                   fill="#e5e0cb" stroke="#c8c3b1" stroke-width="1.5"/>
                                             <circle cx="384" cy="194" r="17"
@@ -588,11 +583,9 @@
                             </button>
                             <button class="black-btn" onclick="re.set_unset_down_direction()">Опуск</button>
                         </div>
-
                         <div>
                             Режимы АЗ<br>
                             <button id="azs_start" onclick="re.az.azs_start()" class="az-btn">
-
                                 <svg xmlns="http://www.w3.org/2000/svg" height="55" viewBox="8 6 752 435">
                                     <defs>
                                         <linearGradient id="plate" x1="0" y1="0" x2=".9" y2="1">
@@ -642,25 +635,18 @@
                                             <path d="M-3-3L3 3" stroke="#77786d" stroke-width="1.5"/>
                                         </g>
                                     </defs>
-
-                                    <!-- Панель без лишних полей -->
                                     <rect x="28" y="25" width="712" height="462" rx="13"
                                           fill="none" stroke="#d0cdbb" stroke-width="3" opacity=".75"/>
                                     <rect x="34" y="31" width="700" height="450" rx="10"
                                           fill="none" stroke="#65665d" stroke-width="1.5"/>
-
                                     <use href="#screw" x="34" y="33"/>
                                     <use href="#screw" x="734" y="33"/>
                                     <use href="#screw" x="34" y="479"/>
                                     <use href="#screw" x="734" y="479"/>
-
-                                    <!-- Подписи -->
                                     <g font-family="Arial, Helvetica, sans-serif"
                                        font-weight="bold" fill="#24251f" text-anchor="middle">
                                         <text x="156" y="231" font-size="84">ВКЛ</text>
                                     </g>
-
-                                    <!-- Круглое основание -->
                                     <ellipse cx="384" cy="180" rx="119" ry="123"
                                              fill="#141511" opacity=".4" filter="url(#shadow)"/>
                                     <circle cx="384" cy="196" r="113"
@@ -673,8 +659,6 @@
                                             fill="none" stroke="#56574f" stroke-width="2"/>
                                     <circle cx="384" cy="206" r="101"
                                             fill="none" stroke="#dedbca" stroke-width="1.5" opacity=".6"/>
-
-                                    <!-- Рукоятка -->
                                     <rect x="353" y="60" width="67" height="260" rx="29"
                                           fill="#080908" opacity=".7" filter="url(#softShadow)"/>
                                     <rect x="354" y="62" width="60" height="254" rx="27"
@@ -688,12 +672,8 @@
                                           stroke-linecap="round" opacity=".8"/>
                                     <path d="M402 120V335"
                                           fill="none" stroke="#050605" stroke-width="2"/>
-
-                                    <!-- Стрелка -->
                                     <path d="M384 89L370 127H379V159H389V127H398Z"
                                           fill="#e5e0cb" stroke="#c8c3b1" stroke-width="1.5"/>
-
-                                    <!-- Центральный фиксатор -->
                                     <circle cx="384" cy="194" r="17"
                                             fill="#10110f" stroke="#4c4d45" stroke-width="3"/>
                                     <circle cx="384" cy="194" r="11"
@@ -701,8 +681,6 @@
                                     <circle cx="384" cy="194" r="4.5"
                                             fill="#e1ddcc" stroke="#66675d" stroke-width="1.5"/>
                                     <circle cx="382" cy="192" r="1.5" fill="#fff" opacity=".8"/>
-
-                                    <!-- Табличка АЗ-5 -->
                                     <rect x="225" y="330" width="322" height="108" rx="10"
                                           fill="#33342e" opacity=".65"/>
                                     <rect x="226" y="331" width="316" height="108" rx="10"
@@ -717,11 +695,9 @@
                                           font-size="100" font-weight="bold"
                                           letter-spacing="2" fill="#e0dac5">АЗC
                                     </text>
-
                                 </svg>
                             </button>
                             <button id="azsr_start" onclick="re.az.azsr_start()" class="az-btn">
-
                                 <svg xmlns="http://www.w3.org/2000/svg" height="55" viewBox="8 6 752 435">
                                     <defs>
                                         <linearGradient id="plate" x1="0" y1="0" x2=".9" y2="1">
@@ -771,13 +747,10 @@
                                             <path d="M-3-3L3 3" stroke="#77786d" stroke-width="1.5"/>
                                         </g>
                                     </defs>
-
-                                    <!-- Панель без лишних полей -->
                                     <rect x="28" y="25" width="712" height="462" rx="13"
                                           fill="none" stroke="#d0cdbb" stroke-width="3" opacity=".75"/>
                                     <rect x="34" y="31" width="700" height="450" rx="10"
                                           fill="none" stroke="#65665d" stroke-width="1.5"/>
-
                                     <use href="#screw" x="34" y="33"/>
                                     <use href="#screw" x="734" y="33"/>
                                     <use href="#screw" x="34" y="479"/>
@@ -802,8 +775,6 @@
                                             fill="none" stroke="#56574f" stroke-width="2"/>
                                     <circle cx="384" cy="206" r="101"
                                             fill="none" stroke="#dedbca" stroke-width="1.5" opacity=".6"/>
-
-                                    <!-- Рукоятка -->
                                     <rect x="353" y="60" width="67" height="260" rx="29"
                                           fill="#080908" opacity=".7" filter="url(#softShadow)"/>
                                     <rect x="354" y="62" width="60" height="254" rx="27"
@@ -848,7 +819,6 @@
                                     </text>
 
                                 </svg>
-
                             </button>
                             <button style="background:red;" onclick="re.az.stop_az()">Съём АЗ</button>
                         </div>
@@ -871,130 +841,40 @@
                 <div id="canvas_cont"></div>
                 <div class="errors-table flex-div">
                     <div>
-                        <div id="h_lower_water_level_BS1" onclick="show_hints(this.id)" class="alert-error max-class">H
-                            БС1
-                            <svg height="14" viewBox="8 7 8 10" fill="none"
-                                 xmlns="http://www.w3.org/2000/svg">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                   stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <path d="M12 16L12 8" stroke="#323232" stroke-width="2"
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round"></path>
-                                    <path d="M9 13L11.913 15.913V15.913C11.961 15.961 12.039 15.961 12.087 15.913V15.913L15 13"
-                                          stroke="#323232"
-                                          stroke-width="2" stroke-linecap="round"
-                                          stroke-linejoin="round"></path>
-                                </g>
-                            </svg>
-                            0.75
-                        </div>
-                        <div id="h_lower_water_level_BS2" onclick="show_hints(this.id)" class="alert-error max-class">H
-                            БС2
-                            <svg height="14" viewBox="8 7 8 10" fill="none"
-                                 xmlns="http://www.w3.org/2000/svg">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                   stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <path d="M12 16L12 8" stroke="#323232" stroke-width="2"
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round"></path>
-                                    <path d="M9 13L11.913 15.913V15.913C11.961 15.961 12.039 15.961 12.087 15.913V15.913L15 13"
-                                          stroke="#323232"
-                                          stroke-width="2" stroke-linecap="round"
-                                          stroke-linejoin="round"></path>
-                                </g>
-                            </svg>
-                            0.75
-                        </div>
-
+                        <div id="h_lower_water_level_BS1" onclick="show_hints(this.id)" class="alert-error"></div>
+                        <div id="h_lower_water_level_BS2" onclick="show_hints(this.id)" class="alert-error"></div>
                     </div>
                     <div>
-                        <div id="level_down1" class="alert-error" onclick="show_hints(this.id)">Cброс БС1</div>
-                        <div id="level_down2" class="alert-error" onclick="show_hints(this.id)">Cброс БС2</div>
+                        <div id="level_down1" class="alert-error" onclick="show_hints(this.id)"></div>
+                        <div id="level_down2" class="alert-error" onclick="show_hints(this.id)"></div>
                     </div>
                     <div>
-                        <div id="3_n_error" class="alert-error " onclick="show_hints(this.id)">ПЭН1 неиспр</div>
-                        <div id="4_n_error" class="alert-error " onclick="show_hints(this.id)">ПЭН2 неиспр</div>
-
-
+                        <div id="3_n_error" class="alert-error " onclick="show_hints(this.id)"></div>
+                        <div id="4_n_error" class="alert-error " onclick="show_hints(this.id)"></div>
                     </div>
                     <div>
-                        <div id="3_a_error" class="alert-error" onclick="show_hints(this.id)">АПЭН1 неиспр</div>
-                        <div id="4_a_error" class="alert-error max-class" onclick="show_hints(this.id)">АПЭН2 неиспр
-                        </div>
+                        <div id="3_a_error" class="alert-error" onclick="show_hints(this.id)"></div>
+                        <div id="4_a_error" class="alert-error max-class" onclick="show_hints(this.id)"></div>
                     </div>
                     <div>
-                        <div id="alert_high_temperatureBS2" onclick="show_hints(this.id)" class="alert-error">Т БС2
-                            <svg height="14" viewBox="8 7 8 10" fill="none"
-                                 xmlns="http://www.w3.org/2000/svg" transform="matrix(-1, 0, 0, -1, 0, 0)">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <path d="M12 16L12 8" stroke="#323232" stroke-width="2"
-                                          stroke-linecap="round" stroke-linejoin="round">
-                                    </path>
-                                    <path d="M9 13L11.913 15.913V15.913C11.961 15.961 12.039 15.961 12.087 15.913V15.913L15 13"
-                                          stroke="#323232"
-                                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                </g>
-                            </svg>
-                        </div>
-                        <div id="1_n_turn_down" class="alert-error" onclick="show_hints(this.id)">ГНЦ1 ОТКЛ</div>
-
+                        <div id="alert_high_temperatureBS2" onclick="show_hints(this.id)" class="alert-error"></div>
+                        <div id="1_n_turn_down" class="alert-error" onclick="show_hints(this.id)"></div>
                     </div>
                     <div>
-                        <div id="4_n_turn_down" class="alert-error" onclick="show_hints(this.id)">ПЭН2 ОТКЛ</div>
-                        <div id="1_a_turn_down" class="alert-error" onclick="show_hints(this.id)"
-                             style="width:max-content;">АГНЦ1 ОТКЛ
-                        </div>
+                        <div id="4_n_turn_down" class="alert-error" onclick="show_hints(this.id)"></div>
+                        <div id="1_a_turn_down" class="alert-error" onclick="show_hints(this.id)"></div>
                     </div>
                     <div>
-                        <div id="4_a_turn_down" class="alert-error max-class" onclick="show_hints(this.id)">АПЭН2 ОТКЛ
-                        </div>
-
-                        <div id="mpa" class="alert-error" onclick="show_hints(this.id)">МПА</div>
-
+                        <div id="4_a_turn_down" class="alert-error max-class" onclick="show_hints(this.id)"></div>
+                        <div id="mpa" class="alert-error" onclick="show_hints(this.id)"></div>
                     </div>
                     <div>
-                        <div id="bs1_level_up" onclick="show_hints(this.id)" class="alert-error max-class">H БС1
-                            <svg height="14" viewBox="8 7 8 10" fill="none"
-                                 xmlns="http://www.w3.org/2000/svg" transform="matrix(-1, 0, 0, -1, 0, 0)">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <path d="M12 16L12 8" stroke="#323232" stroke-width="2"
-                                          stroke-linecap="round" stroke-linejoin="round">
-                                    </path>
-                                    <path d="M9 13L11.913 15.913V15.913C11.961 15.961 12.039 15.961 12.087 15.913V15.913L15 13"
-                                          stroke="#323232"
-                                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                </g>
-                            </svg>
-                        </div>
-                        <div id="bs2_level_up" onclick="show_hints(this.id)" class="alert-error">H БС2
-                            <svg height="14" viewBox="8 7 8 10" fill="none"
-                                 xmlns="http://www.w3.org/2000/svg" transform="matrix(-1, 0, 0, -1, 0, 0)">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <path d="M12 16L12 8" stroke="#323232" stroke-width="2"
-                                          stroke-linecap="round" stroke-linejoin="round">
-                                    </path>
-                                    <path d="M9 13L11.913 15.913V15.913C11.961 15.961 12.039 15.961 12.087 15.913V15.913L15 13"
-                                          stroke="#323232"
-                                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                </g>
-                            </svg>
-                        </div>
+                        <div id="bs1_level_up" onclick="show_hints(this.id)" class="alert-error max-class"></div>
+                        <div id="bs2_level_up" onclick="show_hints(this.id)" class="alert-error"></div>
                     </div>
                     <div>
-                        <div id="3_a_turn_down" class="alert-error max-class" onclick="show_hints(this.id)">АПЭН1 ОТКЛ
-                        </div>
-                        <div id="2_a_error" class="alert-error max-class" onclick="show_hints(this.id)">АГНЦ2 неиспр
-                        </div>
+                        <div id="3_a_turn_down" class="alert-error max-class" onclick="show_hints(this.id)"></div>
+                        <div id="2_a_error" class="alert-error max-class" onclick="show_hints(this.id)"></div>
                     </div>
                 </div>
                 <div class="flex-div">
@@ -1013,7 +893,6 @@
                                 P МПа<br>
                                 <input id="p_bs1" class="input-big margin-input" readonly>
                             </div>
-
                         </div>
                     </div>
                     <div class="sector">
@@ -1325,44 +1204,32 @@
                     </div>
                     <div class="flex-div">
                         <div>
-                            <div id="alert_high_e_power_t1" class="alert-error" onclick="show_hints(this.id)">Высокая
-                                мощность ТГ1
-                            </div>
-                            <div id="alert_high_turnovers1" class="alert-error" onclick="show_hints(this.id)">Высокие
-                                обороты ТГ1
-                            </div>
-                            <div id="alert_high_turnovers2" class="alert-error" onclick="show_hints(this.id)">Высокие
-                                обороты ТГ2
-                            </div>
-                            <div id="alert_high_e_power_t2" class="alert-error" onclick="show_hints(this.id)">Высокая
-                                мощность ТГ2
-                            </div>
-
+                            <div id="alert_high_e_power_t1" class="alert-error" onclick="show_hints(this.id)"></div>
+                            <div id="alert_high_turnovers1" class="alert-error" onclick="show_hints(this.id)"></div>
+                            <div id="alert_high_turnovers2" class="alert-error" onclick="show_hints(this.id)"></div>
+                            <div id="alert_high_e_power_t2" class="alert-error" onclick="show_hints(this.id)"></div>
                         </div>
                         <div>
-                            <div id="turn_down_rdg2" class="alert-error" onclick="show_hints(this.id)">РДГ2 откл</div>
-                            <div id="turn_down_rdg1" class="alert-error" onclick="show_hints(this.id)">РДГ1 откл</div>
-                            <div id="turn_down_t2" class="alert-error" onclick="show_hints(this.id)">ТГ2 откл</div>
-                            <div id="turn_down_t1" class="alert-error" onclick="show_hints(this.id)">ТГ1 откл</div>
+                            <div id="turn_down_rdg2" class="alert-error" onclick="show_hints(this.id)"></div>
+                            <div id="turn_down_rdg1" class="alert-error" onclick="show_hints(this.id)"></div>
+                            <div id="turn_down_t2" class="alert-error" onclick="show_hints(this.id)"></div>
+                            <div id="turn_down_t1" class="alert-error" onclick="show_hints(this.id)"></div>
                         </div>
                         <div>
-                            <div id="rdg1_broken" class="alert-error" onclick="show_hints(this.id)">РДГ1 неиспр</div>
-                            <div id="rdg2_broken" class="alert-error" onclick="show_hints(this.id)">РДГ2 неиспр</div>
-                            <div id="lep1_broken" class="alert-error" onclick="show_hints(this.id)">ЛЭП1 неиспр</div>
-                            <div id="lep2_broken" class="alert-error" onclick="show_hints(this.id)">ЛЭП2 неиспр</div>
+                            <div id="rdg1_broken" class="alert-error" onclick="show_hints(this.id)"></div>
+                            <div id="rdg2_broken" class="alert-error" onclick="show_hints(this.id)"></div>
+                            <div id="lep1_broken" class="alert-error" onclick="show_hints(this.id)"></div>
+                            <div id="lep2_broken" class="alert-error" onclick="show_hints(this.id)"></div>
                         </div>
                         <div>
-                            <div id="error_t1" class="alert-error" onclick="show_hints(this.id)">ТГ1 неиспр</div>
-                            <div id="error_t2" class="alert-error" onclick="show_hints(this.id)">ТГ2 неиспр</div>
-                            <div id="e_h" class="alert-error" onclick="show_hints(this.id)">Превыш Нагрузки</div>
-                            <div id="m_down_t1" class="alert-error" onclick="show_hints(this.id)">ТГ1 потеря момента
-                            </div>
-
+                            <div id="error_t1" class="alert-error" onclick="show_hints(this.id)"></div>
+                            <div id="error_t2" class="alert-error" onclick="show_hints(this.id)"></div>
+                            <div id="e_h" class="alert-error" onclick="show_hints(this.id)"></div>
+                            <div id="m_down_t1" class="alert-error" onclick="show_hints(this.id)"></div>
                         </div>
                         <div>
-                            <div id="m_down_t2" class="alert-error" onclick="show_hints(this.id)">ТГ2 потеря момента
-                            </div>
-                            <div id="tsn_broken" class="alert-error" onclick="show_hints(this.id)">ТСН неиспр</div>
+                            <div id="m_down_t2" class="alert-error" onclick="show_hints(this.id)"></div>
+                            <div id="tsn_broken" class="alert-error" onclick="show_hints(this.id)"></div>
                         </div>
                     </div>
                 </div>
@@ -1382,7 +1249,6 @@
                                             type="text/css"> .puchipuchi_een{fill:#111918;} </style>
                                         <path class="puchipuchi_een"
                                               d="M30,17c0,7.72-6.28,14-14,14S2,24.72,2,17C2,10.311,6.718,4.71,13,3.332v4.129 C8.948,8.739,6,12.531,6,17c0,5.514,4.486,10,10,10s10-4.486,10-10c0-4.469-2.948-8.261-7-9.539V3.332C25.282,4.71,30,10.311,30,17z M16,13c1.104,0,2-0.896,2-2V3c0-1.104-0.896-2-2-2s-2,0.896-2,2v8C14,12.104,14.896,13,16,13z">
-
                              </path> </g></svg>
                             </div>
                         </button>
@@ -1394,7 +1260,6 @@
                     <br>
                 </div>
                 {% endfor %}
-
                 <div style="">
                     <div>
                         РДГ1

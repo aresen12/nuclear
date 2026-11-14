@@ -62,10 +62,10 @@ const errors2 = {
   "lep2_broken": "ЛЭП2 неиспр",
   "tsn_broken": "ТСН неиспр",
   "e_h": "Превыш Нагрузки",
-  "alert_high_e_power_t1": "Высокая мощность ТГ1",
-  "alert_high_turnovers1": "Высокие обороты ТГ1",
-  "alert_high_turnovers2": "Высокие обороты ТГ2",
-  "alert_high_e_power_t2": "Высокая мощность ТГ2",
+  "alert_high_e_power_t1": "P ТГ1 ↑ 1.25",
+  "alert_high_turnovers1": "Высокие обр ТГ1",
+  "alert_high_turnovers2": "Высокие обр ТГ2",
+  "alert_high_e_power_t2": "P ТГ2 ↑ 1.25",
   "error_t1": "ТГ1 неиспр",
   "error_t2": "ТГ2 неиспр"
 
@@ -97,6 +97,11 @@ function show_mnemo(reactor){
 
 function exit_menu(menu_id){
     document.getElementById(menu_id).style.display = "none";
+}
+
+
+function full_screen(){
+    document.exitFullscreen()
 }
 
 
